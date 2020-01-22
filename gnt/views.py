@@ -9,3 +9,6 @@ def signup(request):
 
 def login(request):
     return render(request, 'gnt/login.html')
+
+def results(request):
+    return render(request, 'gnt/results.html')

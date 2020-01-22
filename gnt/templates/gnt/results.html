@@ -1,0 +1,44 @@
+{% extends 'gnt/base.html' %} {% block 'content' %}
+
+<style>
+  .border1 {
+    border: 5px blue solid;
+  }
+
+  .title {
+    margin-top: 80px;
+  }
+
+  h1 {
+    text-align: center;
+  }
+
+  .results {
+    margin-top: 50px;
+  }
+</style>
+
+<div class="container title">
+  <h1>Results</h1>
+</div>
+
+<div class="container results">
+  <div class="row">
+    <div class="col-lg-2 border1">pictures</div>
+    <div class="col-lg-10 border1">Descriptions</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 border1">pictures</div>
+    <div class="col-lg-10 border1">Descriptions</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 border1">pictures</div>
+    <div class="col-lg-10 border1">Descriptions</div>
+  </div>
+  <div class="row">
+    <div class="col-lg-2 border1">pictures</div>
+    <div class="col-lg-10 border1">Descriptions</div>
+  </div>
+</div>
+
+{% endblock %}
