@@ -1,0 +1,10 @@
+.loading_gif_wrapper {
+    text-align: center;
+}
+
+.duck_loading {
+    display: inline-block;
+    margin-top: 10%;
+    width: 50%;
+    height: auto;
+}

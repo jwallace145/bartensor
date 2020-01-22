@@ -21,3 +21,6 @@ def login(request):
 
 def results(request):
     return render(request, 'gnt/results.html')
+
+def loading(request):
+    return render(request, 'gnt/loading.html')
