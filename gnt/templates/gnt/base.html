@@ -21,6 +21,7 @@
         <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
     </head>
     <body>
+        {% block 'header' %}
         <header class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row bd-navbar">
             <a class="navbar-brand mr-0 mr-md-2" href="{% url 'gnt:index' %}" aria-label="Bartensor"><h2>Bartensor</h2></a>
             <div class="navbar-nav-scroll w-100">
@@ -34,6 +35,7 @@
                 </ul>
             </div>
         </header>
+        {% endblock %}
 
         {% block 'content' %}
         {% endblock %}
