@@ -26,12 +26,21 @@
             <a class="navbar-brand mr-0 mr-md-2" href="{% url 'gnt:index' %}" aria-label="Bartensor"><h2>Bartensor</h2></a>
             <div class="navbar-nav-scroll w-100">
                 <ul class="navbar-brand navbar-nav bd-navbar-nav flex-row float-right">
+                    {% if logged_in %}
+                    <li class="nav-item border rounded px-1 mr-3 bg-white">
+                        <a class="nav-link" href="{% url 'gnt:index' %}">Log Out</a>
+                    </li>
+                    <li class="nav-item px-1 mr-3 bg-white">
+                        <img class="rounded" style="height:50px" src="{% static 'profile.jpg' %}" alt="My Profile">
+                    </li>
+                    {% else %}
                     <li class="nav-item border rounded px-1 mr-3 bg-white">
                         <a class="nav-link" href="{% url 'gnt:signup' %}">Sign Up</a>
                     </li>
                     <li class="nav-item border rounded px-1 bg-white">
                         <a class="nav-link" href="{% url 'gnt:login' %}">Login</a>
                     </li>
+                    {% endif %}
                 </ul>
             </div>
         </header>
