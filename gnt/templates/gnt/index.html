@@ -1,41 +1,30 @@
 {% extends 'gnt/base.html' %} 
 {% block 'content' %}
 
-<style>
+<script type="text/javascript">
 
-    .assistant_button_wrapper {
-        text-align: center;
-    }
+    $(document).ready(function () {
+        $(".listen").hide();
 
-    .circleBase {
-        box-shadow: 5px 10px #888888;
-        display: inline-block;
-        border-radius: 50%;
-        behavior: url(PIE.htc); /* for IE8 compatability */
-        margin-top: 20%;
-    }
+        $(".assistant_button").click(function waiting() {
+                $(".listen").show();
+                setTimeout(function redirect_to_results() {
+                    var url = window.location
+                    window.location.replace(url + "results")
+                }, 5000);
+            }
+        ); 
 
-    .assistant_button {
-        width: 200px;
-        height: 200px;
-        background: #f8f9fa;
-        border: 3px solid #bebebe;
-    }
+    });
 
-    .mic_icon {
-        margin: auto;
-        padding: 10px;
-        margin: 45px;
-        width: 80px;
-        height: 88px;
-    }
-
-</style>
+</script>
 
 <div class="assistant_button_wrapper">
-    <div class="circleBase assistant_button" href="{% url 'gnt:results' %}">
+    <a class="circleBase assistant_button">
         <img class="mic_icon" src="../../static/mic.png" alt="can't find mic icon"/>
-    </div>
+    </a>
+
+    <a class="listen">Listening</a>
 </div>
 
 {% endblock %}
