@@ -5,7 +5,7 @@ def index(request):
     return render(request, 'gnt/index.html')
 
 def signup(request):
-    return HttpResponse('Sign up stub')
+    return render(request, 'gnt/signup.html')
 
 def login(request):
-    return HttpResponse('Login stub')
+    return render(request, 'gnt/login.html')
