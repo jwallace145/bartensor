@@ -1,6 +1,41 @@
 {% extends 'gnt/base.html' %} 
 {% block 'content' %}
 
-<p>Sample index html</p>
+<style>
+
+    .assistant_button_wrapper {
+        text-align: center;
+    }
+
+    .circleBase {
+        box-shadow: 5px 10px #888888;
+        display: inline-block;
+        border-radius: 50%;
+        behavior: url(PIE.htc); /* for IE8 compatability */
+        margin-top: 20%;
+    }
+
+    .assistant_button {
+        width: 200px;
+        height: 200px;
+        background: #f8f9fa;
+        border: 3px solid #bebebe;
+    }
+
+    .mic_icon {
+        margin: auto;
+        padding: 10px;
+        margin: 45px;
+        width: 80px;
+        height: 88px;
+    }
+
+</style>
+
+<div class="assistant_button_wrapper">
+    <div class="circleBase assistant_button" href="{% url 'gnt:results' %}">
+        <img class="mic_icon" src="../../static/mic.png" alt="can't find mic icon"/>
+    </div>
+</div>
 
 {% endblock %}
