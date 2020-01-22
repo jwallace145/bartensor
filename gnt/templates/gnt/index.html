@@ -1,6 +1,30 @@
 {% extends 'gnt/base.html' %} 
 {% block 'content' %}
 
-<p>Sample index html</p>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $(".listen").hide();
+
+        $(".assistant_button").click(function waiting() {
+                $(".listen").show();
+                setTimeout(function redirect_to_loading() {
+                    var url = window.location;
+                    window.location.replace(url + "loading");
+                }, 5000);
+            }
+        ); 
+
+    });
+
+</script>
+
+<div class="assistant_button_wrapper">
+    <a class="circleBase assistant_button">
+        <img class="mic_icon" src="../../static/mic.png" alt="can't find mic icon"/>
+    </a>
+
+    <a class="listen">I'm listening. Go ahead!</a>
+</div>
 
 {% endblock %}
