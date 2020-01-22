@@ -3,6 +3,13 @@
 {% block 'header' %}
 <header class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row bd-navbar">
     <a class="navbar-brand mr-0 mr-md-2" href="{% url 'gnt:index' %}" aria-label="Bartensor"><h2>Bartensor</h2></a>
+    <div class="navbar-nav-scroll w-100">
+        <ul class="navbar-brand navbar-nav bd-navbar-nav flex-row float-right">
+            <li class="nav-item border rounded px-1 mr-3 bg-white">
+                <a class="nav-link" href="{% url 'gnt:signup' %}">Sign Up</a>
+            </li>
+        </ul>
+    </div>
 </header>
 {% endblock %}
 
