@@ -9,8 +9,15 @@
       setTimeout(function redirect_to_loading() {
         var url = window.location;
         window.location.replace(url + "loading");
-      }, 5000);
+      }, 10000);
     });
+
+    $('.single_drink_rec').click(
+      function redirect_to_loading() {
+        var url = window.location;
+        window.location.replace(url + "loading");
+      }
+    );
   });
 </script>
 
@@ -134,6 +141,7 @@
     </div>
   </div>
 </div>
+<div class="single_drink_rec" style="cursor: pointer; text-align:center; padding: 20px;">Recommend me a drink</div>
 {% endif %}
 
 {% endblock %}
