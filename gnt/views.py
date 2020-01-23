@@ -7,11 +7,8 @@ from django.urls import reverse
 from .models import User
 
 def index(request):
-    logged_in = len(User.objects.filter(username='big_duddy666')) > 0
-    for user in User.objects.all():
-        user.delete()
     return render(request, 'gnt/index.html', {
-            'logged_in': logged_in,
+            'logged_in': len(User.objects.filter(username='big_duddy666')) > 0,
         })
 
 def signup(request):
@@ -32,8 +29,17 @@ def login(request):
     else:
         return render(request, 'gnt/login.html')
 
+def logout(request):
+    for user in User.objects.all():
+        user.delete()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 def results(request):
-    return render(request, 'gnt/results.html')
+    return render(request, 'gnt/results.html', {
+            'logged_in': len(User.objects.filter(username='big_duddy666')) > 0,
+        })
 
 def loading(request):
-    return render(request, 'gnt/loading.html')
+    return render(request, 'gnt/loading.html', {
+            'logged_in': len(User.objects.filter(username='big_duddy666')) > 0,
+        })
