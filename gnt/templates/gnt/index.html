@@ -12,12 +12,10 @@
       }, 10000);
     });
 
-    $('.single_drink_rec').click(
-      function redirect_to_loading() {
-        var url = window.location;
-        window.location.replace(url + "loading");
-      }
-    );
+    $(".single_drink_rec").click(function redirect_to_loading() {
+      var url = window.location;
+      window.location.replace(url + "loading");
+    });
   });
 </script>
 
@@ -141,7 +139,10 @@
     </div>
   </div>
 </div>
-<div class="single_drink_rec" style="cursor: pointer; text-align:center; padding: 20px;">Recommend me a drink</div>
-{% endif %}
-
-{% endblock %}
+<div
+  class="single_drink_rec"
+  style="cursor: pointer; text-align:center; padding: 20px;"
+>
+  <button class="btn btn-primary">Recommend me a drink</button>
+</div>
+{% endif %} {% endblock %}
