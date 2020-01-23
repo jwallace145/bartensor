@@ -25,6 +25,7 @@
   <a class="listen">I'm listening. Go ahead!</a>
 </div>
 
+{% if logged_in %}
 <div style="margin-top: 60px;" class="container title">
   <h3 style="text-align: center;">Your Liked Drinks</h3>
 </div>
@@ -133,5 +134,6 @@
     </div>
   </div>
 </div>
+{% endif %}
 
 {% endblock %}
