@@ -35,14 +35,46 @@ def logout(request):
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 def results(request):
-	return render(request, 'gnt/results.html', {
-			'logged_in': len(User.objects.filter(username='big_duddy666')) > 0,
-		})
+	#TODO: Replace hard coded drinks with information passed into request
+	drinks = [
+		{
+			'id': 'headingOne',
+			'picture': 'https://assets.bonappetit.com/photos/57acc14e53e63daf11a4d9b6/master/pass/whiskey-sour.jpg',
+			'name': 'Whiskey Sour',
+			'glass': 'Highball',
+			'ingredients': ['1 ½ oz oz Whiskey',
+							'2 oz Sour Mix (Fresh preferred)',
+							'Optional: 1/2 oz egg white (makes drink foamy)'
+							],
+			'method': ['Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice',
+						'Strain into a large old fashioned glass with fresh ice',
+						'Garnish with cherry & orange'
+						]
+
+		},
+		{
+			'id': 'headingTwo',
+			'picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS9h-WqGmZDxZTkvjEqRWyDG0ZIw5wC6RlQyFj_THX8fmYcQEgv',
+			'name': 'Old Fashioned',
+			'glass': 'Rocks glass',
+			'ingredients': ['Packet of Sugar', 
+							'2 dashes of Bitters', 
+							'Splash of soda',
+							'Cherry & orange',
+							'2 oz Whiskey'
+							],
+			'method': ['Muddle sugar, bitters, soda in glass',
+						'Add Whiskey',
+						'Fill glass with ice'
+						]
+		}
+	]
+	context = {
+		'drinks': drinks
+	}
+	return render(request, 'gnt/results.html', context)
 
 def loading(request):
 	return render(request, 'gnt/loading.html', {
 			'logged_in': len(User.objects.filter(username='big_duddy666')) > 0,
 		})
-
-def test(request):
-	return render(request, 'gnt/test.html')
