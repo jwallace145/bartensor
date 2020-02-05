@@ -125,5 +125,15 @@ STATIC_URL = '/static/'
 
 JENKINS_TASKS = (
     'django_jenkins.tasks.run_pep8',
-    'django_jenkins.tasks.run_pyflakes'
+    'django_jenkins.tasks.run_pyflakes',
 )
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = 'profile'
+
+LOGIN_URL = 'login'
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
