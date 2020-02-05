@@ -48,7 +48,11 @@ pipeline {
     // Deployment
     stage('Deployment') {
       steps {
-        sh 'echo "Deployment"'
+        if (params.DEPLOY) {
+          sh 'echo "Deployment"'
+        } else {
+          sh 'echo "Skipped Deployment"'
+        }
       }
     }
   }
