@@ -48,10 +48,12 @@ pipeline {
     // Deployment
     stage('Deployment') {
       steps {
-        if (params.DEPLOY) {
-          sh 'echo "Deployment"'
-        } else {
-          sh 'echo "Skipped Deployment"'
+        script {
+          if (params.DEPLOY) {
+            sh 'echo "Deployment"'
+          } else {
+            sh 'echo "Skipped Deployment"'
+          }
         }
       }
     }
