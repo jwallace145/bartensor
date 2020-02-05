@@ -10,7 +10,6 @@ pipeline {
         sh '''
         python --version
         pip --version
-        sudo pip install virtualenv
         virtualenv --version
         '''
       }
