@@ -7,6 +7,18 @@ pipeline {
   }
 
   stages {
+    stage('install python virtual environment') {
+      steps {
+        def installed = fileExists 'bin/activate'
+
+        if (!installed) {
+          sh 'virtualenv --no-site-packages'
+        } else {
+          sh 'echo "virtual environment already installed"'
+        }
+      }
+    }
+
     stage('build') {
       steps {
         sh 'sudo -H pip freeze'
@@ -16,13 +28,13 @@ pipeline {
 
     stage('test') {
       steps {
-        sh 'echo "hello world!"'
+        sh 'echo "tesing..."'
       }
     }
 
     stage('deploy') {
       steps {
-        sh 'echo "deploying"'
+        sh 'echo "deploying..."'
       }
     }
   }
