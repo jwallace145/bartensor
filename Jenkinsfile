@@ -9,13 +9,25 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh """
+        sh '''
         python --version
         pip --version
-        pip install virtualenv
+        sudo pip install virtualenv
         virtualenv --version
-        """
+        '''
       }
+    }
+
+    stage('test') {
+      steps {
+        sh 'echo "run tests"'
+      }
+    }
+  }
+
+  post {
+    always {
+      sh 'echo "test results"'
     }
   }
 }
