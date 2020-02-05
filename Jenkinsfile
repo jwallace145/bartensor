@@ -20,35 +20,35 @@ pipeline {
     // Checkout Code
     stage('Checkout Code') {
       steps {
-
+        sh 'echo "Checkout Code"'
       }
     }
 
     // Virtual Environment Initialization
     stage('Virtual Environment Initialization') {
       steps {
-
+        sh 'echo "Virtual Environment Initialization"'
       }
     }
 
     // Static Code Analysis
     stage('Static Code Analysis') {
       steps {
-
+        sh 'echo "Static Code Analysis"'
       }
     }
 
     // Tests
     stage('Tests') {
       steps {
-
+        sh 'echo "Tests"'
       }
     }
 
     // Deployment
     stage('Deployment') {
       steps {
-
+        sh 'echo "Deployment"'
       }
     }
   }
