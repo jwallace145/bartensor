@@ -17,14 +17,21 @@ pipeline {
 
     stage('test') {
       steps {
-        sh 'echo "run tests"'
+        sh 'python manage.py jenkins'
+      }
+    }
+
+    stage('deploy') {
+      steps {
+        sh 'echo "deploying..."'
       }
     }
   }
 
   post {
     always {
-      sh 'echo "test results"'
+      sh 'echo "building reports"'
+      junit 'build/reports/**/*.xml'
     }
   }
 }
