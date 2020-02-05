@@ -9,14 +9,20 @@ pipeline {
   stages {
     stage('build') {
       steps {
-        sh 'pip freeze'
-        sh 'pip install -r requirements.txt'
+        sh 'sudo -H pip freeze'
+        sh 'sudo -H pip install -r requirements.txt'
       }
     }
 
     stage('test') {
       steps {
         sh 'echo "hello world!"'
+      }
+    }
+
+    stage('deploy') {
+      steps {
+        sh 'echo "deploying"'
       }
     }
   }
