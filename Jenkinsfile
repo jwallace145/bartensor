@@ -1,9 +1,7 @@
 #!groovy
 pipeline {
   agent {
-    docker {
-      image 'python:3.8.1-buster'
-    }
+    dockerfile true
   }
 
   stages {
