@@ -12,7 +12,7 @@ pipeline {
     if (!installed) {
       stage('install python virtual environment') {
         steps {
-          'virtualenv --no-site-packages'
+          sh 'virtualenv --no-site-packages'
         }
       }
     }
