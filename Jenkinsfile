@@ -12,6 +12,7 @@ pipeline {
         sh """
         python --version
         pip --version
+        pip install virtualenv
         virtualenv --version
         """
       }
