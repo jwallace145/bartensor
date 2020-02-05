@@ -12,6 +12,7 @@ pipeline {
         sh """
         python --version
         pip --version
+        virtualenv --version
         """
       }
     }
