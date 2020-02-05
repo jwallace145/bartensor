@@ -18,37 +18,43 @@ pipeline {
     }
 
     stage('Static Code Analysis') {
-      steps {
         if (STATIC_CODE_ANALYSIS) {
-          sh '''
-          python --version
-          pip --version
-          virtualenv --version
-          '''
+          steps {
+            sh '''
+            python --version
+            pip --version
+            virtualenv --version
+            '''
+          }
         } else {
-          sh 'no static code analysis'
+          steps {
+            sh 'no static code analysis'
+          }
         }
-      }
     }
 
     stage('Test') {
-      steps {
         if (TEST) {
-          sh 'echo "testing..."'
+          steps {
+            sh 'echo "testing..."'
+          }
         } else {
-          sh 'echo "no tests were performed"'
+          steps {
+            sh 'echo "no tests were performed"'
+          }
         }
-      }
     }
 
     stage('Deploy') {
-      steps {
         if (DEPLOY) {
-          sh 'echo "deploying..."'
+          steps {
+            sh 'echo "deploying..."'
+          }
         } else {
-          sh 'echo "no deployment"'
+          steps {
+            sh 'echo "no deployment"'
+          }
         }
-      }
     }
   }
 
