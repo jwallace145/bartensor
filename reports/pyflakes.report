@@ -1,0 +1,18 @@
+gnt/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+gnt/views.py:1: [E] PYFLAKES:'django.contrib.auth.authenticate' imported but unused
+gnt/views.py:2: [E] PYFLAKES:'django.contrib.auth.forms.UserCreationForm' imported but unused
+gnt/views.py:4: [E] PYFLAKES:'django.shortcuts.redirect' imported but unused
+gnt/views.py:26: [E] PYFLAKES:redefinition of unused 'login' from line 1
+users/tests.py:1: [E] PYFLAKES:'django.test.TestCase' imported but unused
+users/views.py:13: [E] PYFLAKES:local variable 'username' is assigned to but never used
+env/lib/python3.8/site-packages/crispy_forms/compatibility.py:5: [E] PYFLAKES:undefined name 'basestring'
+env/lib/python3.8/site-packages/crispy_forms/compatibility.py:16: [E] PYFLAKES:undefined name 'unicode'
+env/lib/python3.8/site-packages/crispy_forms/compatibility.py:19: [E] PYFLAKES:undefined name 'long'
+env/lib/python3.8/site-packages/crispy_forms/compatibility.py:24: [E] PYFLAKES:'functools.lru_cache' imported but unused
+env/lib/python3.8/site-packages/crispy_forms/templatetags/crispy_forms_tags.py:14: [E] PYFLAKES:'from crispy_forms.templatetags.crispy_forms_filters import *' used; unable to detect undefined names
+env/lib/python3.8/site-packages/crispy_forms/templatetags/crispy_forms_tags.py:14: [E] PYFLAKES:'crispy_forms.templatetags.crispy_forms_filters.*' imported but unused
+env/lib/python3.8/site-packages/crispy_forms/tests/test_form_helper.py:608: [E] PYFLAKES:redefinition of unused 'test_bootstrap_form_show_errors' from line 580
+env/lib/python3.8/site-packages/django/contrib/messages/__init__.py:1: [E] PYFLAKES:'from django.contrib.messages.api import *' used; unable to detect undefined names
+env/lib/python3.8/site-packages/django/contrib/messages/__init__.py:1: [E] PYFLAKES:'django.contrib.messages.api.*' imported but unused
+env/lib/python3.8/site-packages/django/contrib/messages/__init__.py:2: [E] PYFLAKES:'from django.contrib.messages.constants import *' used; unable to detect undefined names
+env/lib/python3.8/site-packages/django/contrib/messages/__init__.py:2: [E] PYFLAKES:'django.contrib.messages.constants.*' imported but unused
