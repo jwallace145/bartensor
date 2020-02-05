@@ -1,4 +1,5 @@
-{% extends 'gnt/base.html' %} {% block 'content' %}
+{% extends 'gnt/base.html' %}
+{% block 'content' %}
 
 <script type="text/javascript" src="../../static/scripts/results.js"></script>
 
@@ -6,63 +7,6 @@
 	<h1>Results</h1>
 </div>
 
-<div class="container results accordion" id="results">
-	{% for drink in drinks %}
-		<div class="row">
-			<div class="col-lg-2">
-			  <img src="{{drink.picture}}" alt="{{drink.name}}" width="60%"/>
-			</div>
-			<div class="col-lg-8">
-				<div class="card">
-					<div class="card-header" id="{{forloop.counter}}">
-					  <h2 class="mb-0">
-						<button
-						  class="btn btn-link"
-						  type="button"
-						  data-toggle="collapse"
-						  data-target="#header{{forloop.counter}}"
-						  aria-expanded="false"
-						  aria-controls="{{forloop.counter}}"
-						>
-						  {{drink.name}}
-						</button>
-					  </h2>
-					</div>
-					<div
-					  id="header{{forloop.counter}}"
-					  class="collapse"
-					  aria-labelledby="{{forloop.counter}}"
-					  data-parent="#results"
-					>
-					  <div class="card-body">
-						Glass: {{drink.glass}} <br />
-						Ingredients:
-						<ul>
-							{% for ingredient in drink.ingredients %}
-						 		<li>{{ingredient}}</li>
-						 	{% endfor %}
-						</ul>
-						Method:
-						<ul>
-							{% for step in drink.method %}
-						  		<li>{{step}}</li>
-						  	{% endfor %}
-						</ul>
-					  </div>
-					</div>
-				  </div>
-			</div>
-			<div class="col-lg-1">
-				<a class="thumbsup" id="drink-thumbsup-{{drink.id}}">
-					<img src="../../static/thumbsup.png" alt="thumbs up" width="100%">
-				</a>
-			</div>
-			<div class="col-lg-1">
-				<a class="thumbsdown" id="drink-thumbsdown-{{drink.id}}">
-					<img src="../../static/thumbsdown.png" alt="thumbs up" width="100%">
-				</a>
-			</div>
-		</div>
-	{% endfor %}
-</div>
-{% endblock 'content' %}
+{% endblock 'content' %} 
+
+{% extends 'gnt/drink_results.html' %} 
