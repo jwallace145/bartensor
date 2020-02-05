@@ -34,14 +34,26 @@ pipeline {
     // Static Code Analysis
     stage('Static Code Analysis') {
       steps {
-        sh 'echo "Static Code Analysis"'
+        script {
+          if (params.RUN_STATIC_CODE_ANALYSIS) {
+            sh 'echo "Static Code Analysis"'
+          } else {
+            sh 'echo "Skipped Static Code Analysis"'
+          }
+        }
       }
     }
 
     // Tests
     stage('Tests') {
       steps {
-        sh 'echo "Tests"'
+        script {
+          if (params.RUN_TESTS) {
+            sh 'echo "Tests"'
+          } else {
+            sh 'echo "Skipped Tests"'
+          }
+        }
       }
     }
 
