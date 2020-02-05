@@ -16,8 +16,9 @@ for i in range(100):
             second_rand = random.randrange(10)
         drink_id = drink_id + str(letters[first_rand][second_rand])
     print('\t\"' + drink_id + '\":{')
-    print('\t\t\"name\":\"\",')
-    print('\t\t\"text\":\"\"')
+    print('\t\t\"name\":[\"\"],')
+    print('\t\t\"ingredients\":[\"\", \"\", \"\", \"\", \"\"],')
+    print('\t\t\"method\":[\"\", \"\", \"\", \"\", \"\"]')
     print('\t},')
 
 print('}')
