@@ -17,39 +17,44 @@ pipeline {
       }
     }
 
-    if (STATIC_CODE_ANALYSIS) {
-      stage('Static Code Analysis') {
-        steps {
+    stage('Static Code Analysis') {
+      steps {
+        if (STATIC_CODE_ANALYSIS) {
           sh '''
           python --version
           pip --version
           virtualenv --version
           '''
+        } else {
+          sh 'no static code analysis'
         }
       }
     }
 
-    if (TEST) {
-      stage('Test') {
-        steps {
-          sh 'python manage.py jenkins'
+    stage('Test') {
+      steps {
+        if (TEST) {
+          sh 'echo "testing..."'
+        } else {
+          sh 'echo "no tests were performed"'
         }
       }
     }
 
-    if (DEPLOY) {
-      stage('Deploy') {
-        steps {
+    stage('Deploy') {
+      steps {
+        if (DEPLOY) {
           sh 'echo "deploying..."'
+        } else {
+          sh 'echo "no deployment"'
         }
       }
     }
   }
-  
+
   post {
     always {
       sh 'echo "building reports"'
-      junit 'build/reports/**/*.xml'
     }
   }
 }
