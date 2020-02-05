@@ -7,16 +7,12 @@ pipeline {
   }
 
   stages {
-    stage('install python virtual environment') {
-      def installed = fileExists 'bin/activate'
+    def installed = fileExists 'bin/activate'
 
-      if (!installed) {
+    if (!installed) {
+      stage('install python virtual environment') {
         steps {
-          sh 'virtualenv --no-site-packages'
-        }
-      } else {
-        steps {
-          sh 'virtual environment already installed'
+          'virtualenv --no-site-packages'
         }
       }
     }
