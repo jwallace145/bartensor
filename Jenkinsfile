@@ -21,7 +21,7 @@ pipeline {
     stage('Virtual Environment Initialization') {
       steps {
         sh 'echo "Virtual Environment Initialization"'
-        sh 'pip install virtualenv'
+        sh 'pip install virtualenv --user'
         sh 'virtualenv --version'
       }
     }
