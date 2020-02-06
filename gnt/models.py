@@ -34,4 +34,4 @@ class Drink_names(models.Model):
     drink_name = models.CharField(max_length=32)
 
     def __str__(self):
-        return str(drink_hash_FK.drink_hash) + ", " + str(drink_name)
+        return str(self.drink_hash_FK.drink_hash) + ", " + str(self.drink_name)
