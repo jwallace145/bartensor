@@ -1,7 +1,0 @@
-{
-    "python.pythonPath": "C:\\Users\\woybo\\AppData\\Local\\Programs\\Python\\Python37\\python.exe",
-    "editor.defaultFormatter": "esbenp.prettier-vscode",
-    "editor.formatOnSave": true,
-    "prettier.tabWidth": 4,
-    "editor.tabSize": 4
-}
