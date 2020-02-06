@@ -28,6 +28,9 @@ pipeline {
 
             def pep8 = scanForIssues tool: pep8(pattern: '**/reports/pep8.report')
             publishIssues issues:[pep8]
+
+            def pylint = scanForIssues tool: pyLint(pattern: '**/reports/pylint.report')
+            publishIssues issues:[pylint]
           } else {
             sh 'echo "Skipped Static Code Analysis"'
           }
