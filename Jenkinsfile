@@ -31,8 +31,8 @@ pipeline {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
-            def pep8 = scanForIssues tool: [$class: 'pep8'], pattern: '**/reports/pep8.report'
-            publishIssues issues:[pep8], unstableTotalAll:1
+            def pep8 = scanForIssues tool: pep8(pattern: '**/reports/pep8.report')
+            publishIssues issues:[pep8]
           } else {
             sh 'echo "Skipped Static Code Analysis"'
           }
