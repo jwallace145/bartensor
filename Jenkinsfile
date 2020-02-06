@@ -1,7 +1,6 @@
 #!/usr/bin/env groovy
 
 pipeline {
-
   // Agent Initialization
   agent {
     dockerfile true
@@ -29,8 +28,8 @@ pipeline {
             def pep8 = scanForIssues tool: pep8(pattern: '**/reports/pep8.report')
             publishIssues issues:[pep8]
 
-            def pylint = scanForIssues tool: pyLint(pattern: '**/reports/pylint.report')
-            publishIssues issues:[pylint]
+            // def pylint = scanForIssues tool: pyLint(pattern: '**/reports/pylint.report')
+            // publishIssues issues:[pylint]
           } else {
             sh 'echo "Skipped Static Code Analysis"'
           }
@@ -45,6 +44,8 @@ pipeline {
           if (params.RUN_TESTS) {
             sh 'echo "Tests"'
             sh 'python manage.py test'
+
+            junit '**/reports/junit.xml'
           } else {
             sh 'echo "Skipped Tests"'
           }
@@ -63,12 +64,6 @@ pipeline {
           }
         }
       }
-    }
-  }
-
-  post {
-    always {
-      junit '**/reports/junit.xml'
     }
   }
 }
