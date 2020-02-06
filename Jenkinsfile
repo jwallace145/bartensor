@@ -4,9 +4,7 @@ pipeline {
 
   // Agent Initialization
   agent {
-    docker {
-      dockerfile true
-    }
+    dockerfile true
   }
 
   // Parameters
