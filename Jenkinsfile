@@ -22,7 +22,7 @@ pipeline {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
             withEnv(['PYLINTHOME=.']) {
-              sh "pylint --output-format=parseable --reports=no > pylint.log"
+              sh "pylint --output-format=parseable --exit-zero --rcfile=pylint.cfg --reports=no users/ > ./reports/pylint.log"
             }
 
             def flake8 = scanForIssues tool: flake8(pattern: '**/reports/flake8.report')
@@ -30,6 +30,9 @@ pipeline {
 
             def pep8 = scanForIssues tool: pep8(pattern: '**/reports/pep8.report')
             publishIssues issues:[pep8]
+
+            def pylint = scanForIssues tool: pylint(pattern: '**/reports/pylint.log')
+            publishIssues issues:[pylint]
           } else {
             sh 'echo "Skipped Static Code Analysis"'
           }
