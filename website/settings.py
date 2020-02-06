@@ -123,10 +123,16 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-JENKINS_TASKS = (
+PROJECT_APPS = [
+    'gnt',
+    'users'
+]
+
+JENKINS_TASKS = [
     'django_jenkins.tasks.run_pep8',
     'django_jenkins.tasks.run_pyflakes',
-)
+    'django_jenkins.tasks.run_flake8'
+]
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
