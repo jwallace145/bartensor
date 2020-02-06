@@ -10,7 +10,7 @@ pipeline {
   parameters {
     booleanParam(name: 'RUN_STATIC_CODE_ANALYSIS', defaultValue: true, description: 'Would you like to perform static code analysis?')
     booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Would you like to run unit tests?')
-    booleanParam(name: 'DEPLOY', defaultValue: false, description: 'Would you like to deploy?')
+    choice(name: 'DEPLOY', choices: ['NO', 'DEV', 'QA', 'PROD'], description: 'Which environment would you like to deploy to?')
   }
 
   stages {
@@ -21,15 +21,30 @@ pipeline {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
+            withEnv(['PYLINTHOME=.']) {
+              sh 'pylint --output-format=parseable --exit-zero --rcfile=pylint.cfg --reports=no users/ > ./reports/pylint.log'
+              sh 'pylint --output-format=parseable --exit-zero --rcfile=pylint.cfg --reports=no gnt/ >> ./reports/pylint.log'
+            }
 
             def flake8 = scanForIssues tool: flake8(pattern: '**/reports/flake8.report')
             publishIssues issues:[flake8]
 
             def pep8 = scanForIssues tool: pep8(pattern: '**/reports/pep8.report')
             publishIssues issues:[pep8]
+
+            def pylint = scanForIssues tool: pyLint(pattern: '**/reports/pylint.log')
+            publishIssues issues:[pylint]
           } else {
             sh 'echo "Skipped Static Code Analysis"'
           }
+        }
+      }
+    }
+
+    // SonarQube Analysis
+    stage('SonarQube Analysis') {
+      steps {
+        withSonarQubeEnv('sonarqube') {
         }
       }
     }
@@ -54,10 +69,14 @@ pipeline {
     stage('Deployment') {
       steps {
         script {
-          if (params.DEPLOY) {
-            sh 'echo "Deployment"'
-          } else {
-            sh 'echo "Skipped Deployment"'
+          if (params.DEPLOY == 'NO') {
+            sh 'echo "skipping deployment"'
+          } else if (params.DEPLOY == 'DEV'){
+            sh 'echo "deploying to dev..."'
+          } else if (params.DEPLOY == 'QA') {
+            sh 'echo "deploying to qa..."'
+          } else if (params.DEPLOY == 'PROD') {
+            sh 'echo "deploying to prod..."'
           }
         }
       }
