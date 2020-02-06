@@ -49,7 +49,7 @@ def results(request):
 							'2 oz Sour Mix (Fresh preferred)',
 							'Optional: 1/2 oz egg white (makes drink foamy)'
 							],
-			'method': ['glass': 'Highball',
+			'method': ['glass: Highball',
 						'Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice',
 						'Strain into a large old fashioned glass with fresh ice',
 						'Garnish with cherry & orange'
@@ -66,7 +66,7 @@ def results(request):
 							'Cherry & orange',
 							'2 oz Whiskey'
 							],
-			'method': [	'glass': 'Rocks glass',
+			'method': [	'glass: Rocks glass',
 						'Muddle sugar, bitters, soda in glass',
 						'Add Whiskey',
 						'Fill glass with ice'
