@@ -6,6 +6,7 @@ pipeline {
     dockerfile true
   }
 
+
   // Parameters
   parameters {
     booleanParam(name: 'RUN_STATIC_CODE_ANALYSIS', defaultValue: true, description: 'Would you like to perform static code analysis?')
