@@ -17,17 +17,11 @@ pipeline {
   }
 
   stages {
-    // Checkout Code
-    stage('Checkout Code') {
-      steps {
-        sh 'echo "Checkout Code"'
-      }
-    }
-
     // Virtual Environment Initialization
     stage('Virtual Environment Initialization') {
       steps {
         sh 'echo "Virtual Environment Initialization"'
+        sh 'pip install virtualenv'
       }
     }
 
