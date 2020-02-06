@@ -6,12 +6,11 @@ pipeline {
     dockerfile true
   }
 
-
   // Parameters
   parameters {
     booleanParam(name: 'RUN_STATIC_CODE_ANALYSIS', defaultValue: true, description: 'Would you like to perform static code analysis?')
     booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Would you like to run unit tests?')
-    booleanParam(name: 'DEPLOY', defaultValue: false, description: 'Would you like to deploy?')
+    choice(name: 'DEPLOY', choices: ['NO', 'DEV', 'QA', 'PROD'], description: 'Which environment would you like to deploy to?')
   }
 
   stages {
@@ -55,10 +54,14 @@ pipeline {
     stage('Deployment') {
       steps {
         script {
-          if (params.DEPLOY) {
-            sh 'echo "Deployment"'
-          } else {
-            sh 'echo "Skipped Deployment"'
+          if (params.DEPLOY == 'NO') {
+            sh 'echo "skipping deployment"'
+          } else if (params.DEPLOY == 'DEV'){
+            sh 'echo "deploying to dev..."'
+          } else if (params.DEPLOY == 'QA') {
+            sh 'echo "deploying to qa..."'
+          } else if (params.PROD == 'PROD') {
+            sh 'echo "deploying to prod..."'
           }
         }
       }
