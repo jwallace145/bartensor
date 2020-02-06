@@ -22,7 +22,7 @@ pipeline {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
-            sh 'sudo pylint users --output-format=json > ./reports/pylint.report'
+            sh 'su pylint users --output-format=json > ./reports/pylint.report'
 
             def flake8 = scanForIssues tool: flake8(pattern: '**/reports/flake8.report')
             publishIssues issues:[flake8]
