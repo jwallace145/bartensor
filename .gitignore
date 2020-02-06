@@ -130,3 +130,12 @@ dmypy.json
 
 # Mac
 .DS_Store
+
+# reports
+reports/
+
+# media
+media/
+
+# VSCode
+.vscode/

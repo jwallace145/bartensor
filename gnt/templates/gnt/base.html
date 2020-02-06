@@ -11,95 +11,83 @@
   <title>Bartensor</title>
 
   <!-- Bootstrap CSS -->
-  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
 
   <link rel="stylesheet" type="text/css" href="../../static/stylesheets/assistant-button.css" />
   <link rel="stylesheet" type="text/css" href="../../static/stylesheets/loading-screen.css" />
   <link rel="stylesheet" type="text/css" href="../../static/stylesheets/results.css" />
+  <link rel="stylesheet" type="text/css" href="../../static/stylesheets/base.css" />
+  <link rel="stylesheet" type="text/css" href="{% static 'gnt/main.css' %}">
 
+  <script src="../../static/jquery-3.4.1.min.js"></script>
   <script src="../../static/jquery-3.4.1.min.js"></script>
 </head>
 
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../../static/stylesheets/assistant-button.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../../static/stylesheets/loading-screen.css"
-    />
-    <link
-      rel="stylesheet"
-      type="text/css"
-      href="../../static/stylesheets/results.css"
-    />
-    <link
-    rel="stylesheet"
-    type="text/css"
-    href="../../static/stylesheets/base.css"
-  />
-    <script src="../../static/jquery-3.4.1.min.js"></script>
-  </head>
-  <body >
-    <div id= "page-container">
-    {% block 'header' %}
-    <header
-      class="navbar navbar-expand navbar-light bg-light flex-column flex-md-row bd-navbar"
-    >
-      <a
-        class="navbar-brand mr-0 mr-md-2"
-        href="{% url 'gnt:index' %}"
-        aria-label="Bartensor"
-        ><h2>Bartensor</h2></a
-      >
-      <div class="navbar-nav-scroll w-100">
-        <ul class="navbar-brand navbar-nav bd-navbar-nav flex-row float-right">
-          {% if logged_in %}
-          <li class="nav-item border rounded px-1 mr-3 bg-white">
-            <a class="nav-link" href="{% url 'gnt:logout' %}">Log Out</a>
-          </li>
-          <li class="nav-item px-1 mr-3 bg-white">
-            <img
-              class="rounded"
-              style="height:50px"
-              src="{% static 'profile.jpg' %}"
-              alt="My Profile"
-            />
-          </li>
-          {% else %}
-          <li class="nav-item border rounded px-1 mr-3 bg-white">
-            <a class="nav-link" href="{% url 'gnt:signup' %}">Sign Up</a>
-          </li>
-          <li class="nav-item border rounded px-1 bg-white">
-            <a class="nav-link" href="{% url 'gnt:login' %}">Login</a>
-          </li>
-          {% endif %}
-        </ul>
+<body>
+  <header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+      <div class="container">
+        <a class="navbar-brand mr-4" href="{% url 'home' %}">Bartensor</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarToggle">
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
+            <a class="nav-item nav-link" href="#">About</a>
+          </div>
+          <!-- Navbar Right Side -->
+          <div class="navbar-nav">
+            {% if user.is_authenticated %}
+            <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+            {% else %}
+            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+            <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+            {% endif %}
+          </div>
+        </div>
       </div>
-    </header>
-    {% endblock %} {% block 'content' %} {% endblock %}
-    <div id= "footer">
-      <p class="text-center">Please drink responsibly</p>
+    </nav>
+  </header>
+  {% block 'content' %}
+  {% endblock %}
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-8">
+        {% if messages %}
+        {% for message in messages %}
+        <div class=" alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+        {% endfor %}
+        {% endif %}
+        {% block content %}
+        {% endblock %}
+      </div>
+      <div class="col-md-4">
+        <div class="content-section">
+          <h3>Our Sidebar</h3>
+          <p class='text-muted'>You can put any information here you'd like.
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-light">Latest Posts</li>
+              <li class="list-group-item list-group-item-light">Announcements</li>
+              <li class="list-group-item list-group-item-light">Calendars</li>
+              <li class="list-group-item list-group-item-light">etc</li>
+            </ul>
+          </p>
+        </div>
+      </div>
     </div>
+  </main>
+  <div id="footer">
+    <p class="text-center">Please drink responsibly</p>
   </div>
-    <script
-      src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-      integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-      integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-      crossorigin="anonymous"
-    ></script>
-    <script
-      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
-      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-      crossorigin="anonymous"
-    ></script>
+</body>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <div id = "myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -120,20 +108,28 @@
             <p class = "collapse" id= "not21">Yikes, you are not old enough to use Bartensor</p>
           </div>
         </div>
+        <p class="collapse" id="not21">Sorry, you are not old enough to use Gin & Tensor</p>
       </div>
     </div>
-    <script>
-      $(document).ready(function () {
-          //if cookie hasn't been set...
-          if (document.cookie.indexOf("ModalShown=true")<0) {
-              $("#myModal").modal('show');
-              $("#is21").click(function () {
-                  $("#myModal").modal("hide");
-                  document.cookie = "ModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-              });  
-          }
+  </div>
+</div>
+<script>
+  $(document).ready(function() {
+    //if cookie hasn't been set...
+    if (document.cookie.indexOf("ModalShown=true") < 0) {
+      $("#myModal").modal('show');
+      $("#is21").click(function() {
+        $("#myModal").modal("hide");
+        document.cookie = "ModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
       });
-    </script>
-  
-  </body>
+    }
+  });
+</script>
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+</body>
+
 </html>
