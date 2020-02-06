@@ -30,6 +30,7 @@ pipeline {
         script {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
+            sh 'python manage.py jenkins'
           } else {
             sh 'echo "Skipped Static Code Analysis"'
           }
