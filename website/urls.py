@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
 from gnt import views as gnt_views
 from django.conf import settings
@@ -23,13 +23,16 @@ from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('home', gnt_views.home, name='home'),
+    path('home/', gnt_views.home, name='home'),
     path('results/', gnt_views.results, name='results'),
     path('loading/', gnt_views.loading, name='loading'),
     path('register/', gnt_views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='gnt/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='gnt/logout.html'), name='logout'),
     path('profile/', gnt_views.profile, name='profile'),
+    # FOllowing two lines handle all non matching urls
+    re_path(r'^(?P<path>.*)/$', gnt_views.bad_request, name='bad_request'),
+    path('', gnt_views.home, name='empty')
 ]
 
 if settings.DEBUG:
