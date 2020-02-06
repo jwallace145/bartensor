@@ -22,7 +22,8 @@ pipeline {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
             withEnv(['PYLINTHOME=.']) {
-              sh "pylint --output-format=parseable --exit-zero --rcfile=pylint.cfg --reports=no users/ > ./reports/pylint.log"
+              sh 'pylint --output-format=parseable --exit-zero --rcfile=pylint.cfg --reports=no users/ > ./reports/pylint.log'
+              sh 'pylint --output-format=parseable --exit-zero --rcfile=pylint.cfg --reports=no gnt/ >> ./reports/pylint.log'
             }
 
             def flake8 = scanForIssues tool: flake8(pattern: '**/reports/flake8.report')
