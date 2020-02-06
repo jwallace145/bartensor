@@ -38,19 +38,6 @@ pipeline {
       }
     }
 
-    post {
-      success {
-        publishHTML target: [
-          allowMissing: false,
-          alwaysLinkToLastBuild: false,
-          keepAll: true,
-          reportDir: 'reports',
-          reportFiles: 'index.html',
-          reportName: 'RCov Report'
-        ]
-      }
-    }
-
     // Tests
     stage('Tests') {
       steps {
@@ -75,6 +62,19 @@ pipeline {
           }
         }
       }
+    }
+  }
+
+  post {
+    success {
+      publishHTML target: [
+        allowMissing: false,
+        alwaysLinkToLastBuild: false,
+        keepAll: true,
+        reportDir: 'reports',
+        reportFiles: 'index.html',
+        reportName: 'RCov Report'
+      ]
     }
   }
 }
