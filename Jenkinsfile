@@ -9,7 +9,7 @@ pipeline {
   // Parameters
   parameters {
     booleanParam(name: 'RUN_STATIC_CODE_ANALYSIS', defaultValue: true, description: 'Would you like to perform static code analysis?')
-    booleanParam(name: 'RUN_SONARQUBE_ANALYSIS', defaultVale: false, description: 'Would you like to perform a SonarQube analysis?')
+    booleanParam(name: 'RUN_SONARQUBE_ANALYSIS', defaultValue: false, description: 'Would you like to perform a SonarQube analysis?')
     booleanParam(name: 'RUN_TESTS', defaultValue: true, description: 'Would you like to run unit tests?')
     choice(name: 'DEPLOY', choices: ['NO', 'DEV', 'QA', 'PROD'], description: 'Which environment would you like to deploy to?')
   }
