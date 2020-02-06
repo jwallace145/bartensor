@@ -41,9 +41,6 @@ pipeline {
         script {
           if (params.RUN_TESTS) {
             sh 'echo "Tests"'
-
-            def junitParser = scanForIssues tool: junitParser(pattern: '**/reports/junit.xml')
-            publishIssues issues:[junitParser]
           } else {
             sh 'echo "Skipped Tests"'
           }
@@ -66,15 +63,8 @@ pipeline {
   }
 
   post {
-    success {
-      publishHTML target: [
-        allowMissing: false,
-        alwaysLinkToLastBuild: false,
-        keepAll: true,
-        reportDir: 'reports',
-        reportFiles: 'index.html',
-        reportName: 'RCov Report'
-      ]
+    always {
+      junit './reports/junit.xml'
     }
   }
 }
