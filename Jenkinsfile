@@ -31,6 +31,7 @@ pipeline {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
+
             def pep8 = scanForIssues tool: pep8(pattern: '**/reports/pep8.report')
             publishIssues issues:[pep8]
           } else {
@@ -46,6 +47,9 @@ pipeline {
         script {
           if (params.RUN_TESTS) {
             sh 'echo "Tests"'
+
+            def junit = scanForIssues tool: junitParser(pattern: '**/reports/junit.xml')
+            publishIssues issues:[junit]
           } else {
             sh 'echo "Skipped Tests"'
           }
