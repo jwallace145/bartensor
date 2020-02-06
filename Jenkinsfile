@@ -15,14 +15,14 @@ pipeline {
   }
 
   stages {
-    // Virtual Environment Initialization
-    stage('Virtual Environment Initialization') {
-      steps {
-        sh 'echo "Virtual Environment Initialization"'
-        sh 'virtualenv --version'
-        sh 'pip freeze'
-      }
-    }
+    // // Virtual Environment Initialization
+    // stage('Virtual Environment Initialization') {
+    //   steps {
+    //     sh 'echo "Virtual Environment Initialization"'
+    //     sh 'virtualenv --version'
+    //     sh 'pip freeze'
+    //   }
+    // }
 
     // Static Code Analysis
     stage('Static Code Analysis') {
@@ -31,6 +31,8 @@ pipeline {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
+            def pep8 = scanForIssues tool: [$class: 'pep8'], pattern: '**/reports/pep8.report'
+            publishIssues issues:[pep8], unstableTotalAll:1
           } else {
             sh 'echo "Skipped Static Code Analysis"'
           }
