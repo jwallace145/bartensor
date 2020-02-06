@@ -32,6 +32,9 @@ pipeline {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
 
+            def flake8 = scanForIssues tool: flake8(pattern: '**/reports/flake8.report')
+            publishIssues issues:[flake8]
+
             def pep8 = scanForIssues tool: pep8(pattern: '**/reports/pep8.report')
             publishIssues issues:[pep8]
           } else {
@@ -47,9 +50,6 @@ pipeline {
         script {
           if (params.RUN_TESTS) {
             sh 'echo "Tests"'
-
-            def junit = scanForIssues tool: junitParser(pattern: '**/reports/junit.xml')
-            publishIssues issues:[junit]
           } else {
             sh 'echo "Skipped Tests"'
           }
