@@ -21,7 +21,7 @@ pipeline {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
-            sh 'pylint --rcfile=pylint.cfg $(find . -maxdepth 1 -name "*.py" -print) MYMODULE/ > pylint.log || exit 0'
+            sh 'pylint users/ --output-format=parseable > ./reports/pylint.log'
 
             def flake8 = scanForIssues tool: flake8(pattern: '**/reports/flake8.report')
             publishIssues issues:[flake8]
