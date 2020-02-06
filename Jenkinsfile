@@ -15,15 +15,6 @@ pipeline {
   }
 
   stages {
-    // // Virtual Environment Initialization
-    // stage('Virtual Environment Initialization') {
-    //   steps {
-    //     sh 'echo "Virtual Environment Initialization"'
-    //     sh 'virtualenv --version'
-    //     sh 'pip freeze'
-    //   }
-    // }
-
     // Static Code Analysis
     stage('Static Code Analysis') {
       steps {
@@ -50,6 +41,9 @@ pipeline {
         script {
           if (params.RUN_TESTS) {
             sh 'echo "Tests"'
+
+            def junitParser = scanForIssues tool: junitParser(pattern: '**/reports/junit.xml')
+            publishIssues issues:[junitParser]
           } else {
             sh 'echo "Skipped Tests"'
           }
