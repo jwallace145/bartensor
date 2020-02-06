@@ -21,7 +21,9 @@ pipeline {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
             sh 'python manage.py jenkins'
-            sh 'pylint users/ --output-format=parseable > ./reports/pylint.log'
+            withEnv(['PYLINTHOME=.']) {
+              sh "pylint --output-format=parseable --reports=no > pylint.log"
+            }
 
             def flake8 = scanForIssues tool: flake8(pattern: '**/reports/flake8.report')
             publishIssues issues:[flake8]
