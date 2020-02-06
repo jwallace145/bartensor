@@ -6,6 +6,7 @@ from django.urls import reverse
 
 from .models import User
 
+
 def index(request):
 	return render(request, 'gnt/index.html', {
 			'logged_in': len(User.objects.filter(username='big_duddy666')) > 0,
@@ -20,6 +21,7 @@ def signup(request):
 	else:
 		return render(request, 'gnt/signup.html')
 
+
 def login(request):
 	u = User(username='big_duddy666')
 	u.save()
@@ -29,10 +31,12 @@ def login(request):
 	else:
 		return render(request, 'gnt/login.html')
 
+
 def logout(request):
 	for user in User.objects.all():
 		user.delete()
 	return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
 
 def results(request):
 	#TODO: Replace hard coded drinks with information passed into request
