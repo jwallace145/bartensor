@@ -41,6 +41,7 @@ pipeline {
         script {
           if (params.RUN_TESTS) {
             sh 'echo "Tests"'
+            sh 'python manage.py test'
           } else {
             sh 'echo "Skipped Tests"'
           }
