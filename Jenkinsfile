@@ -60,7 +60,7 @@ pipeline {
             sh 'echo "deploying to dev..."'
           } else if (params.DEPLOY == 'QA') {
             sh 'echo "deploying to qa..."'
-          } else if (params.PROD == 'PROD') {
+          } else if (params.DEPLOY == 'PROD') {
             sh 'echo "deploying to prod..."'
           }
         }
