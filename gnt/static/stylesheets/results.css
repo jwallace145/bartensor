@@ -1,11 +1,15 @@
 .title {
-  margin-top: 80px;
+    margin-top: 80px;
 }
 
 h1 {
-  text-align: center;
+    text-align: center;
 }
 
 .results {
-  margin-top: 50px;
+    margin-top: 50px;
+}
+
+a {
+    cursor: pointer;
 }

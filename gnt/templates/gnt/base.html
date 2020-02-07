@@ -85,43 +85,43 @@
     <p class="text-center">Please drink responsibly</p>
   </div>
 </body>
-<!-- <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
-  <div id="myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
-    <div class="modal-dialog modal-dialog-centered" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Welcome to Gin & Tensor</h5>
+<div id="myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Welcome to Gin & Tensor</h5>
+      </div>
+      <div class="modal-body">
+        Are you at least 21?
+      </div>
+      <div class="modal-footer d-flex justify-content-around">
+        <div class="col">
+          <button type="button" class="btn btn-outline-secondary btn-block" data-toggle="collapse" data-target="#not21" aria-expanded="false" aria-controls="not21">No</button>
         </div>
-        <div class="modal-body">
-          Are you at least 21?
+        <div class="col">
+          <button id="is21" type="button" class="btn btn-outline-success btn-block">Yes</button>
         </div>
-        <div class="modal-footer d-flex justify-content-around">
-          <div class="col">
-            <button type="button" class="btn btn-outline-secondary btn-block" data-toggle="collapse" data-target="#not21" aria-expanded="false" aria-controls="not21">No</button>
-          </div>
-          <div class="col">
-            <button id="is21" type="button" class="btn btn-outline-success btn-block">Yes</button>
-          </div>
-          <p class="collapse" id="not21">Sorry, you are not old enough to use Gin & Tensor</p>
-        </div>
+        <p class="collapse" id="not21">Sorry, you are not old enough to use Gin & Tensor</p>
       </div>
     </div>
   </div>
-  <script>
-    $(document).ready(function() {
-      //if cookie hasn't been set...
-      if (document.cookie.indexOf("ModalShown=true") < 0) {
-        $("#myModal").modal('show');
-        $("#is21").click(function() {
-          $("#myModal").modal("hide");
-          document.cookie = "ModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
-        });
-      }
-    });
-  </script> -->
+</div>
+<script>
+  $(document).ready(function() {
+    //if cookie hasn't been set...
+    if (document.cookie.indexOf("ModalShown=true") < 0) {
+      $("#myModal").modal('show');
+      $("#is21").click(function() {
+        $("#myModal").modal("hide");
+        document.cookie = "ModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
+      });
+    }
+  });
+</script>
 <!-- Optional JavaScript -->
 <!-- jQuery first, then Popper.js, then Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
