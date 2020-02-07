@@ -4,7 +4,10 @@ from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.urls import reverse
 
+from ibm_watson import DiscoveryV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 
 # Handles all non specified urls that we don't want users seeing
@@ -17,63 +20,25 @@ def home(request):
 
 
 def results(request):
-    print(request.POST)
-    '''
-    question = get_object_or_404(Question, pk=question_id)
-    try:
-        selected_choice = question.choice_set.get(pk=request.POST['choice'])
-    except (KeyError, Choice.DoesNotExist):
-        # Redisplay the question voting form.
-        return render(request, 'polls/detail.html', {
-            'question': question,
-            'error_message': "You didn't select a choice.",
+    if request.method == 'POST':
+        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
+        collection_id = '0aefcb97-37bd-4713-b39e-41cdd915d52f'
+
+        authenticator = IAMAuthenticator('Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
+        discovery = DiscoveryV1(
+            version='2019-04-30',
+            authenticator=authenticator
+        )
+        discovery.set_service_url('https://api.us-south.discovery.watson.cloud.ibm.com/')
+
+        text = request.POST['search_bar']
+        response = discovery.query(environment_id, collection_id, natural_language_query=text).result['results']
+
+        return render(request, 'gnt/results.html', {
+            'drinks': response
         })
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
-        # Always return an HttpResponseRedirect after successfully dealing
-        # with POST data. This prevents data from being posted twice if a
-        # user hits the Back button.
-        return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
-    '''
-    # TODO: Replace hard coded drinks with information passed into request
-    drinks = [
-        {
-            'id': 'ankeoigab4a34q35htrgif847qyrahd',
-            'picture': 'https://assets.bonappetit.com/photos/57acc14e53e63daf11a4d9b6/master/pass/whiskey-sour.jpg',
-            'name': 'Whiskey Sour',
-                    'ingredients': ['1 ½ oz oz Whiskey',
-                                    '2 oz Sour Mix (Fresh preferred)',
-                                    'Optional: 1/2 oz egg white (makes drink foamy)'
-                                    ],
-                    'method': ['glass: Highball',
-                               'Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice',
-                               'Strain into a large old fashioned glass with fresh ice',
-                               'Garnish with cherry & orange'
-                               ]
-
-        },
-        {
-            'id': '394agdnavior;oa4eih',
-            'picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS9h-WqGmZDxZTkvjEqRWyDG0ZIw5wC6RlQyFj_THX8fmYcQEgv',
-            'name': 'Old Fashioned',
-                    'ingredients': ['Packet of Sugar',
-                                    '2 dashes of Bitters',
-                                    'Splash of soda',
-                                    'Cherry & orange',
-                                    '2 oz Whiskey'
-                                    ],
-                    'method': [	'glass: Rocks glass',
-                                'Muddle sugar, bitters, soda in glass',
-                                'Add Whiskey',
-                                'Fill glass with ice'
-                                ]
-        }
-    ]
-    context = {
-        'drinks': drinks
-    }
-    return render(request, 'gnt/results.html', context)
+        return HttpResponseRedirect(reverse('home'))
 
 
 def loading(request):
