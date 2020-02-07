@@ -11,26 +11,27 @@
   </div>
   <div class="row">
     <div class="col"><!-- for spacing --></div>
-    <div class="col-7 form-group">
+    <form class="col-7 form-group" action="{% url 'results' %}" method="POST">
+      {% csrf_token %}
       <ul class="nav nav-tabs">
         <li class="nav-item">
-          <input type="radio" id="what" name="q" value="what" class="d-none" checked>
+          <input type="radio" id="what" name="question" value="what" class="d-none" checked>
           <span class="nav-link active search-nav-link">What can I make with...</span>
         </li>
         <li class="nav-item">
-          <input type="radio" id="how" name="q" value="how" class="d-none">
+          <input type="radio" id="how" name="question" value="how" class="d-none">
           <span class="nav-link search-nav-link">How do I make...</span>
         </li>
       </ul>
       <div class="input-group">
-        <input type="text" class="form-control search-bar" id="search_bar" placeholder="Search" aria-label="Search" aria-describedby="search-bar">
+        <input type="text" class="form-control search-bar" name="search_bar" placeholder="Search" aria-label="Search" aria-describedby="search-bar">
         <div class="input-group-append">
-          <button class="btn btn-outline-primary search-button" type="button">
+          <button class="btn btn-outline-primary search-button" type="submit">
             <img class="search-icon" src="{% static 'images/search.png' %}" alt="Search" />
           </button>
         </div>
       </div>
-    </div>
+    </form>
     <div class="col"><!-- for spacing --></div>
   </div>
 </div>
