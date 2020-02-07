@@ -17,4 +17,4 @@ for dirty_drink in dirty.values():
     clean.append(clean_drink)
 
 with open('drinks-cleaned.json', 'w') as f:
-    f.write(json.dumps(clean, indent=4))
+    f.write(json.dumps(clean, indent=4, ensure_ascii=False))
