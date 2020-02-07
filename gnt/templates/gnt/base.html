@@ -13,15 +13,7 @@
   <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
   <link rel="shortcut icon" type="image/x-icon" href="{% static 'favicon.ico' %}" />
-
-  <link rel="stylesheet" type="text/css" href="../../static/stylesheets/assistant-button.css" />
-  <link rel="stylesheet" type="text/css" href="../../static/stylesheets/loading-screen.css" />
-  <link rel="stylesheet" type="text/css" href="../../static/stylesheets/results.css" />
-  <link rel="stylesheet" type="text/css" href="../../static/stylesheets/base.css" />
-  <link rel="stylesheet" type="text/css" href="{% static 'gnt/main.css' %}">
-
-  <script src="../../static/jquery-3.4.1.min.js"></script>
-  <script src="../../static/jquery-3.4.1.min.js"></script>
+  <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/custom.css' %}" />
 </head>
 
 <body>
@@ -51,9 +43,9 @@
       </div>
     </nav>
   </header>
-  {% block 'content' %}
-  {% endblock %}
   <main role="main" class="container">
+    {% block 'content' %}
+    {% endblock %}
     <div class="row">
       <div class="col-md-8">
         {% if messages %}
@@ -66,6 +58,7 @@
         {% block content %}
         {% endblock %}
       </div>
+      <!--
       <div class="col-md-4">
         <div class="content-section">
           <h3>Our Sidebar</h3>
@@ -80,10 +73,13 @@
         </div>
       </div>
     </div>
+    -->
   </main>
-  <div id="footer">
-    <p class="text-center">Please drink responsibly</p>
-  </div>
+  <footer class="footer">
+    <div class="container text-center">
+      <span class="text-muted">Please drink responsibly.</span>
+    </div>
+  </footer>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -110,6 +106,13 @@
     </div>
   </div>
 </div>
+
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<!-- Controls 21+ modal -->
 <script>
   $(document).ready(function() {
     //if cookie hasn't been set...
@@ -122,11 +125,9 @@
     }
   });
 </script>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<script type="text/javascript" src="{% static 'scripts/index.js' %}"></script>
+
 </body>
 
 </html>
