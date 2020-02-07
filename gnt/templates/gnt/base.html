@@ -37,6 +37,10 @@
             <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
             <a class="nav-item nav-link" href="#">About</a>
           </div>
+          <div id = "drink-responsibly" class = "col">
+          Please drink responsibly
+          </div>
+
           <!-- Navbar Right Side -->
           <div class="navbar-nav">
             {% if user.is_authenticated %}
@@ -66,7 +70,7 @@
         {% block content %}
         {% endblock %}
       </div>
-      <div class="col-md-4">
+      <!-- <div class="col-md-4">
         <div class="content-section">
           <h3>Our Sidebar</h3>
           <p class='text-muted'>You can put any information here you'd like.
@@ -78,12 +82,9 @@
             </ul>
           </p>
         </div>
-      </div>
+      </div> -->
     </div>
   </main>
-  <div id="footer">
-    <p class="text-center">Please drink responsibly</p>
-  </div>
 </body>
 <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>

@@ -1,14 +1,12 @@
-#footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    
-}
-
-#footer p{
-    margin-top:30px;
-}
 #page-container{
     position: relative;
     min-height: 100vh;
+}
+.site-header{
+    text-align: center;
+}
+#drink-responsibly{
+    text-align: center;
+    display: inline-block;
+    margin-right: 75px;
 }
