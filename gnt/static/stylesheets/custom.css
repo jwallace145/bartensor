@@ -95,58 +95,68 @@ a.article-title:hover {
 /*
  * Search bar
  */
-input[type="text"],
-select.form-control {
-    background: transparent;
-    border: none;
+.search-bar {
+    border-top: none;
+    border-right: none;
     border-bottom: 2px solid #000000;
     -webkit-box-shadow: none;
     box-shadow: none;
     border-radius: 0;
 }
 
-input[type="text"]:focus,
-select.form-control:focus {
+.search-bar:focus {
     -webkit-box-shadow: none;
+    border-right: none;
+    border-left: 1px solid #dee2e6;
     box-shadow: none;
-    background: transparent;
+}
+
+.search-button {
+    background: white;
+    border-top: none;
+    border-right: 1px solid #dee2e6;
+    border-bottom: 2px solid #000000;
+    border-left: none;
+    border-radius: 1px;
+}
+
+.search-button:hover {
+    background: #dee2e6;
+    border-top: none;
+    border-right: 1px solid #dee2e6;
+    border-bottom: 2px solid #000000;
+    border-left: none;
+    border-radius: 1px;
+}
+
+.search-icon {
+    height: 20px;
+}
+
+.search-nav-link {
+    cursor: pointer;
+    /* using important here to override bootstrap's specificity */
+    border: 1px solid #dee2e6 !important;
+    border-bottom: none !important;
 }
 
 /*
  * Assitant Button
  */
-.assistant_button_wrapper {
-    text-align: center;
-}
-
-.circleBase {
-    cursor: pointer;
-    box-shadow: 5px 10px #888888;
-    display: inline-block;
-    border-radius: 50%;
-    behavior: url(PIE.htc); /* for IE8 compatability */
-    margin-top: 10%;
-}
-
 .assistant_button {
     cursor: pointer;
-    width: 200px;
-    height: 200px;
-    background: #f8f9fa;
+    background: transparent;
     border: 3px solid #bebebe;
+    box-shadow: 3px 6px #888888;
+    width: 100px;
+    height: 100px;
+    display: inline-block;
 }
 
 .mic_icon {
-    margin: auto;
-    padding: 10px;
-    margin: 50px;
-    width: 80px;
-    height: 88px;
-}
-
-.listen {
-    padding: 15px;
-    display: block;
+    margin-top: 12px;
+    width: 60px;
+    height: 66px;
 }
 
 /*
@@ -172,10 +182,6 @@ select.form-control:focus {
 
 h1 {
     text-align: center;
-}
-
-.results {
-    margin-top: 50px;
 }
 
 a {

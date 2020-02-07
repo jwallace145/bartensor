@@ -1,41 +1,37 @@
-{% extends 'gnt/base.html' %} {% block 'content' %}
-
-<script type="text/javascript">
-  $(document).ready(function() {
-    $(".listen").hide();
-
-    $(".assistant_button").click(function waiting() {
-      $(".listen").show();
-      setTimeout(function redirect_to_loading() {
-        var url = window.location;
-        window.location.replace(url + "loading");
-      }, 10000);
-    });
-
-    $(".single_drink_rec").click(function redirect_to_loading() {
-      var url = window.location;
-      window.location.replace(url + "loading");
-    });
-  });
-</script>
-
-<div class="assistant_button_wrapper">
-  <a class="circleBase assistant_button">
-    <img class="mic_icon" src="../../static/mic.png" alt="can't find mic icon" />
-  </a>
-  <a class="listen">I'm listening. Go ahead!</a>
+{% extends 'gnt/base.html' %}
+{% block 'content' %}
+{% load static %}
+<div class="container">
+  <div class="row">
+    <div class="col text-center mt-5">
+      <a class="assistant_button rounded-circle my-4">
+        <img class="mic_icon" src="{% static 'mic.png' %}" alt="can't find mic icon" />
+      </a>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col"><!-- for spacing --></div>
+    <div class="col-7 form-group">
+      <ul class="nav nav-tabs">
+        <li class="nav-item">
+          <input type="radio" id="what" name="q" value="what" class="d-none" checked>
+          <span class="nav-link active search-nav-link">What can I make with...</span>
+        </li>
+        <li class="nav-item">
+          <input type="radio" id="how" name="q" value="how" class="d-none">
+          <span class="nav-link search-nav-link">How do I make...</span>
+        </li>
+      </ul>
+      <div class="input-group">
+        <input type="text" class="form-control search-bar" id="search_bar" placeholder="Search" aria-label="Search" aria-describedby="search-bar">
+        <div class="input-group-append">
+          <button class="btn btn-outline-primary search-button" type="button">
+            <img class="search-icon" src="{% static 'images/search.png' %}" alt="Search" />
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="col"><!-- for spacing --></div>
+  </div>
 </div>
-
-<div class="form-group">
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="#">What can I make with...</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">How do I make...</a>
-    </li>
-  </ul>
-  <input type="text" name="name" class="form-control" id="name" placeholder="Search">
-</div>
-
 {% endblock %}
