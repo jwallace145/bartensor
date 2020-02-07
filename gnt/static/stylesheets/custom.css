@@ -1,0 +1,184 @@
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+ul {
+  margin: 0;
+}
+
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.article-title {
+  color: #444444;
+}
+
+a.article-title:hover {
+  color: #428bca;
+  text-decoration: none;
+}
+
+.article-content {
+  white-space: pre-line;
+}
+
+.article-img {
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
+}
+
+.article-metadata {
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3
+}
+
+.article-metadata a:hover {
+  color: #333;
+  text-decoration: none;
+}
+
+.article-svg {
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    height: 60px;
+    width: 100%;
+    line-height: 60px;
+    background-color: #f2f2f2;
+}
+
+/*
+ * Search bar
+ */
+input[type="text"],
+select.form-control {
+    background: transparent;
+    border: none;
+    border-bottom: 2px solid #000000;
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    border-radius: 0;
+}
+
+input[type="text"]:focus,
+select.form-control:focus {
+    -webkit-box-shadow: none;
+    box-shadow: none;
+    background: transparent;
+}
+
+/*
+ * Assitant Button
+ */
+.assistant_button_wrapper {
+    text-align: center;
+}
+
+.circleBase {
+    cursor: pointer;
+    box-shadow: 5px 10px #888888;
+    display: inline-block;
+    border-radius: 50%;
+    behavior: url(PIE.htc); /* for IE8 compatability */
+    margin-top: 10%;
+}
+
+.assistant_button {
+    cursor: pointer;
+    width: 200px;
+    height: 200px;
+    background: #f8f9fa;
+    border: 3px solid #bebebe;
+}
+
+.mic_icon {
+    margin: auto;
+    padding: 10px;
+    margin: 50px;
+    width: 80px;
+    height: 88px;
+}
+
+.listen {
+    padding: 15px;
+    display: block;
+}
+
+/*
+ * Loading Screen
+ */
+.loading_gif_wrapper {
+    text-align: center;
+}
+
+.duck_loading {
+    display: inline-block;
+    margin-top: 10%;
+    width: 20%;
+    height: auto;
+}
+
+/*
+ * Results
+ */
+.title {
+    margin-top: 80px;
+}
+
+h1 {
+    text-align: center;
+}
+
+.results {
+    margin-top: 50px;
+}
+
+a {
+    cursor: pointer;
+}
+
