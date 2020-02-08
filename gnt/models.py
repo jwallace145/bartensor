@@ -22,16 +22,15 @@ class Profile(models.Model):
 
 
 class Drinks(models.Model):
-    drink_hash = models.CharField(max_length=64)
     profiles_that_liked = models.ManyToManyField(Profile)
 
     def __str__(self):
-        return str(self.drink_hash)
+        return str(self.id)
 
 
 class Drink_names(models.Model):
-    drink_hash_FK = models.ForeignKey(Drinks, on_delete=models.PROTECT)
+    drink_FK = models.ForeignKey(Drinks, on_delete=models.PROTECT)
     drink_name = models.CharField(max_length=32)
 
     def __str__(self):
-        return str(self.drink_hash_FK.drink_hash) + ", " + str(self.drink_name)
+        return str(self.drink_FK.id) + ", " + str(self.drink_name)
