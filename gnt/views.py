@@ -1,11 +1,11 @@
-from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-
+from django.contrib.auth.models import User
+from .models import Profile, Drinks, Drink_names
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
@@ -83,3 +83,34 @@ def profile(request):
     }
 
     return render(request, 'gnt/profile.html', context)
+
+def liked_drinks(request):
+    if request.user.is_authenticated:
+        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
+        collection_id = '0aefcb97-37bd-4713-b39e-41cdd915d52f'
+
+        authenticator = IAMAuthenticator('Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
+        discovery = DiscoveryV1(
+            version='2019-04-30',
+            authenticator=authenticator
+        )
+        discovery.set_service_url('https://api.us-south.discovery.watson.cloud.ibm.com/')
+
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        drinks = Drinks.objects.filter(profiles_that_liked=profile)
+        if drinks:
+            text = ""
+            for d in drinks:
+                d_name = Drink_names.objects.get(drink_FK=d.id)
+                text = text + str(d_name.drink_name) + " "
+            response = discovery.query(environment_id, collection_id, natural_language_query=text).result['results']
+        
+            return render(request, 'gnt/liked_drinks.html', {
+                'drinks': response
+            })
+        else:
+            return render(request, 'gnt/liked_drinks.html')
+    else:
+        return HttpResponseRedirect('/home/')
+
