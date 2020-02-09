@@ -1,11 +1,7 @@
-<<<<<<< HEAD
-{% extends 'gnt/drink_results.html' %} {% block 'like-dislike' %}
-{% if user.is_authenticated %}
-=======
 {% extends 'gnt/drink_results.html' %}
 {% load static %}
 {% block 'like-dislike' %}
->>>>>>> 1b0db5cfbbdf4b0523ef399f45d84f7991b69dad
+{% if user.is_authenticated %}
 <div class="col-lg-1">
     <a class="thumbsup" id="drink-thumbsup-{{drink.id}}">
         <img src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="100%" />
