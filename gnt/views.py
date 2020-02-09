@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.contrib.auth.models import User
-from .models import Profile, Drinks, Drink_names
+from .models import Profile, Drinks, Drink_names, Profile_to_drink
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
@@ -35,7 +35,7 @@ def results(request):
         text = request.POST['search_bar']
         response = discovery.query(
             environment_id, collection_id, natural_language_query=text).result['results']
-
+        
         return render(request, 'gnt/results.html', {
             'drinks': response
         })
@@ -103,15 +103,14 @@ def liked_drinks(request):
 
         user = request.user
         profile = Profile.objects.get(user=user)
-        drinks = Drinks.objects.filter(profiles_that_liked=profile)
-        if drinks:
+        profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile.id)
+        if profile_to_drink:
             text = ""
-            for d in drinks:
-                d_name = Drink_names.objects.get(drink_FK=d.id)
+            for ptd in profile_to_drink:
+                d_name = Drink_names.objects.get(drink_FK=ptd.drink_FK.id)
                 text = text + str(d_name.drink_name) + " "
             response = discovery.query(
                 environment_id, collection_id, natural_language_query=text).result['results']
-
             return render(request, 'gnt/liked_drinks.html', {
                 'drinks': response
             })
