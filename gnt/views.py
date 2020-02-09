@@ -36,8 +36,6 @@ def results(request):
         response = discovery.query(
             environment_id, collection_id, natural_language_query=text).result['results']
 
-        print(response)
-
         return render(request, 'gnt/results.html', {
             'drinks': response
         })
