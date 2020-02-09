@@ -123,4 +123,9 @@ def liked_drinks(request):
 
 def like_drink(request):
     print(request.POST)
+    print(request.POST['user'])
+    drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+    new_like = Profile_to_drink(
+        profile_FK=request.user.profile.id, drink_FK=drink.id)
+    new_like.save()
     return HttpResponse(status=200)

@@ -21,13 +21,7 @@ $(document).ready(function() {
                 headers: { "X-CSRFToken": csrftoken },
                 data: payload,
                 dataType: "json"
-            })
-                .done(function(response) {
-                    console.log(response.id + " " + response.name);
-                })
-                .fail(function(error) {
-                    console.log(error);
-                });
+            });
         });
     });
 });
