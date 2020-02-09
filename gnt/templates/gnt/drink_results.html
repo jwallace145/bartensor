@@ -1,20 +1,33 @@
 {% extends 'gnt/base.html' %} {% block 'content' %}
 <!-- autoformat comment -->
-{% block 'above-drink-results' %} {% endblock 'above-drink-results' %}
+{% block 'above-drink-results' %}
+{% endblock 'above-drink-results' %}
 <div class="container results accordion" id="results">
     {% for drink in drinks %}
     <div class="row">
         <div class="col-lg-2">
-            <img src="{{drink.picture}}" alt="{{drink.name}}" width="60%" />
+            <img src="{{drink.picture}}" alt="{{ drink.names | first }}" width="60%" />
         </div>
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header" id="{{forloop.counter}}">
                     <h2 class="mb-0">
+<<<<<<< HEAD
                         <button class="btn btn-link" type="button" data-toggle="collapse"
                             data-target="#header{{forloop.counter}}" aria-expanded="false"
                             aria-controls="{{forloop.counter}}">
                             {{drink.name}}
+=======
+                        <button
+                            class="btn btn-link"
+                            type="button"
+                            data-toggle="collapse"
+                            data-target="#header{{forloop.counter}}"
+                            aria-expanded="false"
+                            aria-controls="{{forloop.counter}}"
+                        >
+                            {{ drink.names | first }}
+>>>>>>> 1b0db5cfbbdf4b0523ef399f45d84f7991b69dad
                         </button>
                     </h2>
                 </div>

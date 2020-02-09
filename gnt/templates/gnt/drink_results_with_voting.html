@@ -1,13 +1,19 @@
+<<<<<<< HEAD
 {% extends 'gnt/drink_results.html' %} {% block 'like-dislike' %}
 {% if user.is_authenticated %}
+=======
+{% extends 'gnt/drink_results.html' %}
+{% load static %}
+{% block 'like-dislike' %}
+>>>>>>> 1b0db5cfbbdf4b0523ef399f45d84f7991b69dad
 <div class="col-lg-1">
     <a class="thumbsup" id="drink-thumbsup-{{drink.id}}">
-        <img src="../../static/thumbsup.png" alt="thumbs up" width="100%" />
+        <img src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="100%" />
     </a>
 </div>
 <div class="col-lg-1">
     <a class="thumbsdown" id="drink-thumbsdown-{{drink.id}}">
-        <img src="../../static/thumbsdown.png" alt="thumbs down" width="100%" />
+        <img src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="100%" />
     </a>
 </div>
 {% endif %}

@@ -131,11 +131,7 @@ dmypy.json
 # Mac
 .DS_Store
 
-# reports
+.idea/
 reports/
-
-# media
 media/
-
-# VSCode
 .vscode/

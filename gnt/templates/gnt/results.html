@@ -1,5 +1,6 @@
 {% extends 'gnt/drink_results_with_voting.html' %}
-<script type="text/javascript" src="../../static/scripts/results.js"></script>
+{% load static %}
+<script type="text/javascript" src="{% static 'scripts/results.js' %}"></script>
 
 {% block 'above-drink-results' %}
 <div class="container title">
