@@ -21,7 +21,7 @@ def home(request):
 def results(request):
     if request.method == 'POST':
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
-        collection_id = '0aefcb97-37bd-4713-b39e-41cdd915d52f'
+        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
         authenticator = IAMAuthenticator(
             'Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
@@ -35,9 +35,6 @@ def results(request):
         text = request.POST['search_bar']
         response = discovery.query(
             environment_id, collection_id, natural_language_query=text).result['results']
-
-        for drink in response:
-            drink['id'] = drink['extracted_metadata']['filename'].split('.')[0]
 
         return render(request, 'gnt/results.html', {
             'drinks': response
