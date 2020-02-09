@@ -119,3 +119,6 @@ def liked_drinks(request):
             return render(request, 'gnt/liked_drinks.html')
     else:
         return HttpResponseRedirect('/home/')
+
+def like_drink(request):
+    print(request)
