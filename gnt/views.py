@@ -36,6 +36,9 @@ def results(request):
         response = discovery.query(
             environment_id, collection_id, natural_language_query=text).result['results']
 
+        for drink in response:
+            drink['id'] = drink['extracted_metadata']['filename'].split('.')[0]
+
         return render(request, 'gnt/results.html', {
             'drinks': response
         })
