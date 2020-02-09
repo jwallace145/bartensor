@@ -4,13 +4,15 @@ $(document).ready(function() {
     anchor.each(function likeDrink(index, element) {
         $(this).on("click", function likeDrink() {
             var html_id = $(this).attr("id");
+            var user = $(this).attr("user");
             var drink_id = html_id
                 .split("-")
                 .slice(-1)
                 .pop();
             var url = APPURL + "/like_drink/";
             var payload = {
-                drink_id: drink_id
+                drink_id: drink_id,
+                user: user
             };
             var csrftoken = getCookie("csrftoken");
             $.ajax({
