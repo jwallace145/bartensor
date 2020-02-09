@@ -8,9 +8,24 @@ $(document).ready(function() {
                 .split("-")
                 .slice(-1)
                 .pop();
-            console.log(drink_id);
-            console.log(APPURL);
-            //TODO: Add call to /likedrink endpoint
+            var url = APPURL + "/like_drink/";
+            var payload = {
+                drink_id: drink_id
+            };
+            var csrftoken = getCookie("csrftoken");
+            $.ajax({
+                url: url,
+                method: "POST",
+                headers: { "X-CSRFToken": csrftoken },
+                data: payload,
+                dataType: "json"
+            })
+                .done(function(response) {
+                    console.log(response.id + " " + response.name);
+                })
+                .fail(function(error) {
+                    console.log(error);
+                });
         });
     });
 });
@@ -29,3 +44,21 @@ $(document).ready(function() {
         });
     });
 });
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != "") {
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == name + "=") {
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1)
+                );
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}

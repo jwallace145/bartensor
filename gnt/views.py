@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from .models import Profile, Drinks, Drink_names
@@ -120,5 +120,7 @@ def liked_drinks(request):
     else:
         return HttpResponseRedirect('/home/')
 
+
 def like_drink(request):
-    print(request)
+    print(request.POST)
+    return HttpResponse(status=200)
