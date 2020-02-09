@@ -1,4 +1,5 @@
 {% extends 'gnt/drink_results.html' %} {% block 'like-dislike' %}
+{% load static %}
 {% if user.is_authenticated %}
 <div class="col-lg-1">
     <a class="thumbsup" id="drink-thumbsup-{{drink.id}}">
