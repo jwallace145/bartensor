@@ -5,9 +5,9 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 
-
-
 # Handles all non specified urls that we don't want users seeing
+
+
 def bad_request(request, *args, **kwargs):
     return HttpResponseRedirect('/home/')
 
