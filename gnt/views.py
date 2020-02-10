@@ -102,12 +102,12 @@ def liked_drinks(request):
             'https://api.us-south.discovery.watson.cloud.ibm.com/')
 
         user = request.user
-        profile = Profile.objects.get(id = user.profile.id)
-        profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile)
+        profile = Profile.objects.get(user=user)
+        profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile.id)
         if profile_to_drink:
             text = ""
             for ptd in profile_to_drink:
-                d_name = Drink_names.objects.get(drink_FK=ptd.drink_FK)
+                d_name = Drink_names.objects.get(drink_FK=ptd.drink_FK.id)
                 text = text + str(d_name.drink_name) + " "
             response = discovery.query(
                 environment_id, collection_id, natural_language_query=text).result['results']
@@ -122,22 +122,29 @@ def liked_drinks(request):
 
 def like_drink(request):
     try:
-        # Check to see that user has not already liked drink
         username = request.POST['user']
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
         profile = Profile.objects.get(id = request.user.profile.id)
-        new_like = Profile_to_drink(
-            profile_FK=profile, drink_FK=drink)
-        new_like.save()
-        msg = "Drink " + str(request.POST['drink_id']) + "added to " + str(username) + "'s liked drinks"
-        response = {
-            'message': msg,
-            'status': 200
-        }
+        if Profile_to_drink.objects.filter(profile_FK = profile, drink_FK=drink):
+            print("drink already liked")
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " has already been liked by " + str(username) + ". No changes to db",
+                'status': 422
+            }
+        else:             
+            new_like = Profile_to_drink(
+                profile_FK=profile, drink_FK=drink)
+            new_like.save()
+            msg = "Drink " + str(request.POST['drink_id']) + "added to " + str(username) + "'s liked drinks"
+            response = {
+                'message': msg,
+                'status': 200
+            }
         return JsonResponse(response)
     except Exception as e:
+        print(e)
         response = {
-            'message': e,
+            'message': str(e),
             'status': 500
         }
         return JsonResponse(response)
