@@ -1,34 +1,27 @@
-{% extends 'gnt/base.html' %} {% block 'content' %}
-<!-- autoformat comment -->
-{% block 'above-drink-results' %} {% endblock 'above-drink-results' %}
+{% extends 'gnt/base.html' %}
+{% block 'content' %}
+{% block 'above-drink-results' %}
+{% endblock 'above-drink-results' %}
+{% load static %}
 <div class="container results accordion" id="results">
     {% for drink in drinks %}
     <div class="row">
         <div class="col-lg-2">
-            <img src="{{drink.picture}}" alt="{{drink.name}}" width="60%" />
+            <img src="{% static drink.picture %}" alt="{{ drink.picture }}" width="60%" />
         </div>
         <div class="col-lg-8">
             <div class="card">
                 <div class="card-header" id="{{forloop.counter}}">
                     <h2 class="mb-0">
-                        <button
-                            class="btn btn-link"
-                            type="button"
-                            data-toggle="collapse"
-                            data-target="#header{{forloop.counter}}"
-                            aria-expanded="false"
-                            aria-controls="{{forloop.counter}}"
-                        >
-                            {{drink.name}}
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                            data-target="#header{{forloop.counter}}" aria-expanded="false"
+                            aria-controls="{{forloop.counter}}">
+                            {{ drink.names | first }}
                         </button>
                     </h2>
                 </div>
-                <div
-                    id="header{{forloop.counter}}"
-                    class="collapse"
-                    aria-labelledby="{{forloop.counter}}"
-                    data-parent="#results"
-                >
+                <div id="header{{forloop.counter}}" class="collapse" aria-labelledby="{{forloop.counter}}"
+                    data-parent="#results">
                     <div class="card-body">
                         Ingredients:
                         <ul>

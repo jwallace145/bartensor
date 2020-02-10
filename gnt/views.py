@@ -1,13 +1,15 @@
-from django.shortcuts import render
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
+from django.urls import reverse
+from django.contrib.auth.models import User
+from .models import Profile, Drinks, Drink_names, Profile_to_drink
+from ibm_watson import DiscoveryV1
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 
-
-# Handles all non specified urls that we don't want users seeing
 def bad_request(request, *args, **kwargs):
     return HttpResponseRedirect('/home/')
 
@@ -17,44 +19,28 @@ def home(request):
 
 
 def results(request):
-    # TODO: Replace hard coded drinks with information passed into request
-    drinks = [
-        {
-            'id': 'ankeoigab4a34q35htrgif847qyrahd',
-            'picture': 'https://assets.bonappetit.com/photos/57acc14e53e63daf11a4d9b6/master/pass/whiskey-sour.jpg',
-            'name': 'Whiskey Sour',
-                    'ingredients': ['1 ½ oz oz Whiskey',
-                                    '2 oz Sour Mix (Fresh preferred)',
-                                    'Optional: 1/2 oz egg white (makes drink foamy)'
-                                    ],
-                    'method': ['glass: Highball',
-                               'Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice',
-                               'Strain into a large old fashioned glass with fresh ice',
-                               'Garnish with cherry & orange'
-                               ]
+    if request.method == 'POST':
+        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
+        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
-        },
-        {
-            'id': '394agdnavior;oa4eih',
-            'picture': 'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcS9h-WqGmZDxZTkvjEqRWyDG0ZIw5wC6RlQyFj_THX8fmYcQEgv',
-            'name': 'Old Fashioned',
-                    'ingredients': ['Packet of Sugar',
-                                    '2 dashes of Bitters',
-                                    'Splash of soda',
-                                    'Cherry & orange',
-                                    '2 oz Whiskey'
-                                    ],
-                    'method': [	'glass: Rocks glass',
-                                'Muddle sugar, bitters, soda in glass',
-                                'Add Whiskey',
-                                'Fill glass with ice'
-                                ]
-        }
-    ]
-    context = {
-        'drinks': drinks
-    }
-    return render(request, 'gnt/results.html', context)
+        authenticator = IAMAuthenticator(
+            'Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
+        discovery = DiscoveryV1(
+            version='2019-04-30',
+            authenticator=authenticator
+        )
+        discovery.set_service_url(
+            'https://api.us-south.discovery.watson.cloud.ibm.com/')
+
+        text = request.POST['search_bar']
+        response = discovery.query(
+            environment_id, collection_id, natural_language_query=text).result['results']
+        
+        return render(request, 'gnt/results.html', {
+            'drinks': response
+        })
+    else:
+        return HttpResponseRedirect(reverse('home'))
 
 
 def loading(request):
@@ -99,3 +85,36 @@ def profile(request):
     }
 
     return render(request, 'gnt/profile.html', context)
+
+
+def liked_drinks(request):
+    if request.user.is_authenticated:
+        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
+        collection_id = '0aefcb97-37bd-4713-b39e-41cdd915d52f'
+
+        authenticator = IAMAuthenticator(
+            'Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
+        discovery = DiscoveryV1(
+            version='2019-04-30',
+            authenticator=authenticator
+        )
+        discovery.set_service_url(
+            'https://api.us-south.discovery.watson.cloud.ibm.com/')
+
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile.id)
+        if profile_to_drink:
+            text = ""
+            for ptd in profile_to_drink:
+                d_name = Drink_names.objects.get(drink_FK=ptd.drink_FK.id)
+                text = text + str(d_name.drink_name) + " "
+            response = discovery.query(
+                environment_id, collection_id, natural_language_query=text).result['results']
+            return render(request, 'gnt/liked_drinks.html', {
+                'drinks': response
+            })
+        else:
+            return render(request, 'gnt/liked_drinks.html')
+    else:
+        return HttpResponseRedirect('/home/')
