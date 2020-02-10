@@ -1,12 +1,13 @@
-{% extends 'gnt/base.html' %} {% block 'content' %}
-<!-- autoformat comment -->
+{% extends 'gnt/base.html' %}
+{% block 'content' %}
 {% block 'above-drink-results' %}
 {% endblock 'above-drink-results' %}
+{% load static %}
 <div class="container results accordion" id="results">
     {% for drink in drinks %}
     <div class="row">
         <div class="col-lg-2">
-            <img src="{{drink.picture}}" alt="{{ drink.names | first }}" width="60%" />
+            <img src="{% static drink.picture %}" alt="{{ drink.picture }}" width="60%" />
         </div>
         <div class="col-lg-8">
             <div class="card">
