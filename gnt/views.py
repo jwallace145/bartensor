@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, HttpResponse
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from .models import Profile, Drinks, Drink_names, Profile_to_drink
@@ -90,7 +90,7 @@ def profile(request):
 def liked_drinks(request):
     if request.user.is_authenticated:
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
-        collection_id = '0aefcb97-37bd-4713-b39e-41cdd915d52f'
+        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
         authenticator = IAMAuthenticator(
             'Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
@@ -102,12 +102,12 @@ def liked_drinks(request):
             'https://api.us-south.discovery.watson.cloud.ibm.com/')
 
         user = request.user
-        profile = Profile.objects.get(user=user)
-        profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile.id)
+        profile = Profile.objects.get(id = user.profile.id)
+        profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile)
         if profile_to_drink:
             text = ""
             for ptd in profile_to_drink:
-                d_name = Drink_names.objects.get(drink_FK=ptd.drink_FK.id)
+                d_name = Drink_names.objects.get(drink_FK=ptd.drink_FK)
                 text = text + str(d_name.drink_name) + " "
             response = discovery.query(
                 environment_id, collection_id, natural_language_query=text).result['results']
@@ -121,10 +121,23 @@ def liked_drinks(request):
 
 
 def like_drink(request):
-    print(request.POST)
-    print(request.POST['user'])
-    drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
-    new_like = Profile_to_drink(
-        profile_FK=request.user.profile.id, drink_FK=drink.id)
-    new_like.save()
-    return HttpResponse(status=200)
+    try:
+        # Check to see that user has not already liked drink
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        profile = Profile.objects.get(id = request.user.profile.id)
+        new_like = Profile_to_drink(
+            profile_FK=profile, drink_FK=drink)
+        new_like.save()
+        msg = "Drink " + str(request.POST['drink_id']) + "added to " + str(username) + "'s liked drinks"
+        response = {
+            'message': msg,
+            'status': 200
+        }
+        return JsonResponse(response)
+    except Exception as e:
+        response = {
+            'message': e,
+            'status': 500
+        }
+        return JsonResponse(response)

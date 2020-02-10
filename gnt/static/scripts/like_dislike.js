@@ -20,7 +20,14 @@ $(document).ready(function() {
                 method: "POST",
                 headers: { "X-CSRFToken": csrftoken },
                 data: payload,
-                dataType: "json"
+                dataType: "json",
+                success: function(data) {
+                    console.log(data)
+                 },
+                 error: function (xhr, ajaxOptions, thrownError) {
+                    console.log(xhr.status);
+                    console.log(thrownError);
+                  }
             });
         });
     });
