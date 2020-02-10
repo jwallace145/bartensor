@@ -22,7 +22,7 @@ class Profile(models.Model):
 
 
 class Drinks(models.Model):
-    drink_hash = models.CharField(max_length=64, default="emptydrink")
+    drink_hash = models.CharField(max_length=64, default="emptydrink", unique=True)
 
     def __str__(self):
         return str(self.id) + ", " + str(self.drink_hash)
@@ -33,7 +33,7 @@ class Drink_names(models.Model):
     drink_name = models.CharField(max_length=32)
 
     def __str__(self):
-        return str(self.id) + ", " + str(self.drink_FK.id) + ", " + str(self.drink_name)
+        return str(self.id) + ", " + str(self.drink_FK.drink_hash) + ", " + str(self.drink_name)
 
 
 class Profile_to_drink(models.Model):
