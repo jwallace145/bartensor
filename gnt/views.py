@@ -90,7 +90,7 @@ def profile(request):
 def liked_drinks(request):
     if request.user.is_authenticated:
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
-        collection_id = '0aefcb97-37bd-4713-b39e-41cdd915d52f'
+        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
         authenticator = IAMAuthenticator(
             'Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
@@ -105,12 +105,11 @@ def liked_drinks(request):
         profile = Profile.objects.get(user=user)
         profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile.id)
         if profile_to_drink:
-            text = ""
-            for ptd in profile_to_drink:
-                d_name = Drink_names.objects.get(drink_FK=ptd.drink_FK.id)
-                text = text + str(d_name.drink_name) + " "
-            response = discovery.query(
-                environment_id, collection_id, natural_language_query=text).result['results']
+            response = [0 for i in range(len(profile_to_drink))]
+            for i, ptd in enumerate(profile_to_drink):
+                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                obj = discovery.query(environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                response[i] = obj[0]
             return render(request, 'gnt/liked_drinks.html', {
                 'drinks': response
             })
