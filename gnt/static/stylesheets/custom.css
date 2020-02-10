@@ -85,6 +85,7 @@ a.article-title:hover {
 
 .footer {
     bottom: 0;
+    position: absolute;
     height: 60px;
     width: 100%;
     line-height: 60px;
