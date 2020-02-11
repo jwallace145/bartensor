@@ -24,7 +24,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('about/', gnt_views.about, name = 'about'),
     path('admin/', admin.site.urls),
-    path('home/', gnt_views.home, name='home'),
+    path('', gnt_views.home, name='home'),
     path('results/', gnt_views.results, name='results'),
     path('loading/', gnt_views.loading, name='loading'),
     path('register/', gnt_views.register, name='register'),
