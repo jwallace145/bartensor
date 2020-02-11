@@ -32,6 +32,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='gnt/logout.html'), name='logout'),
     path('profile/', gnt_views.profile, name='profile'),
     path('liked_drinks/', gnt_views.liked_drinks, name='liked_drinks'),
+    path('like_drink/', gnt_views.like_drink, name='like_drink'),
     # Following two lines handle all non matching urls
     re_path(r'^(?P<path>.*)/$', gnt_views.bad_request, name='bad_request'),
     path('', gnt_views.home, name='empty')

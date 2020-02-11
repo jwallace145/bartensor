@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from .models import Profile, Drinks, Drink_names, Profile_to_drink
@@ -90,7 +90,7 @@ def profile(request):
 def liked_drinks(request):
     if request.user.is_authenticated:
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
-        collection_id = '0aefcb97-37bd-4713-b39e-41cdd915d52f'
+        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
         authenticator = IAMAuthenticator(
             'Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
@@ -105,12 +105,11 @@ def liked_drinks(request):
         profile = Profile.objects.get(user=user)
         profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile.id)
         if profile_to_drink:
-            text = ""
-            for ptd in profile_to_drink:
-                d_name = Drink_names.objects.get(drink_FK=ptd.drink_FK.id)
-                text = text + str(d_name.drink_name) + " "
-            response = discovery.query(
-                environment_id, collection_id, natural_language_query=text).result['results']
+            response = [0 for i in range(len(profile_to_drink))]
+            for i, ptd in enumerate(profile_to_drink):
+                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                obj = discovery.query(environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                response[i] = obj[0]
             return render(request, 'gnt/liked_drinks.html', {
                 'drinks': response
             })
@@ -121,3 +120,32 @@ def liked_drinks(request):
 
 def about(request):
     return render(request, 'gnt/about.html')
+
+def like_drink(request):
+    try:
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        profile = Profile.objects.get(id = request.user.profile.id)
+        if Profile_to_drink.objects.filter(profile_FK = profile, drink_FK=drink):
+            print("drink already liked")
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " has already been liked by " + str(username) + ". No changes to db",
+                'status': 422
+            }
+        else:             
+            new_like = Profile_to_drink(
+                profile_FK=profile, drink_FK=drink)
+            new_like.save()
+            msg = "Drink " + str(request.POST['drink_id']) + "added to " + str(username) + "'s liked drinks"
+            response = {
+                'message': msg,
+                'status': 200
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(e)
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
