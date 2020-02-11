@@ -1,5 +1,12 @@
 {% extends 'gnt/drink_results.html' %}
 {% if user.is_authenticated %}
+{% if drinks %}
+{% block 'above-drink-results' %}
+<div class="container title">
+    <h1>Liked Drinks</h1>
+</div>
+{% endblock 'above-drink-results' %}
+{% endif %}
 {% block 'below-drink-results' %}
 {% if not drinks %}
 </div>You haven't Liked any drinks! Make a query and give feedback on anything you try! We'll save it for you for later.</div>
