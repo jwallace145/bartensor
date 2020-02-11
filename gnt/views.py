@@ -118,19 +118,21 @@ def liked_drinks(request):
     else:
         return HttpResponseRedirect('/home/')
 
+def about(request):
+    return render(request, 'gnt/about.html')
 
 def like_drink(request):
     try:
         username = request.POST['user']
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
-        profile = Profile.objects.get(id = request.user.profile.id)
-        if Profile_to_drink.objects.filter(profile_FK = profile, drink_FK=drink):
+        profile = Profile.objects.get(id=request.user.profile.id)
+        if Profile_to_drink.objects.filter(profile_FK=profile, drink_FK=drink):
             print("drink already liked")
             response = {
                 'message': "Drink " + str(request.POST['drink_id']) + " has already been liked by " + str(username) + ". No changes to db",
                 'status': 422
             }
-        else:             
+        else:
             new_like = Profile_to_drink(
                 profile_FK=profile, drink_FK=drink)
             new_like.save()

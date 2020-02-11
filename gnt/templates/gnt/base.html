@@ -30,8 +30,12 @@
         <div class="collapse navbar-collapse" id="navbarToggle">
           <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="{% url 'home' %}">Home</a>
-            <a class="nav-item nav-link" href="#">About</a>
+            <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
           </div>
+          <div id = "drink-responsibly" class = "col">
+            Please drink responsibly
+          </div>
+  
           <!-- Navbar Right Side -->
           <div class="navbar-nav">
             {% if user.is_authenticated %}
@@ -51,7 +55,7 @@
     {% block 'content' %}
     {% endblock %}
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-9">
         {% if messages %}
         {% for message in messages %}
         <div class=" alert alert-{{ message.tags }}">
@@ -75,15 +79,14 @@
             </ul>
           </p>
         </div>
-      </div>
+      </div> -->
     </div>
-    -->
   </main>
-  <footer class="footer">
+  <!-- <footer class="footer">
     <div class="container text-center">
       <span class="text-muted">Please drink responsibly.</span>
     </div>
-  </footer>
+  </footer> -->
   <div id="myModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">

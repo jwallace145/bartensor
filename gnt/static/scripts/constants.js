@@ -1,1 +1,2 @@
-var APPURL = "http://localhost:8000";
+var APPURL = "http://" + window.location.hostname +":8000";
+
