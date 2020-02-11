@@ -118,3 +118,6 @@ def liked_drinks(request):
             return render(request, 'gnt/liked_drinks.html')
     else:
         return HttpResponseRedirect('/home/')
+
+def about(request):
+    return render(request, 'gnt/about.html')
