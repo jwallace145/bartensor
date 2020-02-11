@@ -141,7 +141,7 @@ def like_drink(request):
             }
         return JsonResponse(response)
     except Exception as e:
-        print(e)
+        print(str(e))
         response = {
             'message': str(e),
             'status': 500
