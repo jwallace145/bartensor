@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # export environment variables
-export BARTENSOR_EMAIL_USERNAME=bartensor@gmail.com
-export BARTENSOR_EMAIL_PASSWORD=iupeqdduwlekqjrj
-export WATSON_DISCOVERY_API_KEY=Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy
+export BARTENSOR_EMAIL_USERNAME=
+export BARTENSOR_EMAIL_PASSWORD=
+export WATSON_DISCOVERY_API_KEY=
 
 # set run script variables
 DJANGO_PORT=8000
