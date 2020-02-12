@@ -16,7 +16,7 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: ${{ matrix.python-version }}
-    - env: 
+      env: 
         BARTENSOR_EMAIL_USERNAME: ${{ secrets.BARTENSOR_EMAIL_USERNAME }}
         BARTENSOR_EMAIL_PASSWORD: ${{ secrets.BARTENSOR_EMAIL_PASSWORD }}  
     - name: Install dependencies
