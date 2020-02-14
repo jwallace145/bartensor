@@ -24,8 +24,15 @@ ul {
 
 .site-header .navbar-nav .nav-link {
   color: #838a8e;
-  /* new */
+  font-family: 'Helvetica';
   font-size: 18px;
+  font-weight: bold;
+}
+
+.navbar-brand {
+  font-family: 'Helvetica';
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -225,7 +232,7 @@ a {
 
 .searchbar:hover>.search_input {
   padding: 0 10px;
-  width: 400px;
+  width: 300px;
   caret-color: black;
   transition: width 0.4s linear;
 }
