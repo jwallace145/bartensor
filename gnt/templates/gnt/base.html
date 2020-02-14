@@ -58,9 +58,16 @@
             <!-- <a class="nav-item nav-link" href="{% url 'liked_drinks' %}">Liked</a>
             <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a> -->
 
-            <i class="fas fa-comment-dots fa-2x"></i>
-            <i class="fas fa-bell fa-2x"></i>
-            <i class="fas fa-ellipsis-h fa-2x "></i>
+            <a class="nav-item nav-link" href="#">
+              <i class="fas fa-comment-dots fa-lg"></i>
+            </a>
+            <a class="nav-item nav-link" href="#">
+              <i class="fas fa-bell fa-lg"></i>
+            </a>
+            <a class="nav-item nav-link" href="#">
+              <i class="fas fa-ellipsis-h fa-lg"></i>
+            </a>
+
             {% else %}
             <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
             <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>

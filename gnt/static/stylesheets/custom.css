@@ -243,13 +243,14 @@ a {
 
 /* font awesome styling */
 .fa-bell {
-  margin-left: 20px
+  margin-left: 12px
 }
 
 .fa-comment-dots {
-  margin-left: 20px;
+  margin-left: 12px;
 }
 
 .fa-ellipsis-h {
-  margin-left: 20px;
+  margin-left: 12px;
+  margin-right: 12px;
 }
