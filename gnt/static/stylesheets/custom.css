@@ -80,6 +80,12 @@ a.article-title:hover {
   vertical-align: middle;
 }
 
+.account-header-img {
+  height: 40px;
+  width: 40px;
+  margin-right: 20px;
+}
+
 .account-img {
   height: 125px;
   width: 125px;
@@ -219,7 +225,7 @@ a {
 
 .searchbar:hover>.search_input {
   padding: 0 10px;
-  width: 500px;
+  width: 400px;
   caret-color: black;
   transition: width 0.4s linear;
 }
@@ -256,6 +262,7 @@ a {
 }
 
 .btn-ellipsis {
+  margin-top: 3px;
   background-color: #252729;
   color: #838a8e;
 }
