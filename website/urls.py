@@ -22,9 +22,9 @@ from django.conf.urls.static import static
 
 
 urlpatterns = [
-    path('about/', gnt_views.about, name = 'about'),
+    path('about/', gnt_views.about, name='about'),
     path('admin/', admin.site.urls),
-    path('home/', gnt_views.home, name='home'),
+    path('', gnt_views.home, name='home'),
     path('results/', gnt_views.results, name='results'),
     path('loading/', gnt_views.loading, name='loading'),
     path('register/', gnt_views.register, name='register'),
@@ -33,6 +33,22 @@ urlpatterns = [
     path('profile/', gnt_views.profile, name='profile'),
     path('liked_drinks/', gnt_views.liked_drinks, name='liked_drinks'),
     path('like_drink/', gnt_views.like_drink, name='like_drink'),
+    path('password-reset/',
+         auth_views.PasswordResetView.as_view(
+             template_name='gnt/password_reset.html'),
+         name='password_reset'),
+    path('password-reset/done/',
+         auth_views.PasswordResetDoneView.as_view(
+             template_name='gnt/password_reset_done.html'),
+         name='password_reset_done'),
+    path('password-reset-confirm/<uidb64>/<token>/',
+         auth_views.PasswordResetConfirmView.as_view(
+             template_name='gnt/password_reset_confirm.html'),
+         name='password_reset_confirm'),
+    path('password-reset-complete',
+         auth_views.PasswordResetCompleteView.as_view(
+             template_name='gnt/password_reset_complete.html'),
+         name='password_reset_complete'),
     # Following two lines handle all non matching urls
     re_path(r'^(?P<path>.*)/$', gnt_views.bad_request, name='bad_request'),
     path('', gnt_views.home, name='empty')
