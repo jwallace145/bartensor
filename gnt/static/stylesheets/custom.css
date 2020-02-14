@@ -15,7 +15,7 @@ ul {
 }
 
 .bg-steel {
-  background-color: #5f788a;
+  background-color: #252729;
 }
 
 .site-header {
@@ -23,9 +23,9 @@ ul {
 }
 
 .site-header .navbar-nav .nav-link {
-  color: #cbd5db;
+  color: #838a8e;
   /* new */
-  font-size: 20px;
+  font-size: 18px;
 }
 
 .site-header .navbar-nav .nav-link:hover {
@@ -201,13 +201,13 @@ a {
   margin-bottom: auto;
   margin-top: auto;
   height: 60px;
-  background-color: rgba(237, 237, 237, 0.78);
+  background-color: white;
   border-radius: 30px;
   padding: 10px;
 }
 
 .search_input {
-  color: white;
+  color: black;
   border: 0;
   outline: 0;
   background: none;
@@ -225,8 +225,8 @@ a {
 }
 
 .searchbar:hover>.search_icon {
-  background: white;
-  color: black;
+  background: #838a8e;
+  color: #ffffff;
 }
 
 .search_icon {
@@ -237,7 +237,7 @@ a {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  color: white;
+  color: #838a8e;
   text-decoration: none;
 }
 
