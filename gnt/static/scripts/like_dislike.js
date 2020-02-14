@@ -29,7 +29,7 @@ $(document).ready(function() {
                         console.log("Drink already liked");
                         likeDrinkFeedback('This is already in your liked drinks');
                     } else {
-                        likeDrinkFeedback('Error in liking drink');
+                        likeDrinkError('Error in liking drink');
                         console.log("Error in liking drink");
                     }
                  },
@@ -76,5 +76,21 @@ function getCookie(name) {
 }
 
 function likeDrinkFeedback(message){
-    alert(message);
+    document.getElementById("like-drink").innerHTML = message;
+    $("#like-drink").show("slow");
+    setTimeout(hideLikeDrinkFeedback, 5000);
+}
+
+function likeDrinkError(message){
+    document.getElementById("like-drink").innerHTML = message;
+    $("#like-drink").show("slow");
+    setTimeout(hideLikeDrinkError, 5000);
+}
+
+function hideLikeDrinkFeedback(){
+    $("#like-drink").hide("slow");
+}
+
+function hideLikeDrinkError(){
+    $("#dislike-drink").hide("slow");
 }

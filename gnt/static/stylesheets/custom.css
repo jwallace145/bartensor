@@ -195,3 +195,13 @@ h1 {
 a {
     cursor: pointer;
 }
+
+#like-drink{
+  display: none;
+  text-align: center;
+}
+
+#dislike-drink{
+  display: none;
+  text-align: center;
+}

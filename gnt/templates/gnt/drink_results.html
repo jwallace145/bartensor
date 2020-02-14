@@ -3,6 +3,13 @@
 {% block 'above-drink-results' %}
 {% endblock 'above-drink-results' %}
 {% load static %}
+
+<!-- For feedback when user clicks like drink button -->
+<div class="alert alert-success" role="alert" id="like-drink">
+    <!-- Feedback text goes here -->
+</div>
+<div class="alert alert-danger" role="alert" id="dislike-drink">
+  </div>
 <div class="container results accordion" id="results">
     {% for drink in drinks %}
     <div class="row">
