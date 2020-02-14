@@ -254,3 +254,8 @@ a {
   margin-left: 12px;
   margin-right: 12px;
 }
+
+.btn-ellipsis {
+  background-color: #252729;
+  color: #838a8e;
+}

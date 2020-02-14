@@ -64,12 +64,21 @@
             <a class="nav-item nav-link" href="#">
               <i class="fas fa-bell fa-lg"></i>
             </a>
-            <a class="nav-item nav-link" href="#">
-              <i class="fas fa-ellipsis-h fa-lg"></i>
-            </a>
+
+            <div class="dropdown">
+              <button class="btn btn-ellipsis" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="fas fa-ellipsis-h fa-lg"></i>
+              </button>
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="{% url 'profile' %}">Profile</a>
+                <a class="dropdown-item" href="{% url 'liked_drinks' %}">Liked Drinks</a>
+                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+                <a class="dropdown-item" href="#">Settings</a>
+              </div>
+            </div>
 
             {% else %}
-            <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+            <a class=" nav-item nav-link" href="{% url 'login' %}">Login</a>
             <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
             {% endif %}
           </div>
