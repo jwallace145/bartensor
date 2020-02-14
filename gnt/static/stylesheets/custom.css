@@ -219,7 +219,7 @@ a {
 
 .searchbar:hover>.search_input {
   padding: 0 10px;
-  width: 450px;
+  width: 500px;
   caret-color: black;
   transition: width 0.4s linear;
 }
