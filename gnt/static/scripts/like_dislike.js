@@ -22,7 +22,16 @@ $(document).ready(function() {
                 data: payload,
                 dataType: "json",
                 success: function(data) {
-                    console.log(data)
+                    if (data['status'] == 200){
+                        console.log("drink liked");
+                        likeDrinkFeedback('Drink liked!');
+                    } else if (data['status'] == 422){
+                        console.log("Drink already liked");
+                        likeDrinkFeedback('This is already in your liked drinks');
+                    } else {
+                        likeDrinkFeedback('Error in liking drink');
+                        console.log("Error in liking drink");
+                    }
                  },
                  error: function (xhr, ajaxOptions, thrownError) {
                     console.log(xhr.status);
@@ -64,4 +73,8 @@ function getCookie(name) {
         }
     }
     return cookieValue;
+}
+
+function likeDrinkFeedback(message){
+    alert(message);
 }
