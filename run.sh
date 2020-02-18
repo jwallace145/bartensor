@@ -16,7 +16,7 @@ then
   export WATSON_DISCOVERY_API_KEY=Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy
 
   # echo environment variables
-  echo "import environment variables listed below..."
+  echo "important environment variables listed below..."
   echo "BARTENSOR_EMAIL_USERNAME = $BARTENSOR_EMAIL_USERNAME"
   echo "BARTENSOR_EMAIL_PASSWORD = $BARTENSOR_EMAIL_PASSWORD"
   echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
@@ -96,7 +96,7 @@ then
   export WATSON_DISCOVERY_API_KEY=Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy
 
   # echo the needed environment variables
-  echo "import environment variables listed below..."
+  echo "important environment variables listed below..."
   echo "BARTENSOR_EMAIL_USERNAME = $BARTENSOR_EMAIL_USERNAME"
   echo "BARTENSOR_EMAIL_PASSWORD = $BARTENSOR_EMAIL_PASSWORD"
   echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
@@ -134,5 +134,5 @@ then
   python manage.py migrate
 
   echo "starting server at localhost port $DJANGO_PORT"
-  python manage.py runserver $DJANGO_POR
+  python manage.py runserver $DJANGO_PORT
 fi
