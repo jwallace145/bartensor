@@ -232,7 +232,7 @@ a {
 
 .searchbar:hover>.search_input {
   padding: 0 10px;
-  width: auto;
+  width: 400px;
   caret-color: black;
   transition: width 0.4s linear;
 }
