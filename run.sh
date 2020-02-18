@@ -80,4 +80,33 @@ elif [[ "$OSTYPE" == "msys" ]];
 then
   # lightweight shell and gnu utilities compiled for windows (part of mingw)
   echo "msys ostype detected"
+
+  # export environment variables
+  # $Env:BARTENSOR_EMAIL_USERNAME = "bartensor@gmail.com"
+  # $Env:BARTENSOR_EMAIL_PASSWORD = "iupeqdduwlekqjrj"
+  # $Env:WATSON_DISCOVERY_API_KEY = "Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy"
+
+  # export environment variables
+  export BARTENSOR_EMAIL_USERNAME=bartensor@gmail.com
+  export BARTENSOR_EMAIL_PASSWORD=iupeqdduwlekqjrj
+  export WATSON_DISCOVERY_API_KEY=Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy
+
+  # echo the needed environment variables
+  echo $BARTENSOR_EMAIL_USERNAME
+  echo $BARTENSOR_EMAIL_PASSWORD
+  echo $WATSON_DISCOVERY_API_KEY
+
+  echo "install the required dependencies..."
+  pip install -r requirements.txt
+  echo "pip has installed all required dependencies..."
+
+  echo "django make migrations..."
+  python manage.py makemigrations
+
+  echo "django migrate..."
+  python manage.py migrate
+
+  echo "starting server at localhost port $DJANGO_PORT"
+  python manage.py runserver $DJANGO_PORT
+
 fi
