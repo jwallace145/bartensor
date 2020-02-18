@@ -7,11 +7,19 @@ VENV_NAME="env"
 if [[ "$OSTYPE" == "darwin"* ]];
 then
   # mac osx
+  echo "mac osx detected..."
 
   # export environment variables
+  echo "exporting important environment variables..."
   export BARTENSOR_EMAIL_USERNAME=bartensor@gmail.com
   export BARTENSOR_EMAIL_PASSWORD=iupeqdduwlekqjrj
   export WATSON_DISCOVERY_API_KEY=Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy
+
+  # echo environment variables
+  echo "import environment variables listed below..."
+  echo "BARTENSOR_EMAIL_USERNAME = $BARTENSOR_EMAIL_USERNAME"
+  echo "BARTENSOR_EMAIL_PASSWORD = $BARTENSOR_EMAIL_PASSWORD"
+  echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
 
   # if virtual environment is not active, activate it
   if [[ "$VIRTUAL_ENV" == "" ]]
@@ -79,22 +87,41 @@ then
 elif [[ "$OSTYPE" == "msys" ]];
 then
   # lightweight shell and gnu utilities compiled for windows (part of mingw)
-  echo "msys ostype detected"
+  echo "msys ostype detected..."
 
   # export environment variables
-  # $Env:BARTENSOR_EMAIL_USERNAME = "bartensor@gmail.com"
-  # $Env:BARTENSOR_EMAIL_PASSWORD = "iupeqdduwlekqjrj"
-  # $Env:WATSON_DISCOVERY_API_KEY = "Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy"
-
-  # export environment variables
+  echo "exporting important environment variables..."
   export BARTENSOR_EMAIL_USERNAME=bartensor@gmail.com
   export BARTENSOR_EMAIL_PASSWORD=iupeqdduwlekqjrj
   export WATSON_DISCOVERY_API_KEY=Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy
 
   # echo the needed environment variables
-  echo $BARTENSOR_EMAIL_USERNAME
-  echo $BARTENSOR_EMAIL_PASSWORD
-  echo $WATSON_DISCOVERY_API_KEY
+  echo "import environment variables listed below..."
+  echo "BARTENSOR_EMAIL_USERNAME = $BARTENSOR_EMAIL_USERNAME"
+  echo "BARTENSOR_EMAIL_PASSWORD = $BARTENSOR_EMAIL_PASSWORD"
+  echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
+
+  # if virtual environment is not active, activate it
+  if [[ "$VIRTUAL_ENV" == "" ]]
+  then
+    echo "virtual environment not detected..."
+
+    echo "activating virtual environment..."
+    pip install virtualenv
+    python -m virtualenv $VENV_NAME
+    source $VENV_NAME/Scripts/activate.ps1
+
+    echo "virtual environment $VENV_NAME activated..."
+
+    if [[ "$VIRTUAL_ENV" == "" ]]
+    then
+      echo "error during virtual environment initialization..."
+      echo "ensure that virtualenv is installed for Python3.8..."
+      echo "exiting bash script now..."
+
+      exit 1
+    fi
+  fi
 
   echo "install the required dependencies..."
   pip install -r requirements.txt
@@ -107,6 +134,5 @@ then
   python manage.py migrate
 
   echo "starting server at localhost port $DJANGO_PORT"
-  python manage.py runserver $DJANGO_PORT
-
+  python manage.py runserver $DJANGO_POR
 fi
