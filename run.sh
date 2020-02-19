@@ -1,9 +1,10 @@
-#!/usr/bin/env bash
+#!/bin/bash
 
 # set run script variables
 DJANGO_PORT=8000
 VENV_NAME="env"
 
+# determine os type
 if [[ "$OSTYPE" == "darwin"* ]];
 then
   # mac osx
@@ -109,7 +110,7 @@ then
     echo "activating virtual environment..."
     pip install virtualenv
     python -m virtualenv $VENV_NAME
-    source $VENV_NAME/Scripts/activate.ps1
+    source $VENV_NAME/Scripts/activate
 
     echo "virtual environment $VENV_NAME activated..."
 
