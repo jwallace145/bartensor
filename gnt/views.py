@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
+from django.conf import settings
 from .models import Profile, Drinks, Drink_names, Profile_to_drink
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
@@ -19,12 +20,14 @@ def home(request):
 
 
 def results(request):
+    # get api key from settings.py which is stored as an environment variable
+    api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
+
     if request.method == 'POST':
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
-        authenticator = IAMAuthenticator(
-            'Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
+        authenticator = IAMAuthenticator(api_key)
         discovery = DiscoveryV1(
             version='2019-04-30',
             authenticator=authenticator
@@ -35,7 +38,7 @@ def results(request):
         text = request.POST['search_bar']
         response = discovery.query(
             environment_id, collection_id, natural_language_query=text).result['results']
-        
+
         return render(request, 'gnt/results.html', {
             'drinks': response
         })
@@ -103,12 +106,14 @@ def liked_drinks(request):
 
         user = request.user
         profile = Profile.objects.get(user=user)
-        profile_to_drink = Profile_to_drink.objects.filter(profile_FK=profile.id)
+        profile_to_drink = Profile_to_drink.objects.filter(
+            profile_FK=profile.id)
         if profile_to_drink:
             response = [0 for i in range(len(profile_to_drink))]
             for i, ptd in enumerate(profile_to_drink):
                 drink = Drinks.objects.get(id=ptd.drink_FK.id)
-                obj = discovery.query(environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                obj = discovery.query(
+                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
                 response[i] = obj[0]
             return render(request, 'gnt/liked_drinks.html', {
                 'drinks': response
@@ -118,8 +123,10 @@ def liked_drinks(request):
     else:
         return HttpResponseRedirect('/home/')
 
+
 def about(request):
     return render(request, 'gnt/about.html')
+
 
 def like_drink(request):
     try:
@@ -136,7 +143,9 @@ def like_drink(request):
             new_like = Profile_to_drink(
                 profile_FK=profile, drink_FK=drink)
             new_like.save()
-            msg = "Drink " + str(request.POST['drink_id']) + "added to " + str(username) + "'s liked drinks"
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s liked drinks"
             response = {
                 'message': msg,
                 'status': 200
