@@ -6,6 +6,11 @@
     <h1>Liked Drinks</h1>
 </div>
 {% endblock 'above-drink-results' %}
+{% block 'like-dislike' %}
+<div>
+    <button class="btn btn-outline-danger remove">Remove</button>
+</div>
+{% endblock 'like-dislike' %}
 {% endif %}
 {% block 'below-drink-results' %}
 {% if not drinks %}
