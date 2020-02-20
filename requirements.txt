@@ -22,6 +22,7 @@ packaging==20.1
 pep8==1.7.1
 Pillow==7.0.0
 pluggy==0.13.1
+psycopg2-binary==2.8.4
 py==1.8.1
 pycodestyle==2.5.0
 pyflakes==2.1.1
