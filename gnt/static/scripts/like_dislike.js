@@ -23,10 +23,8 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data['status'] == 200){
-                        console.log("drink liked");
                         likeDrinkFeedback('Drink liked!');
                     } else if (data['status'] == 422){
-                        console.log("Drink already liked");
                         likeDrinkFeedback('This is already in your liked drinks');
                     } else {
                         likeDrinkError('Error in liking drink');
@@ -34,8 +32,7 @@ $(document).ready(function() {
                     }
                  },
                  error: function (xhr, ajaxOptions, thrownError) {
-                    console.log(xhr.status);
-                    console.log(thrownError);
+                    likeDrinkError('Error in liking drink');
                   }
             });
         });
