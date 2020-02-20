@@ -102,27 +102,27 @@ then
   echo "BARTENSOR_EMAIL_PASSWORD = $BARTENSOR_EMAIL_PASSWORD"
   echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
 
-  # # if virtual environment is not active, activate it
-  # if [[ "$VIRTUAL_ENV" == "" ]]
-  # then
-  #   echo "virtual environment not detected..."
-  #
-  #   echo "activating virtual environment..."
-  #   pip install virtualenv
-  #   python -m virtualenv $VENV_NAME
-  #   source $VENV_NAME/Scripts/activate
-  #
-  #   echo "virtual environment $VENV_NAME activated..."
-  #
-  #   if [[ "$VIRTUAL_ENV" == "" ]]
-  #   then
-  #     echo "error during virtual environment initialization..."
-  #     echo "ensure that virtualenv is installed for Python3.8..."
-  #     echo "exiting bash script now..."
-  #
-  #     exit 1
-  #   fi
-  # fi
+  # if virtual environment is not active, activate it
+  if [[ "$VIRTUAL_ENV" == "" ]]
+  then
+    echo "virtual environment not detected..."
+
+    echo "activating virtual environment..."
+    pip install virtualenv
+    python -m virtualenv $VENV_NAME
+    $VENV_NAME/Scripts/activate
+
+    echo "virtual environment $VENV_NAME activated..."
+
+    if [[ "$VIRTUAL_ENV" == "" ]]
+    then
+      echo "error during virtual environment initialization..."
+      echo "ensure that virtualenv is installed for Python3.8..."
+      echo "exiting bash script now..."
+
+      exit 1
+    fi
+  fi
 
   echo "install the required dependencies..."
   pip install -r requirements.txt
