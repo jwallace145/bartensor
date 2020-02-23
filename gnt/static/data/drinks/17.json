@@ -1,19 +1,16 @@
 {
     "names": [
-        "Singapore Sling"
+        "A Gilligan's Island"
     ],
     "ingredients": [
-        "1 oz. London dry gin",
-        " oz. Cherry Heering",
-        "\u00bd oz. B\u00e9n\u00e9dictine",
-        "1 oz. fresh lime juice",
-        "2 oz. soda water",
-        "1 dash Angostura bitters"
+        "1 oz  Vodka",
+        "1 oz  Peach schnapps",
+        "3 oz  Orange juice",
+        "3 oz  Cranberry juice"
     ],
     "method": [
-        "Shake all ingredients with ice",
-        "Strain into a Collins glass filled with fresh ice",
-        "Garnish with wedge of Pineapple"
+        "Collins glass",
+        "Shaken, not stirred!"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/wysqut1461867176.jpg"
 }

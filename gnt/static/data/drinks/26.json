@@ -1,18 +1,15 @@
 {
     "names": [
-        "Old Fashioned"
+        "ABC"
     ],
     "ingredients": [
-        "Packet of Sugar",
-        "2 dashes of Bitters",
-        "Splash of soda",
-        "2 oz Whiskey"
+        "1/3  Amaretto",
+        "1/3  Bailey's irish cream",
+        "1/3  Cognac"
     ],
     "method": [
-        "Fill glass with ice",
-        "Muddle",
-        "Optional: Cherry & orange",
-        "Rocks glass"
+        "Shot glass",
+        "Layered in a shot glass"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/tqpvqp1472668328.jpg"
 }

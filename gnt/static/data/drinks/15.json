@@ -1,20 +1,18 @@
 {
     "names": [
-        "Long Island Ice Tea"
+        "A Day at the Beach"
     ],
     "ingredients": [
-        "\u00bd oz  Vodka",
-        "\u00bd oz  Gin",
-        "\u00bd oz Light Rum",
-        "\u00bd oz Tequila",
-        "\u00bd oz Triple sec",
-        "2oz Sour mix",
-        "Top with Cola"
+        "1 oz  Coconut rum",
+        "1/2 oz  Amaretto",
+        "4 oz  Orange juice",
+        "1/2 oz  Grenadine"
     ],
     "method": [
-        "Lemon Garnish",
-        "Short shake",
-        "Glass: Highball w/ice"
+        "Highball glass",
+        "Shake rum, amaretto, and orange juice in a shaker filled with ice",
+        "Strain over ice into a highball glass",
+        "Add grenadine and garnish with a pineapple wedge and a strawberry"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/trptts1454514474.jpg"
 }
