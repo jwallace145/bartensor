@@ -49,11 +49,11 @@ then
   then
     echo "virtual environment detected..."
 
-    # ensure python version == 3.8
+    # ensure python version starts with 3.8
     PYTHON_VERSION="$(python --version)"
     echo "current python version -> $PYTHON_VERSION"
 
-    if [[ "$PYTHON_VERSION" == "Python 3.8.0" ]]
+    if [[ "$PYTHON_VERSION" == "Python 3.8"* ]]
     then
       echo "current python version is up to date -> $PYTHON_VERSION"
 
