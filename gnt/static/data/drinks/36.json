@@ -1,14 +1,20 @@
 {
     "names": [
-        "Sweaty Mexican"
+        "Absolut Summertime"
     ],
     "ingredients": [
-        "2 oz tequila",
-        "2 oz tabasco sauce"
+        "1 1/2 oz  Absolut Citron",
+        "3/4 oz  Sweet and sour",
+        "1/2 oz  Sprite",
+        "3 oz  Soda water",
+        "1 slice  Lemon"
     ],
     "method": [
-        "Stir",
-        "Glass: Old-Fashioned"
+        "Collins glass",
+        "Add all ingredients except lemon to shaker filled with ice",
+        "Cover and shake vigorously",
+        "Strain contents into ice filled collins glass",
+        "Garnish with lemon"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/trpxxs1472669662.jpg"
 }

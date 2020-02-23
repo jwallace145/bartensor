@@ -1,17 +1,16 @@
 {
     "names": [
-        "Scotch Sour"
+        "A1"
     ],
     "ingredients": [
-        "1 \u00bd oz Scotch",
-        "2 oz Sour Mix",
-        "Optional: 1/2 oz egg white"
+        "1 3/4 shot  Gin",
+        "1 Shot  Grand Marnier",
+        "1/4 Shot Lemon Juice",
+        "1/8 Shot Grenadine"
     ],
     "method": [
-        "Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice",
-        "Strain into a large old fashioned glass with fresh ice",
-        "Garnish with Cherry & Orange",
-        "Glass:  Highball"
+        "Cocktail glass",
+        "Pour all ingredients into a cocktail shaker, mix and serve over ice into a chilled glass"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/2x8thr1504816928.jpg"
 }
