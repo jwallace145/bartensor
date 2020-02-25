@@ -2,6 +2,7 @@ from django.core.management.base import BaseCommand, CommandError
 from gnt.models import Drinks, Drink_names
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from django.conf import settings
 
 class Command(BaseCommand):
 
@@ -9,7 +10,7 @@ class Command(BaseCommand):
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
-        authenticator = IAMAuthenticator('Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
+        authenticator = IAMAuthenticator(getattr(settings, 'WATSON_DISCOVERY_API_KEY', None))
         discovery = DiscoveryV1(version='2019-04-30',authenticator=authenticator)
         discovery.set_service_url('https://api.us-south.discovery.watson.cloud.ibm.com/')
         response = discovery.query(environment_id, collection_id, _return=['id','names'], count='600').result['results']
