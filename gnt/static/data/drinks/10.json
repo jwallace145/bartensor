@@ -1,14 +1,18 @@
 {
     "names": [
-        "Vodka Tonic"
+        "50/50"
     ],
     "ingredients": [
-        "1 \u00bd oz Vodka",
-        "Fill with Tonic"
+        "2 1/2 oz  Vanilla vodka",
+        "1 splash  Grand Marnier",
+        "Fill with  Orange juice"
     ],
     "method": [
-        "Lime Garnish",
-        "Glass: Highball w/ice"
+        "Collins glass",
+        "Fill glass with crushed ice",
+        "Add vodka",
+        "Add a splash of grand-marnier",
+        "Fill with orange juice"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/wwpyvr1461919316.jpg"
 }

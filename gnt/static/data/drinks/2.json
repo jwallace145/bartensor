@@ -1,13 +1,15 @@
 {
     "names": [
-        "Rum & Coke"
+        "110 in the shade"
     ],
     "ingredients": [
-        "1 \u00bd oz Rum",
-        "Fill w/coke"
+        "16 oz  Lager",
+        "1.5 oz  Tequila"
     ],
     "method": [
-        "Glass: Highball w/ice"
+        "Beer glass",
+        "Drop shooter in glass",
+        "Fill with beer"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/xxyywq1454511117.jpg"
 }

@@ -1,14 +1,18 @@
 {
     "names": [
-        "Tequila Sunrise"
+        "9 1/2 Weeks"
     ],
     "ingredients": [
-        "1 \u00bd oz Tequila",
-        "Fill with Orange Juice",
-        "Top with \u00bd oz of Grenadine"
+        "2 oz  Absolut Citron",
+        "1/2 oz  Orange Curacao",
+        "1 splash  Strawberry liqueur",
+        "1 oz  Orange juice"
     ],
     "method": [
-        "Glass: Highball w/ice"
+        "Cocktail glass",
+        "Combine all ingredients in glass mixer",
+        "Chill and strain into cocktail glass",
+        "Garnish with sliced strawberry"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/xvwusr1472669302.jpg"
 }
