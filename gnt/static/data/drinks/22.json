@@ -1,17 +1,19 @@
 {
     "names": [
-        "Whiskey Sour"
+        "A midsummernight dream"
     ],
     "ingredients": [
-        "1 \u00bd oz Whiskey",
-        "2 oz Sour Mix",
-        "Optional: 1/2 oz egg white"
+        "2 oz  Vodka",
+        "1 oz  Kirschwasser",
+        "1 tsp  Strawberry liqueur",
+        "5  Strawberries",
+        "Schweppes Russchian"
     ],
     "method": [
-        "Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice",
-        "Strain into a large old fashioned glass with fresh ice",
-        "Garnish with Cherry & Orange",
-        "Glass:  Highball"
+        "Collins glass",
+        "Mix the strawberrys in a blender pour it together with the vodka,kirch and strawberry liquer over ice in a shaker",
+        "Shake well and pour in a highballglass",
+        "Fill up with the russchian water"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/ysqvqp1461867292.jpg"
 }

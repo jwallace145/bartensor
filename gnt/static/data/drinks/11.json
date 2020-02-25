@@ -1,14 +1,17 @@
 {
     "names": [
-        "Highball",
-        "Whiskey Ginger"
+        "501 Blue"
     ],
     "ingredients": [
-        "1 \u00bd oz Whiskey",
-        "Fill with Ginger Ale"
+        "Blue Curacao",
+        "Blueberry schnapps",
+        "Vodka",
+        "Sour mix",
+        "7-Up"
     ],
     "method": [
-        "Glass: Highball w/ice"
+        "Collins glass",
+        "Mix equal amounts into a glass with ice"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/ywxwqs1461867097.jpg"
 }
