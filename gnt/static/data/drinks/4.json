@@ -1,14 +1,18 @@
 {
     "names": [
-        "Vodka Soda"
+        "155 Belmont"
     ],
     "ingredients": [
-        "1 \u00bd oz Vodka",
-        "Fill with Seltzer"
+        "1 shot  Dark rum",
+        "2 shots  Light rum",
+        "1 shot  Vodka",
+        "1 shot  Orange juice"
     ],
     "method": [
-        "Garnish with a lime",
-        "Glass: Highball w/ice"
+        "White wine glass",
+        "Blend with ice",
+        "Serve in a wine glass",
+        "Garnish with carrot"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/yqvvqs1475667388.jpg"
 }

@@ -135,3 +135,5 @@ dmypy.json
 reports/
 media/
 .vscode/
+
+run.sh

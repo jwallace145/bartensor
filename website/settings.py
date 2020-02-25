@@ -149,5 +149,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'bartensor@gmail.com'
-EMAIL_HOST_PASSWORD = 'xgxcmpoiuwbibqea'
+EMAIL_HOST_USER = os.environ.get('BARTENSOR_EMAIL_USERNAME')
+EMAIL_HOST_PASSWORD = os.environ.get('BARTENSOR_EMAIL_PASSWORD')
+
+WATSON_DISCOVERY_API_KEY = 'Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2'

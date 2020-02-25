@@ -1,17 +1,19 @@
 {
     "names": [
-        "Negroni"
+        "A True Amaretto Sour"
     ],
     "ingredients": [
-        "1oz Gin",
-        "1oz Sweet Vermouth",
-        "1oz Campari"
+        "1 jigger  Amaretto",
+        "Juice of 1/2  Lemon",
+        "Ice",
+        "Maraschino cherry"
     ],
     "method": [
-        "Pour over ice in Rocks Glass",
-        "Stir",
-        "Orange twist",
-        "(Usually served on the rocks, but some guests may prefer it UP in which case - stir over ice in mixing cup.  Strain into chilled cocktail glass.)"
+        "Old-fashioned glass",
+        "Rub the rim of an old fashioned glass with lemon, and dip repeatedly into granulated sugar until it has a good frosted rim",
+        "Shake a jigger of amaretto with the juice of 1/2 a lemon",
+        "Strain into glass and add ice",
+        "Garnish with a marachino cherry"
     ],
-    "picture": "images/placeholder.jpg"
+    "picture": "http://www.thecocktaildb.com/images/media/drink/rptuxy1472669372.jpg"
 }
