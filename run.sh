@@ -103,7 +103,7 @@ then
   echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
 
   echo "install the required dependencies..."
-  pip install -r requirements.txt
+  pip install -r requirements-windows.txt
   echo "pip has installed all required dependencies..."
 
   echo "django make migrations..."
