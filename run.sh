@@ -4,23 +4,23 @@
 DJANGO_PORT=8000
 VENV_NAME="env"
 
+# export environment variables
+echo "exporting important environment variables..."
+export BARTENSOR_EMAIL_USERNAME=bartensor@gmail.com
+export BARTENSOR_EMAIL_PASSWORD=iupeqdduwlekqjrj
+export WATSON_DISCOVERY_API_KEY=Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2
+
+# echo environment variables
+echo "important environment variables listed below..."
+echo "BARTENSOR_EMAIL_USERNAME = $BARTENSOR_EMAIL_USERNAME"
+echo "BARTENSOR_EMAIL_PASSWORD = $BARTENSOR_EMAIL_PASSWORD"
+echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
+
 # determine os type
 if [[ "$OSTYPE" == "darwin"* ]];
 then
   # mac osx
   echo "mac osx detected..."
-
-  # export environment variables
-  echo "exporting important environment variables..."
-  export BARTENSOR_EMAIL_USERNAME=bartensor@gmail.com
-  export BARTENSOR_EMAIL_PASSWORD=iupeqdduwlekqjrj
-  export WATSON_DISCOVERY_API_KEY=Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2
-
-  # echo environment variables
-  echo "important environment variables listed below..."
-  echo "BARTENSOR_EMAIL_USERNAME = $BARTENSOR_EMAIL_USERNAME"
-  echo "BARTENSOR_EMAIL_PASSWORD = $BARTENSOR_EMAIL_PASSWORD"
-  echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
 
   # if virtual environment is not active, activate it
   if [[ "$VIRTUAL_ENV" == "" ]]
@@ -89,18 +89,6 @@ elif [[ "$OSTYPE" == "msys" ]];
 then
   # lightweight shell and gnu utilities compiled for windows (part of mingw)
   echo "msys ostype detected..."
-
-  # export environment variables
-  echo "exporting important environment variables..."
-  export BARTENSOR_EMAIL_USERNAME=bartensor@gmail.com
-  export BARTENSOR_EMAIL_PASSWORD=iupeqdduwlekqjrj
-  export WATSON_DISCOVERY_API_KEY=Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2
-
-  # echo the needed environment variables
-  echo "important environment variables listed below..."
-  echo "BARTENSOR_EMAIL_USERNAME = $BARTENSOR_EMAIL_USERNAME"
-  echo "BARTENSOR_EMAIL_PASSWORD = $BARTENSOR_EMAIL_PASSWORD"
-  echo "WATSON_DISCOVERY_API_KEY = $WATSON_DISCOVERY_API_KEY"
 
   echo "install the required dependencies..."
   pip install -r requirements.txt
