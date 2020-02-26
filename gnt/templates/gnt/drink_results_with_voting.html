@@ -2,7 +2,7 @@
 <!-- autoformat comment -->
 {% block 'like-dislike' %} {% if user.is_authenticated %}
 <div class="col-lg-1">
-    <a class="thumbsup" id="drink-thumbsup-{{drink.id}}" user="{{user}}">
+    <a class="thumbsup" id="drink_thumbsup_{{drink.id}}" user="{{user}}">
         <img
             src="{% static 'images/thumbsup.png' %}"
             alt="thumbs up"
@@ -11,7 +11,7 @@
     </a>
 </div>
 <div class="col-lg-1">
-    <a class="thumbsdown" id="drink-thumbsdown-{{drink.id}}" user="{{user}}">
+    <a class="thumbsdown" id="drink_thumbsdown_{{drink.id}}" user="{{user}}">
         <img
             src="{% static 'images/thumbsdown.png' %}"
             alt="thumbs down"

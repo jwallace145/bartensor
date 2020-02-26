@@ -6,8 +6,7 @@ $(document).ready(function() {
             var html_id = $(this).attr("id");
             var user = $(this).attr("user");
             var drink_id = html_id
-                .split("-")
-                .slice(-1)
+                .split("_")
                 .pop();
             var url = APPURL + "/like_drink/";
             var payload = {
@@ -46,8 +45,7 @@ $(document).ready(function() {
         $(this).on("click", function likeDrink() {
             var html_id = $(this).attr("id");
             var drink_id = html_id
-                .split("-")
-                .slice(-1)
+                .split("_")
                 .pop();
             //TODO: Add call to /dislikedrink endpoint
         });
