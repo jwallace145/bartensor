@@ -13,7 +13,7 @@ class Command(BaseCommand):
         authenticator = IAMAuthenticator(getattr(settings, 'WATSON_DISCOVERY_API_KEY', None))
         discovery = DiscoveryV1(version='2019-04-30',authenticator=authenticator)
         discovery.set_service_url('https://api.us-south.discovery.watson.cloud.ibm.com/')
-        response = discovery.query(environment_id, collection_id, _return=['id','names'], count='600').result['results']
+        response = discovery.query(environment_id, collection_id, _return=['id','names'], count='1000').result['results']
         for i in response:
             id_var = i['id']
             print(f'INSERTING {id_var}', file=self.stdout)
