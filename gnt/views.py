@@ -10,6 +10,9 @@ from .models import Profile, Drinks, Drink_names, Profile_to_drink
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
+# get api key from settings.py which is stored as an environment variable
+api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
+
 
 def bad_request(request, *args, **kwargs):
     return HttpResponseRedirect('/home/')
@@ -20,8 +23,6 @@ def home(request):
 
 
 def results(request):
-    # get api key from settings.py which is stored as an environment variable
-    api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
 
     if request.method == 'POST':
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
@@ -95,8 +96,7 @@ def liked_drinks(request):
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
-        authenticator = IAMAuthenticator(
-            'Jc1KWt03zHYFzwvVf3_UVOyFpdagyO7P8GU-9ra9_8cy')
+        authenticator = IAMAuthenticator(api_key)
         discovery = DiscoveryV1(
             version='2019-04-30',
             authenticator=authenticator
