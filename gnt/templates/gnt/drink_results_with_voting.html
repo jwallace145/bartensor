@@ -1,22 +1,13 @@
 {% extends 'gnt/drink_results.html' %} {% load static %}
-<!-- autoformat comment -->
 {% block 'like-dislike' %} {% if user.is_authenticated %}
 <div class="col-lg-1">
-    <a class="thumbsup" id="drink_thumbsup_{{drink.id}}" user="{{user}}">
-        <img
-            src="{% static 'images/thumbsup.png' %}"
-            alt="thumbs up"
-            width="100%"
-        />
+    <a class="thumbsup" drinkid="{{drink.id}}" user="{{user}}">
+        <img src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="100%" />
     </a>
 </div>
 <div class="col-lg-1">
-    <a class="thumbsdown" id="drink_thumbsdown_{{drink.id}}" user="{{user}}">
-        <img
-            src="{% static 'images/thumbsdown.png' %}"
-            alt="thumbs down"
-            width="100%"
-        />
+    <a class="thumbsdown" drinkid="{{drink.id}}" user="{{user}}">
+        <img src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="100%" />
     </a>
 </div>
 
