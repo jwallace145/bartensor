@@ -18,7 +18,7 @@ $(document).ready(function() {
                 data: payload,
                 dataType: "json",
                 success: function(data) {
-                    if (data["status"] == 200) {
+                    if (data["status"] == 201) {
                         likeDrinkFeedback("Drink liked!");
                     } else if (data["status"] == 422) {
                         likeDrinkFeedback(

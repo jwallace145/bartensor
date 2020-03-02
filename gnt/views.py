@@ -148,6 +148,38 @@ def like_drink(request):
                 str(username) + "'s liked drinks"
             response = {
                 'message': msg,
+                'status': 201
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+def remove_like_drink(request):
+    try:
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        profile = Profile.objects.get(id=request.user.profile.id)
+        liked_drink = Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink)
+        if liked_drink
+            liked_drink.delete()
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " deleted for " + str(username) +,
+                'status': 422
+            }
+        else:
+            new_like = Profile_to_liked_drink(
+                profile_FK=profile, drink_FK=drink)
+            new_like.save()
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s liked drinks"
+            response = {
+                'message': msg,
                 'status': 200
             }
         return JsonResponse(response)
