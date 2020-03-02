@@ -133,6 +133,11 @@ def like_drink(request):
         username = request.POST['user']
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
         profile = Profile.objects.get(id=request.user.profile.id)
+        # Check to see if drink is disliked then remove
+        disliked_drink = Profile_to_disliked_drink.objects.filter(profile_FK=profile, drink_FK=drink)
+        if disliked_drink:
+            disliked_drink.delete()
+            
         if Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
             print("drink already liked")
             response = {
@@ -169,7 +174,7 @@ def dislike_drink(request):
         if liked_drink:
             # Remove liked drink
             liked_drink.delete()
-            
+
         if Profile_to_disliked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
             print("drink already disliked")
             response = {
