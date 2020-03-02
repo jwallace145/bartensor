@@ -6,7 +6,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import Profile, Drinks, Drink_names, Profile_to_drink
+from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
@@ -106,7 +106,7 @@ def liked_drinks(request):
 
         user = request.user
         profile = Profile.objects.get(user=user)
-        profile_to_drink = Profile_to_drink.objects.filter(
+        profile_to_drink = Profile_to_liked_drink.objects.filter(
             profile_FK=profile.id)
         if profile_to_drink:
             response = [0 for i in range(len(profile_to_drink))]
@@ -133,14 +133,14 @@ def like_drink(request):
         username = request.POST['user']
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
         profile = Profile.objects.get(id=request.user.profile.id)
-        if Profile_to_drink.objects.filter(profile_FK=profile, drink_FK=drink):
+        if Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
             print("drink already liked")
             response = {
                 'message': "Drink " + str(request.POST['drink_id']) + " has already been liked by " + str(username) + ". No changes to db",
                 'status': 422
             }
         else:
-            new_like = Profile_to_drink(
+            new_like = Profile_to_liked_drink(
                 profile_FK=profile, drink_FK=drink)
             new_like.save()
             msg = "Drink " + \
@@ -152,7 +152,7 @@ def like_drink(request):
             }
         return JsonResponse(response)
     except Exception as e:
-        print(e)
+        print(str(e))
         response = {
             'message': str(e),
             'status': 500
