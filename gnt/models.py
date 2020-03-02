@@ -20,6 +20,20 @@ class Profile(models.Model):
             img.thumbnail(output_size)
             img.save(self.image.path)
 
+class Friend_request(models.Model):
+    profile_FK = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='profilerequest1')
+    request_FK = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='profilerequest2')
+
+    def __str__(self):
+        return str(self.profile_FK) + " requested " + str(self.request_FK)
+
+class Friend(models.Model):
+    profile_FK = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='profile1')
+    friend_FK = models.ForeignKey(Profile, on_delete=models.PROTECT, related_name='profile2')
+
+    def __str__(self):
+        return str(self.profile_FK) + " accepted " + str(self.friend_FK) + "'s request"
+
 
 class Drinks(models.Model):
     drink_hash = models.CharField(max_length=64, default="emptydrink", unique=True)
@@ -36,7 +50,14 @@ class Drink_names(models.Model):
         return str(self.id) + ", " + str(self.drink_FK.drink_hash) + ", " + str(self.drink_name)
 
 
-class Profile_to_drink(models.Model):
+class Profile_to_liked_drink(models.Model):
+    profile_FK = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    drink_FK = models.ForeignKey(Drinks, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.id) + ", " + str(self.profile_FK.user.username) + ", " + str(self.drink_FK.drink_hash)
+
+class Profile_to_disliked_drink(models.Model):
     profile_FK = models.ForeignKey(Profile, on_delete=models.PROTECT)
     drink_FK = models.ForeignKey(Drinks, on_delete=models.PROTECT)
 
