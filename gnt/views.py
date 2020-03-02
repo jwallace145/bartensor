@@ -159,6 +159,44 @@ def like_drink(request):
         }
         return JsonResponse(response)
 
+def dislike_drink(request):
+    try:
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        profile = Profile.objects.get(id=request.user.profile.id)
+        # If user has liked drink, remove it from liked table
+        liked_drink = Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink)
+        if liked_drink:
+            # Remove liked drink
+            liked_drink.delete()
+            
+        if Profile_to_disliked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
+            print("drink already disliked")
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " has already been disliked by " + str(username) + ". No changes to db",
+                'status': 422
+            }
+        else:
+            new_dislike = Profile_to_disliked_drink(
+                profile_FK=profile, drink_FK=drink)
+            new_dislike.save()
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s disliked drinks"
+            response = {
+                'message': msg,
+                'status': 201
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+
 def remove_liked_drink(request):
     try:
         username = request.POST['user']
