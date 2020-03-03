@@ -1,4 +1,6 @@
 $(document).ready(function() {
+//$(window).bind('load', function(){
+    console.log("Running mark_liked_disliked_drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
@@ -8,7 +10,6 @@ $(document).ready(function() {
         data: {csrfmiddlewaretoken: '{{ csrf_token}}' },
         dataType: "json",
         success: function(data) {
-            console.log(data)
             if (data["status"] == 201) {
                 liked_drinks = data["message"][0];
                 disliked_drinks = data["message"][1];
@@ -33,6 +34,7 @@ $(document).ready(function() {
                     }
                 });
             } else {
+                console.log(data["status"]);
                 console.log("Error in finding liked and disliked drinks");
             }
         },

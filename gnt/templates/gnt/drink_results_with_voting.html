@@ -1,6 +1,5 @@
 {% extends 'gnt/drink_results.html' %} {% load static %}
 {% block 'like-dislike' %} {% if user.is_authenticated %}
-<script type="text/javascript" src="{% static 'scripts/mark_liked_disliked_drinks.js' %}"></script>
 <div class="col-lg-1" style="display:inline-block">
     <a class="thumbsup" id ="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
         <img class = "voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up"  width="30em" />
@@ -13,5 +12,6 @@
         <img class = "voting_buttons" id = "filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}" alt="thumbs down disliked"  width="30em" />
     </a>
 </div>
+<!-- <script type="text/javascript" src="{% static 'scripts/mark_liked_disliked_drinks.js' %}"></script> -->
 
 {% endif %} {% endblock 'like-dislike' %}

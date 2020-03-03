@@ -5,5 +5,8 @@
 <div class="container title">
     <h1>Results</h1>
 </div>
+{% if user.is_authenticated %}
+<script type="text/javascript" src="{% static 'scripts/mark_liked_disliked_drinks.js' %}"></script>
+{% endif %}
 {% include 'gnt/drink_results_with_voting.html' %}
 {% endblock 'content' %}
