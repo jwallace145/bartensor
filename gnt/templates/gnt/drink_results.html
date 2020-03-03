@@ -1,45 +1,48 @@
-{% extends 'gnt/base.html' %}
-{% block 'content' %}
-{% block 'above-drink-results' %}
-{% endblock 'above-drink-results' %}
 {% load static %}
-<div class="container results accordion" id="results">
-  {% for drink in drinks %}
-  <div class="row">
-    <div class="col-lg-1">
-      <i class="fas fa-cocktail fa-3x"></i>
-    </div>
-    <div class="col-lg-8">
-      <div class="card">
-        <div class="card-header" id="{{forloop.counter}}">
-          <h2 class="mb-0">
-            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#header{{forloop.counter}}" aria-expanded="false" aria-controls="{{forloop.counter}}">
-              {{ drink.names | first }}
-            </button>
-          </h2>
-        </div>
-        <div id="header{{forloop.counter}}" class="collapse" aria-labelledby="{{forloop.counter}}" data-parent="#results">
-          <div class="card-body">
-            Ingredients:
-            <ul>
-              {% for ingredient in drink.ingredients %}
-              <li>{{ingredient}}</li>
-              {% endfor %}
-            </ul>
-            Method:
-            <ul>
-              {% for step in drink.method %}
-              <li>{{step}}</li>
-              {% endfor %}
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-    {% block 'like-dislike' %}{% endblock 'like-dislike' %}
-  </div>
-  {% endfor %}
+
+<!-- For feedback when user clicks like drink button -->
+<div class="alert alert-success" role="alert" id="like-drink">
+    <!-- Feedback text goes here -->
 </div>
-{% block 'below-drink-results' %} {% endblock 'below-drink-results' %}
-<!-- autoformat comment -->
-{% endblock 'content' %}
+<div class="alert alert-danger" role="alert" id="dislike-drink"></div>
+<div class="container results accordion" id="results">
+    {% for drink in drinks %}
+    <div class="row" id="drink_id_{{ drink.id }}">
+        <div class="col-lg-2">
+            <!-- <i class="fas fa-cocktail fa-3x"></i> -->
+            <img src="{% static drink.picture %}" alt="{{ drink.picture }}" width="60%" />
+        </div>
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header" id="{{forloop.counter}}">
+                    <h2 class="mb-0">
+                        <button class="btn btn-link" type="button" data-toggle="collapse"
+                            data-target="#header{{forloop.counter}}" aria-expanded="false"
+                            aria-controls="{{forloop.counter}}">
+                            {{ drink.names | first }}
+                        </button>
+                    </h2>
+                </div>
+                <div id="header{{forloop.counter}}" class="collapse" aria-labelledby="{{forloop.counter}}"
+                    data-parent="#results">
+                    <div class="card-body">
+                        Ingredients:
+                        <ul>
+                            {% for ingredient in drink.ingredients %}
+                            <li>{{ingredient}}</li>
+                            {% endfor %}
+                        </ul>
+                        Method:
+                        <ul>
+                            {% for step in drink.method %}
+                            <li>{{step}}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% block 'like-dislike' %}{% endblock 'like-dislike' %}
+    </div>
+    {% endfor %}
+</div>

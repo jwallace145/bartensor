@@ -1,8 +1,9 @@
-{% extends 'gnt/drink_results_with_voting.html' %}
+{% extends 'gnt/base.html' %}
 {% load static %}
 
-{% block 'above-drink-results' %}
+{% block 'content' %}
 <div class="container title">
     <h1>Results</h1>
 </div>
-{% endblock 'above-drink-results' %}
+{% include 'gnt/drink_results_with_voting.html' %}
+{% endblock 'content' %}
