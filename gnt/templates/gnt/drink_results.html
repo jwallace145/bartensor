@@ -9,7 +9,7 @@
 </div>
 <div class="container results accordion" id="results">
   {% for drink in drinks %}
-  <div class="row">
+  <div class="row" id="drink_id_{{drink.id}}">
     <div class="col-lg-1">
       {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
       <!-- <i class="fas fa-cocktail fa-3x"></i> -->
@@ -27,7 +27,7 @@
               </button>
             </h2>
           </div>
-          <div style="display:inline-block; text-align: right;">
+          <div style="display:inline-block; margin-left:auto;">
             {% block 'like-dislike' %}{% endblock 'like-dislike' %}
           </div>
         </div>
