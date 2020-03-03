@@ -1,16 +1,67 @@
 $(document).ready(function() {
-    // From demo
-    $(".listen").hide();
-    $(".assistant_button").click(function waiting() {
-        $(".listen").show();
-        setTimeout(function redirect_to_loading() {
-            var url = window.location;
-            window.location.replace(url + "loading");
-        }, 10000);
-    });
-    $(".single_drink_rec").click(function redirect_to_loading() {
-        var url = window.location;
-        window.location.replace(url + "loading");
+    // Listen for input when mic is clicked
+    $(".assistant_button").click(function listening() {
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
+        // https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API/Using_the_MediaStream_Recording_API
+        if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+            console.log('getUserMedia supported.');
+            navigator.mediaDevices.getUserMedia({audio: true})
+            .then(function(stream) { // success callback
+                const mediaRecorder = new MediaRecorder(stream);
+                var harker = hark(stream, {});
+
+                // start recording when harker detects speech
+                harker.on('speaking', function() {
+                    mediaRecorder.start();
+                    console.log('recording');
+                });
+
+                // collect audio data when recording
+                let chunks = [];
+                mediaRecorder.ondataavailable = function(e) {
+                  chunks.push(e.data);
+                }
+
+                // stop recording when harker de-detects speech
+                harker.on('stopped_speaking', function() {
+                    mediaRecorder.stop();
+                    harker.stop()
+                    console.log('stopped recording')
+
+                    const blob = new Blob(chunks, {'type': 'audio/mpeg'});
+                    chunks = []; // reset chunks
+                    const audioURL = window.URL.createObjectURL(blob);
+                    audio.src = audioURL;
+
+                    // https://stackoverflow.com/questions/51130675/how-to-upload-large-audio-file-to-a-django-server-given-a-blob-url
+                    console.log("start sending binary data...");
+                    var form = new FormData();
+                    form.append('audio', blob);
+                    var url = APPURL + "/results/";
+                    var csrftoken = getCookie("csrftoken");
+                    $.ajax({
+                        url: url,
+                        type: 'POST',
+                        headers: {"X-CSRFToken": csrftoken},
+                        data: form,
+                        processData: false,
+                        contentType: false,
+                        success: function (data) {
+                            console.log('response' + JSON.stringify(data));
+                        },
+                        error: function (xhr, ajaxOptions, thrownError) {
+                            console.log(xhr.status);
+                            console.log(thrownError);
+                        }
+                    });
+                });
+            })
+            .catch(function(err) { // error callback
+                console.log('The following getUserMedia error occured: ' + err);
+            });
+        } else {
+           console.log('getUserMedia not supported on your browser!');
+        }
     });
 
     // When search bar is selected, make underline of button match
@@ -30,3 +81,21 @@ $(document).ready(function() {
         $(this).prev().prop("checked", true); // check corresponding radiobutton
     });
 });
+
+function getCookie(name) {
+    var cookieValue = null;
+    if (document.cookie && document.cookie != "") {
+        var cookies = document.cookie.split(";");
+        for (var i = 0; i < cookies.length; i++) {
+            var cookie = jQuery.trim(cookies[i]);
+            // Does this cookie string begin with the name we want?
+            if (cookie.substring(0, name.length + 1) == name + "=") {
+                cookieValue = decodeURIComponent(
+                    cookie.substring(name.length + 1)
+                );
+                break;
+            }
+        }
+    }
+    return cookieValue;
+}
