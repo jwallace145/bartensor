@@ -9,7 +9,6 @@ class Command(BaseCommand):
     def _create_tags(self):
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
-
         authenticator = IAMAuthenticator(getattr(settings, 'WATSON_DISCOVERY_API_KEY', None))
         discovery = DiscoveryV1(version='2019-04-30',authenticator=authenticator)
         discovery.set_service_url('https://api.us-south.discovery.watson.cloud.ibm.com/')
