@@ -2,12 +2,12 @@
 {% block 'like-dislike' %} {% if user.is_authenticated %}
 <div class="col-lg-1" style="display:inline-block">
     <a class="thumbsup" drinkid="{{drink.id}}" user="{{user}}">
-        <img src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="100%"/>
+        <img src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em"/>
     </a>
 </div>
-<div class="col-lg-1" style="display:inline-block">
+<div class="col-lg-1" style="display:inline-block; margin-left: 20%;">
     <a class="thumbsdown" drinkid="{{drink.id}}" user="{{user}}">
-        <img src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="100%"/>
+        <img src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em"/>
     </a>
 </div>
 
