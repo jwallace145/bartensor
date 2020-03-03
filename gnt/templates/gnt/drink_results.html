@@ -1,13 +1,18 @@
-{% extends 'gnt/base.html' %}
-{% block 'content' %}
-{% block 'above-drink-results' %}
-{% endblock 'above-drink-results' %}
 {% load static %}
+
+<!-- For feedback when user clicks like drink button -->
+<div class="alert alert-success" role="alert" id="like-drink">
+  <!-- Feedback text goes here -->
+</div>
+<div class="alert alert-danger" role="alert" id="dislike-drink">
+  <!-- Feedback text goes here -->
+</div>
 <div class="container results accordion" id="results">
   {% for drink in drinks %}
   <div class="row">
     <div class="col-lg-1">
       {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
+      <!-- <i class="fas fa-cocktail fa-3x"></i> -->
       <img src="{% static image_path %}" alt="picture lost :(" width="100%" />
       {% endwith %}
     </div>
@@ -45,6 +50,7 @@
             </div>
             <div class="col-lg-4" style="display: inline-block; margin-left: 15%;">
               {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
+              <!-- <i class="fas fa-cocktail fa-3x"></i> -->
               <img src="{% static image_path %}" alt="picture lost :(" width="100%" />
               {% endwith %}
             </div>
@@ -54,7 +60,3 @@
     </div>
   </div>
   {% endfor %}
-</div>
-{% block 'below-drink-results' %} {% endblock 'below-drink-results' %}
-<!-- autoformat comment -->
-{% endblock 'content' %}
