@@ -90,24 +90,57 @@ def profile(request):
 
     return render(request, 'gnt/profile.html', context)
 
-def get_liked_drinks(request):
-    print("GET LIKED DRINKS")
-    if request.user.is_authenticated:
+def get_liked_disliked_drinks(request):
+    try:
+        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
+        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
+
+        authenticator = IAMAuthenticator(api_key)
+        discovery = DiscoveryV1(
+            version='2019-04-30',
+            authenticator=authenticator
+        )
+        liked_drinks = []
+        disliked_drinks = []
         user = request.user
         profile = Profile.objects.get(user=user)
-        profile_to_drink = Profile_to_liked_drink.objects.filter(profile_FK=profile.id)
-        for i, ptd in enumerate(profile_to_drink):
+        # get liked drinks
+        profile_to_liked_drink = Profile_to_liked_drink.objects.filter(profile_FK=profile.id)
+        if profile_to_liked_drink:
+            response = [0 for i in range(len(profile_to_liked_drink))]
+            for i, ptd in enumerate(profile_to_liked_drink):
                 drink = Drinks.objects.get(id=ptd.drink_FK.id)
                 obj = discovery.query(
                     environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
-                response[i] = obj[0]
-                print(response[i])
-        #print(profile_to_drink)
+                response[i] = obj[0]['id']
+            liked_drinks = response
+        # get disliked drinks
+        profile_to_disliked_drink = Profile_to_disliked_drink.objects.filter(profile_FK=profile.id)
+        if profile_to_disliked_drink:
+            response = [0 for i in range(len(profile_to_disliked_drink))]
+            for i, ptd in enumerate(profile_to_disliked_drink):
+                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                obj = discovery.query(
+                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                response[i] = obj[0]['id']
+            disliked_drinks = response
+        # return response
+        resp = {
+            'message': [liked_drinks, disliked_drinks],
+            'status': 201
+        }    
+        return JsonResponse(resp)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
 
 
 def liked_drinks(request):
     if request.user.is_authenticated:
-        get_liked_drinks(request)
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
@@ -146,7 +179,6 @@ def about(request):
 def like_drink(request):
     try:
         username = request.POST['user']
-        print("HEY")
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
         
         profile = Profile.objects.get(id=request.user.profile.id)

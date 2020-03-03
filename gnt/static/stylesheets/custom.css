@@ -309,3 +309,8 @@ a {
 .fa-cocktail{
   margin-top: 10px;
 }
+
+.voting_buttons{
+    display: none;
+}
+
