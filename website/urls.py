@@ -35,6 +35,7 @@ urlpatterns = [
     path('profile-edit/', gnt_views.profile_edit, name='profile_edit'),
     path('profile-public/', gnt_views.profile_public, name='profile_public'),
     path('liked_drinks/', gnt_views.liked_drinks, name='liked_drinks'),
+    path('get_liked_disliked_drinks/', gnt_views.get_liked_disliked_drinks, name = 'get_liked_disliked_drinks'),
     path('like_drink/', gnt_views.like_drink, name='like_drink'),
     path('remove_liked_drink/', gnt_views.remove_liked_drink,
          name='remove_liked_drink'),

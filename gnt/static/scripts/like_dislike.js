@@ -11,6 +11,9 @@ $(document).ready(function() {
                 user: user
             };
             var csrftoken = getCookie("csrftoken");
+            var currentNode = $(this);
+            var thumbsup = $("a[drinkid='" + drink_id + "']:first");
+            var thumbsdown = $("a[drinkid='" + drink_id + "']:last");
             $.ajax({
                 url: url,
                 method: "POST",
@@ -20,6 +23,7 @@ $(document).ready(function() {
                 success: function(data) {
                     if (data["status"] == 201) {
                         likeDrinkFeedback("Drink liked!");
+                        likeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
                         likeDrinkFeedback(
                             "This is already in your liked drinks"
@@ -50,6 +54,8 @@ $(document).ready(function() {
                 user: user
             };
             var csrftoken = getCookie("csrftoken");
+            var thumbsup = $("a[drinkid='" + drink_id + "']:first");
+            var thumbsdown = $("a[drinkid='" + drink_id + "']:last");
             $.ajax({
                 url: url,
                 method: "POST",
@@ -59,6 +65,7 @@ $(document).ready(function() {
                 success: function(data) {
                     if (data["status"] == 201) {
                         likeDrinkFeedback("Drink disliked!");
+                        dislikeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
                         likeDrinkFeedback(
                             "This is already in your disliked drinks"
@@ -94,4 +101,18 @@ function hideLikeDrinkFeedback() {
 
 function hideLikeDrinkError() {
     $("#dislike-drink").hide("slow");
+}
+
+function likeDrinkAnimation(thumbsup, thumbsdown){
+    thumbsup.children("#blank_thumbsup").hide();
+    thumbsup.children("#filled_thumbsup").show();
+    thumbsdown.children("#blank_thumbsdown").show();
+    thumbsdown.children("#filled_thumbsdown").hide();
+}
+
+function dislikeDrinkAnimation(thumbsup, thumbsdown){
+    thumbsup.children("#blank_thumbsup").show();
+    thumbsup.children("#filled_thumbsup").hide();
+    thumbsdown.children("#blank_thumbsdown").hide();
+    thumbsdown.children("#filled_thumbsdown").show();
 }

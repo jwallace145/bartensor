@@ -309,3 +309,17 @@ a {
 .fa-cocktail{
   margin-top: 10px;
 }
+
+.voting_buttons{
+    display: none;
+    transition: all .2s ease-in-out;   
+}
+
+.voting_buttons:hover {
+    transform: scale(1.3);
+}
+
+.voting_buttons:active{
+    transform: scale(2.0);
+}
+
