@@ -19,18 +19,16 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data["status"] == 201) {
-                        likeDrinkFeedback("Drink liked!");
+                        console.log("Drink liked");
                     } else if (data["status"] == 422) {
-                        likeDrinkFeedback(
-                            "This is already in your liked drinks"
-                        );
+                        console.log("Already liked");
                     } else {
-                        likeDrinkError("Error in liking drink");
-                        console.log("Error in liking drink");
+                        console.log(data["status"]);
+                        console.log(data["message"]);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    likeDrinkError("Error in liking drink");
+                    console.log(xhr);
                 }
             });
         });
@@ -58,40 +56,18 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data["status"] == 201) {
-                        likeDrinkFeedback("Drink disliked!");
+                        console.log("disliked")
                     } else if (data["status"] == 422) {
-                        likeDrinkFeedback(
-                            "This is already in your disliked drinks"
-                        );
+                        console.log("already disliked");
                     } else {
-                        likeDrinkError("Error in disliking drink");
                         console.log("Error in disliking drink");
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    likeDrinkError("Error in disliking drink");
+                    console.log(xhr);
                 }
             });
         });
     });
 });
 
-function likeDrinkFeedback(message) {
-    document.getElementById("like-drink").innerHTML = message;
-    $("#like-drink").show("slow");
-    setTimeout(hideLikeDrinkFeedback, 5000);
-}
-
-function likeDrinkError(message) {
-    document.getElementById("like-drink").innerHTML = message;
-    $("#like-drink").show("slow");
-    setTimeout(hideLikeDrinkError, 5000);
-}
-
-function hideLikeDrinkFeedback() {
-    $("#like-drink").hide("slow");
-}
-
-function hideLikeDrinkError() {
-    $("#dislike-drink").hide("slow");
-}

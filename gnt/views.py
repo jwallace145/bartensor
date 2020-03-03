@@ -139,7 +139,6 @@ def like_drink(request):
             disliked_drink.delete()
             
         if Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
-            print("drink already liked")
             response = {
                 'message': "Drink " + str(request.POST['drink_id']) + " has already been liked by " + str(username) + ". No changes to db",
                 'status': 422
@@ -176,7 +175,6 @@ def dislike_drink(request):
             liked_drink.delete()
 
         if Profile_to_disliked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
-            print("drink already disliked")
             response = {
                 'message': "Drink " + str(request.POST['drink_id']) + " has already been disliked by " + str(username) + ". No changes to db",
                 'status': 422
@@ -217,6 +215,64 @@ def remove_liked_drink(request):
         else:
             response = {
                 'message': 'Drink ' + str(drink) + ' not liked for ' + str(username),
+                'status': 404
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+def disliked_drinks(request):
+    if request.user.is_authenticated:
+        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
+        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
+
+        authenticator = IAMAuthenticator(api_key)
+        discovery = DiscoveryV1(
+            version='2019-04-30',
+            authenticator=authenticator
+        )
+        discovery.set_service_url(
+            'https://api.us-south.discovery.watson.cloud.ibm.com/')
+
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        profile_to_drink = Profile_to_disliked_drink.objects.filter(
+            profile_FK=profile.id)
+        if profile_to_drink:
+            response = [0 for i in range(len(profile_to_drink))]
+            for i, ptd in enumerate(profile_to_drink):
+                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                obj = discovery.query(
+                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                response[i] = obj[0]
+            return render(request, 'gnt/disliked_drinks.html', {
+                'drinks': response
+            })
+        else:
+            return render(request, 'gnt/disliked_drinks.html')
+    else:
+        return HttpResponseRedirect('/home/')
+
+def remove_disliked_drink(request):
+    try:
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        profile = Profile.objects.get(id=request.user.profile.id)
+        disliked_drink = Profile_to_disliked_drink.objects.filter(profile_FK=profile, drink_FK=drink)
+        if disliked_drink:
+            disliked_drink.delete()
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " deleted for ",
+                'status': 200
+            }
+        else:
+            response = {
+                'message': 'Drink ' + str(drink) + ' not disliked for ' + str(username),
                 'status': 404
             }
         return JsonResponse(response)
