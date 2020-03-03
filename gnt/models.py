@@ -37,6 +37,7 @@ class Friend(models.Model):
 
 class Drinks(models.Model):
     drink_hash = models.CharField(max_length=64, default="emptydrink", unique=True)
+    image = models.ImageField(default='default.jpg', upload_to='drink_pics')
 
     def __str__(self):
         return str(self.id) + ", " + str(self.drink_hash)
