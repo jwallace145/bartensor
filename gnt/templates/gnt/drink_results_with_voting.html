@@ -1,11 +1,11 @@
 {% extends 'gnt/drink_results.html' %} {% load static %}
 {% block 'like-dislike' %} {% if user.is_authenticated %}
-<div class="col-lg-1">
+<div class="col-lg-1" style="display:inline-block">
     <a class="thumbsup" drinkid="{{drink.id}}" user="{{user}}">
         <img class="thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="100%" />
     </a>
 </div>
-<div class="col-lg-1">
+<div class="col-lg-1" style="display:inline-block">
     <a class="thumbsdown" drinkid="{{drink.id}}" user="{{user}}">
         <img class="thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="100%" />
     </a>
