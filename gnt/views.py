@@ -89,9 +89,24 @@ def profile(request):
 
     return render(request, 'gnt/profile.html', context)
 
+def get_liked_drinks(request):
+    print("GET LIKED DRINKS")
+    if request.user.is_authenticated:
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        profile_to_drink = Profile_to_liked_drink.objects.filter(profile_FK=profile.id)
+        for i, ptd in enumerate(profile_to_drink):
+                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                obj = discovery.query(
+                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                response[i] = obj[0]
+                print(response[i])
+        #print(profile_to_drink)
+
 
 def liked_drinks(request):
     if request.user.is_authenticated:
+        get_liked_drinks(request)
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
@@ -131,7 +146,9 @@ def about(request):
 def like_drink(request):
     try:
         username = request.POST['user']
+        print("HEY")
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        
         profile = Profile.objects.get(id=request.user.profile.id)
         if Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
             print("drink already liked")
