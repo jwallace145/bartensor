@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
@@ -67,7 +67,39 @@ def register(request):
 
 
 @login_required
-def profile(request):
+def profile_create_drink(request):
+    if request.method == 'POST':
+        profile = Profile.objects.get(id=request.user.profile.id)
+
+        create_user_drink_form = CreateUserDrinkForm(request.POST)
+        if create_user_drink_form.is_valid():
+            user_drink = create_user_drink_form.save()
+            user_drink.profile_FK = profile
+            user_drink.save()
+
+            create_user_drink_ingredient_form = CreateUserDrinkIngredientForm(
+                request.POST)
+
+            if create_user_drink_ingredient_form.is_valid():
+                user_drink_ingredient = create_user_drink_ingredient_form.save()
+                user_drink_ingredient.user_drink_FK = user_drink
+                user_drink_ingredient.save()
+
+                messages.success(request, f'Your drink has been created')
+                return redirect('profile_public')
+    else:
+        create_user_drink_form = CreateUserDrinkForm()
+        create_user_drink_ingredient_form = CreateUserDrinkIngredientForm()
+
+    context = {
+        'create_user_drink_form': create_user_drink_form,
+        'create_user_drink_ingredient_form': create_user_drink_ingredient_form
+    }
+    return render(request, 'gnt/profile_create_drink.html', context)
+
+
+@login_required
+def profile_edit(request):
     if request.method == 'POST':
         user_update_form = UserUpdateForm(request.POST, instance=request.user)
         profile_update_form = ProfileUpdateForm(
@@ -78,7 +110,7 @@ def profile(request):
             profile_update_form.save()
             messages.success(
                 request, f'Your account has been updated!')
-            return redirect('profile')
+            return redirect('profile_public')
     else:
         user_update_form = UserUpdateForm(instance=request.user)
         profile_update_form = ProfileUpdateForm(instance=request.user.profile)
@@ -88,7 +120,12 @@ def profile(request):
         'profile_update_form': profile_update_form
     }
 
-    return render(request, 'gnt/profile.html', context)
+    return render(request, 'gnt/profile_edit.html', context)
+
+
+@login_required
+def profile_public(request):
+    return render(request, 'gnt/profile_public.html')
 
 
 def liked_drinks(request):
@@ -134,10 +171,11 @@ def like_drink(request):
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
         profile = Profile.objects.get(id=request.user.profile.id)
         # Check to see if drink is disliked then remove
-        disliked_drink = Profile_to_disliked_drink.objects.filter(profile_FK=profile, drink_FK=drink)
+        disliked_drink = Profile_to_disliked_drink.objects.filter(
+            profile_FK=profile, drink_FK=drink)
         if disliked_drink:
             disliked_drink.delete()
-            
+
         if Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
             print("drink already liked")
             response = {
@@ -164,13 +202,15 @@ def like_drink(request):
         }
         return JsonResponse(response)
 
+
 def dislike_drink(request):
     try:
         username = request.POST['user']
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
         profile = Profile.objects.get(id=request.user.profile.id)
         # If user has liked drink, remove it from liked table
-        liked_drink = Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink)
+        liked_drink = Profile_to_liked_drink.objects.filter(
+            profile_FK=profile, drink_FK=drink)
         if liked_drink:
             # Remove liked drink
             liked_drink.delete()
@@ -207,7 +247,8 @@ def remove_liked_drink(request):
         username = request.POST['user']
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
         profile = Profile.objects.get(id=request.user.profile.id)
-        liked_drink = Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink)
+        liked_drink = Profile_to_liked_drink.objects.filter(
+            profile_FK=profile, drink_FK=drink)
         if liked_drink:
             liked_drink.delete()
             response = {
