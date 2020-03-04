@@ -16,43 +16,22 @@ $(document).ready(function() {
                     console.log('recording');
                 });
 
-                // collect audio data when recording
-                let chunks = [];
-                mediaRecorder.ondataavailable = function(e) {
-                  chunks.push(e.data);
-                }
-
                 // stop recording when harker de-detects speech
                 harker.on('stopped_speaking', function() {
                     mediaRecorder.stop();
-                    harker.stop()
-                    console.log('stopped recording')
+                    harker.stop();
+                    console.log('stopped recording');
+                });
 
-                    const blob = new Blob(chunks, {'type': 'audio/mpeg'});
-                    chunks = []; // reset chunks
+                // after stopped recording, send data
+                mediaRecorder.ondataavailable = function(e) {
+                    var blob = e.data;
 
-                    // https://stackoverflow.com/questions/51130675/how-to-upload-large-audio-file-to-a-django-server-given-a-blob-url
                     console.log("start sending binary data...");
                     var form = new FormData();
                     form.append('audio', blob);
-                    var formElement = document.querySelector("form");
-
+                    var url = APPURL + '/results/';
                     var csrftoken = getCookie("csrftoken");
-                    var util = {};
-                    util.post = function(url, fields) {
-                        var $form = $('<form>', {
-                            action: url,
-                            method: 'post'
-                        });
-                        $.each(fields, function(key, val) {
-                             $('<input>').attr({
-                                 type: "hidden",
-                                 name: key,
-                                 value: val
-                             }).appendTo($form);
-                        });
-                        $form.appendTo('body').submit();
-                    }
                     $.ajax({
                         url: url,
                         type: 'POST',
@@ -61,16 +40,14 @@ $(document).ready(function() {
                         processData: false,
                         contentType: false,
                         success: function (data) {
-                            console.log('response' + JSON.stringify(data));
-                            console.log(data.redirect)
-                            window.location.href = data.redirect
+                            $("html").html(data); // replace entire page with response
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             console.log(xhr.status);
                             console.log(thrownError);
                         }
                     });
-                });
+                }
             })
             .catch(function(err) { // error callback
                 console.log('The following getUserMedia error occured: ' + err);

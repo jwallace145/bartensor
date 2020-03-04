@@ -10,9 +10,10 @@ from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profil
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
+from .stt import IBM
+
 # get api key from settings.py which is stored as an environment variable
 api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
-
 
 def bad_request(request, *args, **kwargs):
     return HttpResponseRedirect(reverse('home'))
@@ -26,14 +27,10 @@ def results(request):
     if request.method == 'POST':
         if 'audio' in request.FILES:
             audio = request.FILES['audio']
-            print(audio)
-            print(type(audio))
-            text = 'white russian'
+            text = IBM().transcribe(audio)
+            print(text)
         else:
             text = request.POST['search_bar']
-
-        # get api key from settings.py which is stored as an environment variable
-        api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
 
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
