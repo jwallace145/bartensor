@@ -41,5 +41,4 @@ virtualenv==16.7.9
 wcwidth==0.1.8
 websocket-client==0.48.0
 wrapt==1.11.2
-bs4==0.0.1
 lxml==4.5.0
