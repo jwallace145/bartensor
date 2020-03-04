@@ -1,0 +1,22 @@
+{
+  "name": "gin-and-tensor",
+  "version": "1.0.0",
+  "description": "We gon' make some drinks bruh.",
+  "main": "index.js",
+  "scripts": {
+    "test": "selenium-side-runner ./selenium/bartensor.side"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jwallace317/Gin-and-Tensor.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jwallace317/Gin-and-Tensor/issues"
+  },
+  "homepage": "https://github.com/jwallace317/Gin-and-Tensor#readme",
+  "dependencies": {
+    "chromedriver": "^80.0.1"
+  }
+}

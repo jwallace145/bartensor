@@ -6,6 +6,7 @@ from PIL import Image
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+    bio = models.CharField(max_length=250, default='insert bio here')
 
     def __str__(self):
         return f'{self.user.username} Profile'
@@ -21,8 +22,30 @@ class Profile(models.Model):
             img.save(self.image.path)
 
 
+class Friend_request(models.Model):
+    profile_FK = models.ForeignKey(
+        Profile, on_delete=models.PROTECT, related_name='profilerequest1')
+    request_FK = models.ForeignKey(
+        Profile, on_delete=models.PROTECT, related_name='profilerequest2')
+
+    def __str__(self):
+        return str(self.profile_FK) + " requested " + str(self.request_FK)
+
+
+class Friend(models.Model):
+    profile_FK = models.ForeignKey(
+        Profile, on_delete=models.PROTECT, related_name='profile1')
+    friend_FK = models.ForeignKey(
+        Profile, on_delete=models.PROTECT, related_name='profile2')
+
+    def __str__(self):
+        return str(self.profile_FK) + " accepted " + str(self.friend_FK) + "'s request"
+
+
 class Drinks(models.Model):
-    drink_hash = models.CharField(max_length=64, default="emptydrink", unique=True)
+    drink_hash = models.CharField(
+        max_length=64, default="emptydrink", unique=True)
+    image = models.ImageField(default='default.jpg', upload_to='drink_pics')
 
     def __str__(self):
         return str(self.id) + ", " + str(self.drink_hash)
@@ -36,10 +59,32 @@ class Drink_names(models.Model):
         return str(self.id) + ", " + str(self.drink_FK.drink_hash) + ", " + str(self.drink_name)
 
 
-class Profile_to_drink(models.Model):
+class Profile_to_liked_drink(models.Model):
     profile_FK = models.ForeignKey(Profile, on_delete=models.PROTECT)
     drink_FK = models.ForeignKey(Drinks, on_delete=models.PROTECT)
 
     def __str__(self):
         return str(self.id) + ", " + str(self.profile_FK.user.username) + ", " + str(self.drink_FK.drink_hash)
 
+
+class Profile_to_disliked_drink(models.Model):
+    profile_FK = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    drink_FK = models.ForeignKey(Drinks, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.id) + ", " + str(self.profile_FK.user.username) + ", " + str(self.drink_FK.drink_hash)
+
+
+class User_drink(models.Model):
+    profile_FK = models.ForeignKey(
+        Profile, on_delete=models.PROTECT, null=True)
+    drink_name = models.CharField(max_length=32)
+    description = models.CharField(
+        max_length=100, default='add a description...')
+
+
+class Ingredient(models.Model):
+    user_drink_FK = models.ForeignKey(
+        User_drink, on_delete=models.PROTECT, null=True)
+    ingredient_name = models.CharField(max_length=32)
+    ingredient_quantity = models.CharField(max_length=32)

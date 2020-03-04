@@ -1,0 +1,111 @@
+{
+  "id": "db877695-6d70-4739-89c9-e28ba68847a3",
+  "version": "2.0",
+  "name": "bartensor",
+  "url": "http://127.0.0.1:8000",
+  "tests": [{
+    "id": "95b96fd4-6680-4ce1-92d9-d6d7b40778d8",
+    "name": "wrong login",
+    "commands": [{
+      "id": "50c2e30d-2453-400d-9e2f-3de55db40906",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "1a722510-e675-4151-a9e1-99b49d7da128",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1936x1096",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "e00e2294-4f83-4501-8721-88246881a4be",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Login",
+      "targets": [
+        ["linkText=Login", "linkText"],
+        ["css=.navbar-nav:nth-child(3) > .nav-item:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'Login')]", "xpath:link"],
+        ["xpath=//div[@id='navbarToggle']/div[3]/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/login/')]", "xpath:href"],
+        ["xpath=//div[3]/a", "xpath:position"],
+        ["xpath=//a[contains(.,'Login')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "929ad14c-d2f1-46bd-8abc-d14e41fe193c",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_username",
+      "targets": [
+        ["id=id_username", "id"],
+        ["name=username", "name"],
+        ["css=#id_username", "css:finder"],
+        ["xpath=//input[@id='id_username']", "xpath:attributes"],
+        ["xpath=//div[@id='div_id_username']/div/input", "xpath:idRelative"],
+        ["xpath=//div/input", "xpath:position"]
+      ],
+      "value": "incorrect_username"
+    }, {
+      "id": "ba51c1b9-e81a-43f6-ad44-a93aed1aa15c",
+      "comment": "",
+      "command": "type",
+      "target": "id=id_password",
+      "targets": [
+        ["id=id_password", "id"],
+        ["name=password", "name"],
+        ["css=#id_password", "css:finder"],
+        ["xpath=//input[@id='id_password']", "xpath:attributes"],
+        ["xpath=//div[@id='div_id_password']/div/input", "xpath:idRelative"],
+        ["xpath=//div[2]/div/input", "xpath:position"]
+      ],
+      "value": "password"
+    }, {
+      "id": "592e9807-fd4d-43a1-ac38-0e3bdb1bb819",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btn-outline-info",
+      "targets": [
+        ["css=.btn-outline-info", "css:finder"],
+        ["xpath=//button[@type='submit']", "xpath:attributes"],
+        ["xpath=//form/div/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Login')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "582d2637-500a-4dfd-8bfc-7991c4dcf31b",
+      "comment": "",
+      "command": "click",
+      "target": "css=.border-top",
+      "targets": [
+        ["css=.border-top", "css:finder"],
+        ["xpath=//div/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9a8dd818-70a8-4e95-a023-dae9944ab049",
+      "comment": "Assert that error is there",
+      "command": "assertElementPresent",
+      "target": "css=li",
+      "targets": [
+        ["css=li", "css:finder"],
+        ["xpath=//li", "xpath:position"],
+        ["xpath=//li[contains(.,'Please enter a correct username and password. Note that both fields may be case-sensitive.')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "87cd8ba3-6416-4e13-893b-cfd2589fd112",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": ["95b96fd4-6680-4ce1-92d9-d6d7b40778d8"]
+  }],
+  "urls": ["http://127.0.0.1:8000/"],
+  "plugins": []
+}
