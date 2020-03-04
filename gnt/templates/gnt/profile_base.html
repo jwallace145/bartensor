@@ -3,8 +3,8 @@
 
 {% block content %}
 <div class="container">
-  <div class="row">
-    <div class="col-lg-8">
+  <div class="row" style="display: flex">
+    <div class="col-md-8" style="display: inline-block">
       <div class="content-section">
         <div class="media">
           <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
@@ -18,12 +18,14 @@
       {% block profile_content %}
       {% endblock profile_content %}
     </div>
-    <div class="col-lg-4">
+    <div class="col-md-3" style="display: inline-block">
       <div class="content-section">
         <h3>Profile Help</h3>
         <p class='text-muted'>View, edit, and create your profile here!
           <ul class="list-group">
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' %}">Public View</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' %}">Liked Drinks</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' %}">Disliked Drinks</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_edit' %}">Edit Profile</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_create_drink' %}">Create Drink</a></li>
             <li class="list-group-item list-group-item-light"><a href="#">Friends</a></li>

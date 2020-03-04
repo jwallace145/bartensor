@@ -1,14 +1,19 @@
-{% extends 'gnt/base.html' %}
-{% block 'content' %}
-{% if user.is_authenticated %}
-{% if drinks %}
-<div class="container title">
-    <h1>Disliked Drinks</h1>
+{% extends 'gnt/profile_base.html' %}
+{% block profile_content %}
+<div class="content-section">
+    {% if user.is_authenticated %}
+        {% if drinks %}
+            <div class="container title">
+                <h1>Disliked Drinks</h1>
+            </div>
+            {% include 'gnt/disliked_drinks_with_remove.html' %}
+        {% endif %}
+        {% if not drinks %}
+            <div>
+                You haven't Disliked any drinks! Make a query and give feedback on anything you try! We'll save it for you for
+                later.
+            </div>
+        {% endif %}
+    {% endif %}
 </div>
-{% include 'gnt/disliked_drinks_with_remove.html' %}
-{% endif %}
-{% if not drinks %}
-</div>You haven't disliked any drinks</div>
-{% endif %}
-{% endif %}
-{% endblock 'content' %}
+{% endblock profile_content %}
