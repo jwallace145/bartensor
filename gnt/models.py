@@ -77,13 +77,13 @@ class Profile_to_disliked_drink(models.Model):
 
 
 class User_drink(models.Model):
-    profile_FK = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
     description = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
 
 
 class Ingredient(models.Model):
-    user_drink_FK = models.ForeignKey(User_drink, on_delete=models.CASCADE)
+    drink = models.ForeignKey(User_drink, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
     quantity = models.CharField(max_length=32)

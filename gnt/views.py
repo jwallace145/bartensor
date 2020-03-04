@@ -72,19 +72,18 @@ def profile_create_drink(request):
     IngredientFormset = formset_factory(CreateUserDrinkIngredientForm)
 
     if request.method == 'POST':
-        profile = Profile.objects.get(id=request.user.profile.id)
         create_user_drink_form = CreateUserDrinkForm(request.POST)
 
         if create_user_drink_form.is_valid():
             user_drink = create_user_drink_form.save(commit=False)
-            user_drink.profile_FK = profile  # update profile FK
+            user_drink.user = request.user
             user_drink.save()
 
             ingredient_formset = IngredientFormset(request.POST)
             if ingredient_formset.is_valid():
                 for ingredient_form in ingredient_formset:
                     ingredient = ingredient_form.save(commit=False)
-                    ingredient.user_drink_FK = user_drink  # update user drink FK
+                    ingredient.drink = user_drink  # update user drink FK
                     ingredient.save()
 
                 messages.success(request, f'Your drink has been created')
@@ -126,8 +125,7 @@ def profile_edit(request):
 
 @login_required
 def profile_public(request):
-    profile = Profile.objects.get(id=request.user.profile.id)
-    drinks = User_drink.objects.filter(profile_FK=profile)
+    drinks = User_drink.objects.filter(user=request.user)
     context = {
         'drinks': drinks
     }
