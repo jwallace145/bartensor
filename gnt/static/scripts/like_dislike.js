@@ -25,16 +25,14 @@ $(document).ready(function() {
                         likeDrinkFeedback("Drink liked!");
                         likeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
-                        likeDrinkFeedback(
-                            "This is already in your liked drinks"
-                        );
+                        console.log("Already liked");
                     } else {
-                        likeDrinkError("Error in liking drink");
-                        console.log("Error in liking drink");
+                        console.log(data["status"]);
+                        console.log(data["message"]);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    likeDrinkError("Error in liking drink");
+                    console.log(xhr);
                 }
             });
         });
@@ -67,16 +65,13 @@ $(document).ready(function() {
                         likeDrinkFeedback("Drink disliked!");
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
-                        likeDrinkFeedback(
-                            "This is already in your disliked drinks"
-                        );
+                        console.log("already disliked");
                     } else {
-                        likeDrinkError("Error in disliking drink");
                         console.log("Error in disliking drink");
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    likeDrinkError("Error in disliking drink");
+                    console.log(xhr);
                 }
             });
         });
