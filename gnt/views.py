@@ -53,10 +53,6 @@ def results(request):
         return HttpResponseRedirect(reverse('home'))
 
 
-def loading(request):
-    return render(request, 'gnt/loading.html')
-
-
 def register(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
