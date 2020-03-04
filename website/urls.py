@@ -27,7 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', gnt_views.home, name='home'),
     path('results/', gnt_views.results, name='results'),
-    path('loading/', gnt_views.loading, name='loading'),
     path('register/', gnt_views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='gnt/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='gnt/logout.html'), name='logout'),
