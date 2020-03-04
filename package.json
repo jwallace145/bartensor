@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/jwallace317/Gin-and-Tensor#readme",
   "dependencies": {
-    "chromedriver": "^80.0.1"
+    "chromedriver": "^80.0.1",
+    "npm": "^6.14.2",
+    "selenium-side-runner": "^3.16.0"
   }
 }

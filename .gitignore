@@ -137,3 +137,6 @@ media/
 .vscode/
 
 run.sh
+
+# Node Modules
+node_modules
