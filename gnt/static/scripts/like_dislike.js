@@ -62,12 +62,9 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data["status"] == 201) {
-<<<<<<< HEAD
                         likeDrinkFeedback("Drink disliked!");
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
-=======
-                        console.log("disliked")
->>>>>>> 6038dc121ea85ee1665b761bfd965b17e1086fa2
+
                     } else if (data["status"] == 422) {
                         console.log("already disliked");
                     } else {
@@ -82,7 +79,7 @@ $(document).ready(function() {
     });
 });
 
-<<<<<<< HEAD
+
 function likeDrinkFeedback(message) {
     document.getElementById("like-drink").innerHTML = message;
     $("#like-drink").show("slow");
@@ -116,5 +113,4 @@ function dislikeDrinkAnimation(thumbsup, thumbsdown){
     thumbsdown.children("#blank_thumbsdown").hide();
     thumbsdown.children("#filled_thumbsdown").show();
 }
-=======
->>>>>>> 6038dc121ea85ee1665b761bfd965b17e1086fa2
+
