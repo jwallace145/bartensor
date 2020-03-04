@@ -40,6 +40,7 @@ urlpatterns = [
     path('remove_liked_drink/', gnt_views.remove_liked_drink,
          name='remove_liked_drink'),
     path('dislike_drink/', gnt_views.dislike_drink, name='dislike_drink'),
+    path('remove_disliked_drink/', gnt_views.remove_disliked_drink, name='remove_disliked_drink'),
     path('password-reset/',
          auth_views.PasswordResetView.as_view(
              template_name='gnt/password_reset.html'),

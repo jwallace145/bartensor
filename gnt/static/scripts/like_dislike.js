@@ -25,16 +25,14 @@ $(document).ready(function() {
                         likeDrinkFeedback("Drink liked!");
                         likeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
-                        likeDrinkFeedback(
-                            "This is already in your liked drinks"
-                        );
+                        console.log("Already liked");
                     } else {
-                        likeDrinkError("Error in liking drink");
-                        console.log("Error in liking drink");
+                        console.log(data["status"]);
+                        console.log(data["message"]);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    likeDrinkError("Error in liking drink");
+                    console.log(xhr);
                 }
             });
         });
@@ -64,25 +62,27 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data["status"] == 201) {
+<<<<<<< HEAD
                         likeDrinkFeedback("Drink disliked!");
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
+=======
+                        console.log("disliked")
+>>>>>>> 6038dc121ea85ee1665b761bfd965b17e1086fa2
                     } else if (data["status"] == 422) {
-                        likeDrinkFeedback(
-                            "This is already in your disliked drinks"
-                        );
+                        console.log("already disliked");
                     } else {
-                        likeDrinkError("Error in disliking drink");
                         console.log("Error in disliking drink");
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    likeDrinkError("Error in disliking drink");
+                    console.log(xhr);
                 }
             });
         });
     });
 });
 
+<<<<<<< HEAD
 function likeDrinkFeedback(message) {
     document.getElementById("like-drink").innerHTML = message;
     $("#like-drink").show("slow");
@@ -116,3 +116,5 @@ function dislikeDrinkAnimation(thumbsup, thumbsdown){
     thumbsdown.children("#blank_thumbsdown").hide();
     thumbsdown.children("#filled_thumbsdown").show();
 }
+=======
+>>>>>>> 6038dc121ea85ee1665b761bfd965b17e1086fa2
