@@ -1,10 +1,10 @@
 body,
 html {
-    height: 100%;
-    width: 100%;
-    background: #fafafa;
-    color: #333333;
-    margin-top: 5rem;
+  height: 100%;
+  width: 100%;
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
 }
 
 h1,
@@ -13,322 +13,329 @@ h3,
 h4,
 h5,
 h6 {
-    color: #444444;
+  color: #444444;
 }
 
 ul {
-    margin: 0;
+  margin: 0;
 }
 
 .bg-steel {
-    background-color: #252729;
+  background-color: #252729;
 }
 
 .site-header {
-    text-align: center;
+  text-align: center;
 }
 
 .site-header .navbar-nav .nav-link {
-    color: #838a8e;
-    font-family: "Helvetica";
-    font-size: 18px;
-    font-weight: bold;
+  color: #838a8e;
+  font-family: "Helvetica";
+  font-size: 18px;
+  font-weight: bold;
 }
 
 .navbar-brand {
-    font-family: "Helvetica";
-    font-size: 24px;
-    font-weight: bold;
+  font-family: "Helvetica";
+  font-size: 24px;
+  font-weight: bold;
 }
 
 .site-header .navbar-nav .nav-link:hover {
-    color: #ffffff;
+  color: #ffffff;
 }
 
 .site-header .navbar-nav .nav-link.active {
-    font-weight: 500;
+  font-weight: 500;
 }
 
 .content-section {
-    background: #ffffff;
-    padding: 10px 20px;
-    border: 1px solid #dddddd;
-    border-radius: 3px;
-    margin-bottom: 20px;
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
 }
 
 .article-title {
-    color: #444444;
+  color: #444444;
 }
 
 a.article-title:hover {
-    color: #428bca;
-    text-decoration: none;
+  color: #428bca;
+  text-decoration: none;
 }
 
 .article-content {
-    white-space: pre-line;
+  white-space: pre-line;
 }
 
 .article-img {
-    height: 65px;
-    width: 65px;
-    margin-right: 16px;
+  height: 65px;
+  width: 65px;
+  margin-right: 16px;
 }
 
 .article-metadata {
-    padding-bottom: 1px;
-    margin-bottom: 4px;
-    border-bottom: 1px solid #e3e3e3;
+  padding-bottom: 1px;
+  margin-bottom: 4px;
+  border-bottom: 1px solid #e3e3e3;
 }
 
 .article-metadata a:hover {
-    color: #333;
-    text-decoration: none;
+  color: #333;
+  text-decoration: none;
 }
 
 .article-svg {
-    width: 25px;
-    height: 25px;
-    vertical-align: middle;
+  width: 25px;
+  height: 25px;
+  vertical-align: middle;
 }
 
 .account-header-img {
-    height: 40px;
-    width: 40px;
-    margin-right: 20px;
+  height: 40px;
+  width: 40px;
+  margin-right: 20px;
 }
 
 .account-img {
-    height: 125px;
-    width: 125px;
-    margin-right: 20px;
-    margin-bottom: 16px;
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
 }
 
 .account-heading {
-    font-size: 2.5rem;
+  font-size: 2.5rem;
 }
 
 .footer {
-    bottom: 0;
-    position: absolute;
-    height: 60px;
-    width: 100%;
-    line-height: 60px;
-    background-color: #f2f2f2;
+  bottom: 0;
+  position: absolute;
+  height: 60px;
+  width: 100%;
+  line-height: 60px;
+  background-color: #f2f2f2;
 }
 
 /*
  * Search bar
  */
 .search-bar {
-    border-top: none;
-    border-right: none;
-    border-bottom: 2px solid #000000;
-    -webkit-box-shadow: none;
-    box-shadow: none;
-    border-radius: 0;
+  border-top: none;
+  border-right: none;
+  border-bottom: 2px solid #000000;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border-radius: 0;
 }
 
 .search-bar:focus {
-    -webkit-box-shadow: none;
-    border-right: none;
-    border-left: 1px solid #dee2e6;
-    box-shadow: none;
+  -webkit-box-shadow: none;
+  border-right: none;
+  border-left: 1px solid #dee2e6;
+  box-shadow: none;
 }
 
 .search-button {
-    background: white;
-    border-top: none;
-    border-right: 1px solid #dee2e6;
-    border-bottom: 2px solid #000000;
-    border-left: none;
-    border-radius: 1px;
+  background: white;
+  border-top: none;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 2px solid #000000;
+  border-left: none;
+  border-radius: 1px;
 }
 
 .search-button:hover {
-    background: #dee2e6;
-    border-top: none;
-    border-right: 1px solid #dee2e6;
-    border-bottom: 2px solid #000000;
-    border-left: none;
-    border-radius: 1px;
+  background: #dee2e6;
+  border-top: none;
+  border-right: 1px solid #dee2e6;
+  border-bottom: 2px solid #000000;
+  border-left: none;
+  border-radius: 1px;
 }
 
 .search-icon {
-    height: 20px;
+  height: 20px;
 }
 
 .search-nav-link {
-    cursor: pointer;
-    /* using important here to override bootstrap's specificity */
-    border: 1px solid #dee2e6 !important;
-    border-bottom: none !important;
+  cursor: pointer;
+  /* using important here to override bootstrap's specificity */
+  border: 1px solid #dee2e6 !important;
+  border-bottom: none !important;
 }
 
 /*
  * Assitant Button
  */
 .assistant_button {
-    cursor: pointer;
-    background: transparent;
-    border: 3px solid #bebebe;
-    box-shadow: 3px 6px #888888;
-    width: 100px;
-    height: 100px;
-    display: inline-block;
+  cursor: pointer;
+  background: transparent;
+  border: 3px solid #bebebe;
+  box-shadow: 3px 6px #888888;
+  width: 100px;
+  height: 100px;
+  display: inline-block;
 }
 
 .mic_icon {
-    margin-top: 12px;
-    width: 60px;
-    height: 66px;
+  margin-top: 12px;
+  width: 60px;
+  height: 66px;
 }
 
 /*
  * Loading Screen
  */
 .loading_gif_wrapper {
-    text-align: center;
+  text-align: center;
 }
 
 .duck_loading {
-    display: inline-block;
-    margin-top: 10%;
-    width: 20%;
-    height: auto;
+  display: inline-block;
+  margin-top: 10%;
+  width: 20%;
+  height: auto;
 }
 
 /*
  * Results
  */
 .title {
-    margin-top: 80px;
+  margin-top: 80px;
 }
 
 h1 {
-    text-align: center;
+  text-align: center;
 }
 
 a {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* CSS For expanding search bar */
 .searchbar {
-    margin-bottom: auto;
-    margin-top: auto;
-    height: 60px;
-    background-color: white;
-    border-radius: 30px;
-    padding: 10px;
+  margin-bottom: auto;
+  margin-top: auto;
+  height: 60px;
+  background-color: white;
+  border-radius: 30px;
+  padding: 10px;
 }
 
 #like-drink {
-    display: none;
-    text-align: center;
+  display: none;
+  text-align: center;
 }
 
 #dislike-drink {
-    display: none;
-    text-align: center;
+  display: none;
+  text-align: center;
 }
 
 .remove {
-    margin: 10px;
+  margin: 10px;
 }
+
 .search_input {
-    color: black;
-    border: 0;
-    outline: 0;
-    background: none;
-    width: 0;
-    caret-color: transparent;
-    line-height: 40px;
-    transition: width 0.4s linear;
+  color: black;
+  border: 0;
+  outline: 0;
+  background: none;
+  width: 0;
+  caret-color: transparent;
+  line-height: 40px;
+  transition: width 0.4s linear;
 }
 
-.searchbar:hover > .search_input {
-    padding: 0 10px;
-    width: 400px;
-    caret-color: black;
-    transition: width 0.4s linear;
+.searchbar:hover>.search_input {
+  padding: 0 10px;
+  width: 400px;
+  caret-color: black;
+  transition: width 0.4s linear;
 }
 
-.searchbar:hover > .search_icon {
-    background: #838a8e;
-    color: #ffffff;
+.searchbar:hover>.search_icon {
+  background: #838a8e;
+  color: #ffffff;
 }
 
 .search_icon {
-    height: 40px;
-    width: 40px;
-    float: right;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    color: #838a8e;
-    text-decoration: none;
+  height: 40px;
+  width: 40px;
+  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  color: #838a8e;
+  text-decoration: none;
 }
 
 /* font awesome styling */
 .fa-bell {
-    margin-left: 12px;
+  margin-left: 12px;
 }
 
 .fa-comment-dots {
-    margin-left: 12px;
+  margin-left: 12px;
 }
 
 .fa-ellipsis-h {
-    margin-left: 12px;
-    margin-right: 12px;
+  margin-left: 12px;
+  margin-right: 12px;
 }
 
 .btn-ellipsis {
-    margin-top: 3px;
-    background-color: #252729;
-    color: #838a8e;
+  margin-top: 3px;
+  background-color: #252729;
+  color: #838a8e;
 }
 
 .btn.btn-outline-info {
-    color: black;
-    border-color: black;
+  color: black;
+  border-color: black;
 }
+
 .btn.btn-outline-info:hover {
-    background-color: black;
-    border-color: black;
+  background-color: black;
+  border-color: black;
 }
 
 #like-drink {
-    margin: auto;
+  margin: auto;
 }
 
-.fa-cocktail{
+.fa-cocktail {
   margin-top: 10px;
 }
 
 .thumbsup:active {
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
-  }
-
-.thumbsdown:active{
-    box-shadow: 0 5px #666;
-    transform: translateY(4px);
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
 }
 
-.voting_buttons{
-    display: none;
-    transition: all .2s ease-in-out;   
+.thumbsdown:active {
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);
+}
+
+.voting_buttons {
+  display: none;
+  transition: all .2s ease-in-out;
 }
 
 .voting_buttons:hover {
-    transform: scale(1.3);
+  transform: scale(1.3);
 }
 
-.voting_buttons:active{
-    transform: scale(2.0);
+.voting_buttons:active {
+  transform: scale(2.0);
+}
+
+.ingredient {
+  padding-top: 15px;
+  padding-left: 15px;
 }

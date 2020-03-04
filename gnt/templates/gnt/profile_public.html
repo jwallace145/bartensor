@@ -1,5 +1,18 @@
 {% extends 'gnt/profile_base.html' %}
 {% load crispy_forms_tags %}
 {% block profile_content %}
-<p>profile content goes here</p>
+<div class="content-section">
+  <legend class="border-bottom mb-4">Timeline</legend>
+  {% for drink in drinks %}
+  <div class="content-section">
+    <legend>{{ drink.drink_name }}</legend>
+    <div class="row">
+      <p>{{ drink.description }}</p>
+    </div>
+    {% for ingredient in drink.ingredient_set.all %}
+    <p>{{ ingredient.ingredient_name }} {{ ingredient.ingredient_quantity }}</p>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
 {% endblock profile_content %}

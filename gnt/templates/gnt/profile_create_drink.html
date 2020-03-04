@@ -6,10 +6,28 @@
     {% csrf_token %}
     <fieldset class="form-group">
       <legend class="border-bottom mb-4">Create a Drink</legend>
+      <legend>Drink Name & Description</legend>
       {{ create_user_drink_form | crispy }}
-      {{ create_user_drink_ingredient_form | crispy }}
-      <button class="btn btn-outline-info">Add Another Ingredient</button>
+      <legend>Ingredients</legend>
+      {{ ingredient_formset.management_form }}
+      {% for ingredient_form in ingredient_formset %}
+      <div class="row form-row">
+        <div class="col-lg-3">
+          <label>Name</label>
+          {{ ingredient_form.ingredient_name }}
+        </div>
+        <div class="col-lg-1"></div>
+        <div class="col-lg-3">
+          <label>Quantity</label>
+          {{ ingredient_form.ingredient_quantity }}
+        </div>
+      </div>
+      {% endfor %}
+      <div class="row ingredient">
+        <button class="btn btn-outline-info add-form-row">Add Ingredient</button>
+      </div>
     </fieldset>
+    <legend class="border-bottom mb-4"></legend>
     <div class="form-group">
       <button class="btn btn-outline-info" type="submit">Create Drink</button>
     </div>

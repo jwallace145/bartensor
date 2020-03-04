@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, IngredientFormset
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request
+from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request, User_drink
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from django.forms.formsets import formset_factory
 
 # get api key from settings.py which is stored as an environment variable
 api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
@@ -77,23 +78,27 @@ def profile_create_drink(request):
             user_drink.profile_FK = profile
             user_drink.save()
 
-            create_user_drink_ingredient_form = CreateUserDrinkIngredientForm(
-                request.POST)
+            ingredient_formset = IngredientFormset(request.POST)
 
-            if create_user_drink_ingredient_form.is_valid():
-                user_drink_ingredient = create_user_drink_ingredient_form.save()
-                user_drink_ingredient.user_drink_FK = user_drink
-                user_drink_ingredient.save()
+            if ingredient_formset.is_valid():
+                print('formset')
+                print(ingredient_formset)
+                for ingredient_form in ingredient_formset:
+                    print('form')
+                    print(ingredient_form)
+                    ingredient = ingredient_form.save()
+                    ingredient.user_drink_FK = user_drink
+                    ingredient.save()
 
                 messages.success(request, f'Your drink has been created')
                 return redirect('profile_public')
     else:
+        ingredient_formset = IngredientFormset()
         create_user_drink_form = CreateUserDrinkForm()
-        create_user_drink_ingredient_form = CreateUserDrinkIngredientForm()
 
     context = {
         'create_user_drink_form': create_user_drink_form,
-        'create_user_drink_ingredient_form': create_user_drink_ingredient_form
+        'ingredient_formset': ingredient_formset
     }
     return render(request, 'gnt/profile_create_drink.html', context)
 
@@ -125,7 +130,13 @@ def profile_edit(request):
 
 @login_required
 def profile_public(request):
-    return render(request, 'gnt/profile_public.html')
+    profile = Profile.objects.get(id=request.user.profile.id)
+    drinks = User_drink.objects.filter(profile_FK=profile)
+    context = {
+        'drinks': drinks
+    }
+    return render(request, 'gnt/profile_public.html', context)
+
 
 def get_liked_disliked_drinks(request):
     try:
@@ -142,7 +153,8 @@ def get_liked_disliked_drinks(request):
         user = request.user
         profile = Profile.objects.get(user=user)
         # get liked drinks
-        profile_to_liked_drink = Profile_to_liked_drink.objects.filter(profile_FK=profile.id)
+        profile_to_liked_drink = Profile_to_liked_drink.objects.filter(
+            profile_FK=profile.id)
         if profile_to_liked_drink:
             response = [0 for i in range(len(profile_to_liked_drink))]
             for i, ptd in enumerate(profile_to_liked_drink):
@@ -152,7 +164,8 @@ def get_liked_disliked_drinks(request):
                 response[i] = obj[0]['id']
             liked_drinks = response
         # get disliked drinks
-        profile_to_disliked_drink = Profile_to_disliked_drink.objects.filter(profile_FK=profile.id)
+        profile_to_disliked_drink = Profile_to_disliked_drink.objects.filter(
+            profile_FK=profile.id)
         if profile_to_disliked_drink:
             response = [0 for i in range(len(profile_to_disliked_drink))]
             for i, ptd in enumerate(profile_to_disliked_drink):
@@ -165,7 +178,7 @@ def get_liked_disliked_drinks(request):
         resp = {
             'message': [liked_drinks, disliked_drinks],
             'status': 201
-        }    
+        }
         return JsonResponse(resp)
     except Exception as e:
         print(str(e))
@@ -217,7 +230,7 @@ def like_drink(request):
     try:
         username = request.POST['user']
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
-        
+
         profile = Profile.objects.get(id=request.user.profile.id)
         # Check to see if drink is disliked then remove
         disliked_drink = Profile_to_disliked_drink.objects.filter(
@@ -316,6 +329,7 @@ def remove_liked_drink(request):
         }
         return JsonResponse(response)
 
+
 def disliked_drinks(request):
     if request.user.is_authenticated:
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
@@ -348,12 +362,14 @@ def disliked_drinks(request):
     else:
         return HttpResponseRedirect('/home/')
 
+
 def remove_disliked_drink(request):
     try:
         username = request.POST['user']
         drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
         profile = Profile.objects.get(id=request.user.profile.id)
-        disliked_drink = Profile_to_disliked_drink.objects.filter(profile_FK=profile, drink_FK=drink)
+        disliked_drink = Profile_to_disliked_drink.objects.filter(
+            profile_FK=profile, drink_FK=drink)
         if disliked_drink:
             disliked_drink.delete()
             response = {

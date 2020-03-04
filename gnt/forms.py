@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from .models import Profile, User_drink, Ingredient
+from django.forms.formsets import formset_factory
 
 
 class UserRegisterForm(UserCreationForm):
@@ -53,3 +54,6 @@ class CreateUserDrinkIngredientForm(forms.ModelForm):
             'ingredient_name',
             'ingredient_quantity'
         ]
+
+
+IngredientFormset = formset_factory(CreateUserDrinkIngredientForm)
