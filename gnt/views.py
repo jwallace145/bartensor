@@ -12,7 +12,7 @@ from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
 
 def bad_request(request, *args, **kwargs):
-    return HttpResponseRedirect('/home/')
+    return HttpResponseRedirect(reverse('home'))
 
 
 def home(request):
@@ -20,10 +20,18 @@ def home(request):
 
 
 def results(request):
-    # get api key from settings.py which is stored as an environment variable
-    api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
-
     if request.method == 'POST':
+        if 'audio' in request.FILES:
+            audio = request.FILES['audio']
+            print(audio)
+            print(type(audio))
+            text = 'white russian'
+        else:
+            text = request.POST['search_bar']
+
+        # get api key from settings.py which is stored as an environment variable
+        api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
+
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
@@ -35,7 +43,6 @@ def results(request):
         discovery.set_service_url(
             'https://api.us-south.discovery.watson.cloud.ibm.com/')
 
-        text = request.POST['search_bar']
         response = discovery.query(
             environment_id, collection_id, natural_language_query=text).result['results']
 
