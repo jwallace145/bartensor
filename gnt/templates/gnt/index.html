@@ -1,7 +1,7 @@
 {% extends 'gnt/base.html' %}
 {% block 'content' %}
 {% load static %}
-<div class="container">
+<div class="container" id="index-div">
   <div class="row">
     <div class="col text-center mt-5">
       <a class="assistant_button rounded-circle my-4">
@@ -11,7 +11,7 @@
   </div>
   <div class="row">
     <div class="col"><!-- for spacing --></div>
-    <form class="col-7 form-group" action="{% url 'results' %}" method="POST">
+    <form class="col-7 form-group" action="{% url 'results' %}" method="POST" id="index-search-form">
       {% csrf_token %}
       <ul class="nav nav-tabs">
         <li class="nav-item">

@@ -18,9 +18,7 @@ class IBM(STT):
         api_key = os.environ['WATSON_SPEECH_TO_TEXT_API_KEY']
 
         authenticator = IAMAuthenticator(api_key)
-        self.speech_to_text = SpeechToTextV1(
-            authenticator=authenticator
-        )
+        self.speech_to_text = SpeechToTextV1(authenticator=authenticator)
 
         self.speech_to_text.set_service_url('https://api.us-south.speech-to-text.watson.cloud.ibm.com/instances/678b9838-b572-44d3-a3c1-66cf47ce9d67')
 

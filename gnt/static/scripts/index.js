@@ -1,3 +1,7 @@
+function display_duck() {
+    $('#index-div').html('<div class="loading_gif_wrapper"><img class="duck_loading" src="../../static/duck.gif" alt="oof where dat duck boi at"/></div>');
+}
+
 $(document).ready(function() {
     // Listen for input when mic is clicked
     $(".assistant_button").click(function listening() {
@@ -47,6 +51,7 @@ $(document).ready(function() {
                             console.log(thrownError);
                         }
                     });
+                    display_duck();
                 }
             })
             .catch(function(err) { // error callback
@@ -72,6 +77,25 @@ $(document).ready(function() {
         $(".search-nav-link").removeClass("active"); // make all tabs inactive
         $(this).addClass("active"); // make clicked tab active
         $(this).prev().prop("checked", true); // check corresponding radiobutton
+    });
+
+    // overwrite form's builtin post request
+    $('#index-search-form').on('submit', function() {
+        display_duck();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            dataType: 'html',
+            data: $(this).serialize(),
+            success: function(data) {
+                $("html").html(data); // replace entire page with response
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.status);
+                console.log(thrownError);
+            }
+        });
+        return false;
     });
 });
 
