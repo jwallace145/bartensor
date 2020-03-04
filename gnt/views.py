@@ -75,15 +75,15 @@ def profile_create_drink(request):
         create_user_drink_form = CreateUserDrinkForm(request.POST)
 
         if create_user_drink_form.is_valid():
-            user_drink = create_user_drink_form.save(commit=False)
-            user_drink.user = request.user
-            user_drink.save()
+            drink = create_user_drink_form.save(commit=False)
+            drink.user = request.user
+            drink.save()
 
             ingredient_formset = IngredientFormset(request.POST)
             if ingredient_formset.is_valid():
                 for ingredient_form in ingredient_formset:
                     ingredient = ingredient_form.save(commit=False)
-                    ingredient.drink = user_drink  # update user drink FK
+                    ingredient.drink = drink
                     ingredient.save()
 
                 messages.success(request, f'Your drink has been created')
