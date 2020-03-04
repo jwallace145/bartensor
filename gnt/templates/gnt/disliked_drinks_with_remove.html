@@ -2,7 +2,7 @@
 {% block 'like-dislike' %} {% if user.is_authenticated %}
 <div class="col-lg-2">
     <div>
-        <button class="btn btn-outline-danger remove like" drinkid="{{drink.id}}" user="{{user}}">
+        <button class="btn btn-outline-danger remove dislike" drinkid="{{drink.id}}" user="{{user}}">
             Remove
         </button>
     </div>

@@ -11,7 +11,6 @@ $(document).ready(function() {
                 user: user
             };
             var csrftoken = getCookie("csrftoken");
-            var currentNode = $(this);
             var thumbsup = $("a[drinkid='" + drink_id + "']:first");
             var thumbsdown = $("a[drinkid='" + drink_id + "']:last");
             $.ajax({
@@ -22,19 +21,17 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data["status"] == 201) {
-                        likeDrinkFeedback("Drink liked!");
+                        console.log("Drink liked!");
                         likeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
-                        likeDrinkFeedback(
-                            "This is already in your liked drinks"
-                        );
+                        console.log("Already liked");
                     } else {
-                        likeDrinkError("Error in liking drink");
-                        console.log("Error in liking drink");
+                        console.log(data["status"]);
+                        console.log(data["message"]);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    likeDrinkError("Error in liking drink");
+                    console.log(xhr);
                 }
             });
         });
@@ -64,19 +61,18 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data["status"] == 201) {
-                        likeDrinkFeedback("Drink disliked!");
+                        console.log("Drink disliked!");
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
-                        likeDrinkFeedback(
+                        console.log(
                             "This is already in your disliked drinks"
                         );
                     } else {
-                        likeDrinkError("Error in disliking drink");
                         console.log("Error in disliking drink");
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    likeDrinkError("Error in disliking drink");
+                    console.log(xhr);
                 }
             });
         });

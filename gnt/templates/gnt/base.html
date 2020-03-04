@@ -52,7 +52,9 @@
             <a class="nav-item nav-link" href="{% url 'profile_edit' %}">
               <img class="rounded-circle account-header-img" src="{{ user.profile.image.url }}" />
             </a>
-            <a class="nav-item nav-link" href="{% url 'profile_edit' %}">{{ user.username }}</a>
+
+            <a class="nav-item nav-link" href="{% url 'profile_public' %}">{{ user.username }}</a>
+
             <a class="nav-item nav-link" href="#">
               <i class="fas fa-comment-dots fa-lg"></i>
             </a>
@@ -109,7 +111,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLongTitle">
-            Welcome to Gin & Tensor
+            Welcome to Bartensor
           </h5>
         </div>
         <div class="modal-body">
@@ -127,7 +129,7 @@
             </button>
           </div>
           <p class="collapse" id="not21">
-            Sorry, you are not old enough to use Gin & Tensor
+            Sorry, you are not old enough to use Bartensor
           </p>
         </div>
       </div>
@@ -146,7 +148,7 @@
   <script type="text/javascript" src="{% static 'scripts/hark.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/index.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/like_dislike.js' %}"></script>
-  <script type="text/javascript" src="{% static 'scripts/remove_like.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scripts/remove_like_dislike.js' %}"></script>
 
   <!-- Controls 21+ modal -->
   <script>
