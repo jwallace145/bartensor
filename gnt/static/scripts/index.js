@@ -30,15 +30,29 @@ $(document).ready(function() {
 
                     const blob = new Blob(chunks, {'type': 'audio/mpeg'});
                     chunks = []; // reset chunks
-                    const audioURL = window.URL.createObjectURL(blob);
-                    audio.src = audioURL;
 
                     // https://stackoverflow.com/questions/51130675/how-to-upload-large-audio-file-to-a-django-server-given-a-blob-url
                     console.log("start sending binary data...");
                     var form = new FormData();
                     form.append('audio', blob);
-                    var url = APPURL + "/results/";
+                    var formElement = document.querySelector("form");
+
                     var csrftoken = getCookie("csrftoken");
+                    var util = {};
+                    util.post = function(url, fields) {
+                        var $form = $('<form>', {
+                            action: url,
+                            method: 'post'
+                        });
+                        $.each(fields, function(key, val) {
+                             $('<input>').attr({
+                                 type: "hidden",
+                                 name: key,
+                                 value: val
+                             }).appendTo($form);
+                        });
+                        $form.appendTo('body').submit();
+                    }
                     $.ajax({
                         url: url,
                         type: 'POST',
@@ -48,6 +62,8 @@ $(document).ready(function() {
                         contentType: false,
                         success: function (data) {
                             console.log('response' + JSON.stringify(data));
+                            console.log(data.redirect)
+                            window.location.href = data.redirect
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             console.log(xhr.status);
