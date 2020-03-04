@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, IngredientFormset
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
@@ -69,25 +69,22 @@ def register(request):
 
 @login_required
 def profile_create_drink(request):
+    IngredientFormset = formset_factory(CreateUserDrinkIngredientForm)
+
     if request.method == 'POST':
         profile = Profile.objects.get(id=request.user.profile.id)
-
         create_user_drink_form = CreateUserDrinkForm(request.POST)
+
         if create_user_drink_form.is_valid():
-            user_drink = create_user_drink_form.save()
-            user_drink.profile_FK = profile
+            user_drink = create_user_drink_form.save(commit=False)
+            user_drink.profile_FK = profile  # update profile FK
             user_drink.save()
 
             ingredient_formset = IngredientFormset(request.POST)
-
             if ingredient_formset.is_valid():
-                print('formset')
-                print(ingredient_formset)
                 for ingredient_form in ingredient_formset:
-                    print('form')
-                    print(ingredient_form)
-                    ingredient = ingredient_form.save()
-                    ingredient.user_drink_FK = user_drink
+                    ingredient = ingredient_form.save(commit=False)
+                    ingredient.user_drink_FK = user_drink  # update user drink FK
                     ingredient.save()
 
                 messages.success(request, f'Your drink has been created')
@@ -113,8 +110,7 @@ def profile_edit(request):
         if user_update_form.is_valid() and profile_update_form.is_valid():
             user_update_form.save()
             profile_update_form.save()
-            messages.success(
-                request, f'Your account has been updated!')
+            messages.success(request, f'Your account has been updated!')
             return redirect('profile_public')
     else:
         user_update_form = UserUpdateForm(instance=request.user)

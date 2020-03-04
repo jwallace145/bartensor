@@ -6,16 +6,17 @@ from PIL import Image
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpg', upload_to='profile_pics')
-    bio = models.CharField(max_length=250, default='insert bio here')
+    bio = models.CharField(max_length=250, default='insert bio here...')
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return f'{self.user.username} profile'
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
         img = Image.open(self.image.path)
 
+        # resize profile picture
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
             img.thumbnail(output_size)
@@ -76,15 +77,13 @@ class Profile_to_disliked_drink(models.Model):
 
 
 class User_drink(models.Model):
-    profile_FK = models.ForeignKey(
-        Profile, on_delete=models.PROTECT, null=True)
-    drink_name = models.CharField(max_length=32)
-    description = models.CharField(
-        max_length=100, default='add a description...')
+    profile_FK = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    name = models.CharField(max_length=32)
+    description = models.CharField(max_length=100)
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 
 class Ingredient(models.Model):
-    user_drink_FK = models.ForeignKey(
-        User_drink, on_delete=models.PROTECT, null=True)
-    ingredient_name = models.CharField(max_length=32)
-    ingredient_quantity = models.CharField(max_length=32)
+    user_drink_FK = models.ForeignKey(User_drink, on_delete=models.CASCADE)
+    name = models.CharField(max_length=32)
+    quantity = models.CharField(max_length=32)
