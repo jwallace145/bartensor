@@ -64,7 +64,6 @@ $(document).ready(function() {
                     if (data["status"] == 201) {
                         likeDrinkFeedback("Drink disliked!");
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
-
                     } else if (data["status"] == 422) {
                         console.log("already disliked");
                     } else {
@@ -78,7 +77,6 @@ $(document).ready(function() {
         });
     });
 });
-
 
 function likeDrinkFeedback(message) {
     document.getElementById("like-drink").innerHTML = message;
@@ -113,4 +111,3 @@ function dislikeDrinkAnimation(thumbsup, thumbsdown){
     thumbsdown.children("#blank_thumbsdown").hide();
     thumbsdown.children("#filled_thumbsdown").show();
 }
-

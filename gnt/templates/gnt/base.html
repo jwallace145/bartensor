@@ -52,7 +52,9 @@
             <a class="nav-item nav-link" href="{% url 'profile_edit' %}">
               <img class="rounded-circle account-header-img" src="{{ user.profile.image.url }}" />
             </a>
+
             <a class="nav-item nav-link" href="{% url 'profile_public' %}">{{ user.username }}</a>
+
             <a class="nav-item nav-link" href="#">
               <i class="fas fa-comment-dots fa-lg"></i>
             </a>
