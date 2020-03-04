@@ -1,5 +1,6 @@
 {% extends 'gnt/base.html' %}
 {% load crispy_forms_tags %}
+
 {% block content %}
 <div class="container">
   <div class="row">
@@ -13,28 +14,21 @@
           </div>
         </div>
         <p class="text-secondary">{{ user.profile.bio }}</p>
-        <form method="POST" enctype="multipart/form-data">
-          {% csrf_token %}
-          <fieldset class="form-group">
-            <legend class="border-bottom mb-4">Profile Info</legend>
-            {{ user_update_form | crispy }}
-            {{ profile_update_form | crispy }}
-          </fieldset>
-          <div class="form-group">
-            <button class="btn btn-outline-info" type="submit">Update</button>
-          </div>
-        </form>
       </div>
+      {% block profile_content %}
+      {% endblock profile_content %}
     </div>
     <div class="col-lg-4">
       <div class="content-section">
         <h3>Profile Help</h3>
         <p class='text-muted'>View, edit, and create your profile here!
           <ul class="list-group">
-            <li class="list-group-item list-group-item-light">Public View</li>
-            <li class="list-group-item list-group-item-light">Edit Profile</li>
-            <li class="list-group-item list-group-item-light">Create Post</li>
-            <li class="list-group-item list-group-item-light">Friends</li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' %}">Public View</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_edit' %}">Edit Profile</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_create_drink' %}">Create Drink</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">Friends</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">Edit Flavor Profile</a></li>
           </ul>
         </p>
       </div>

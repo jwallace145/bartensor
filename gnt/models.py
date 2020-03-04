@@ -73,3 +73,18 @@ class Profile_to_disliked_drink(models.Model):
 
     def __str__(self):
         return str(self.id) + ", " + str(self.profile_FK.user.username) + ", " + str(self.drink_FK.drink_hash)
+
+
+class User_drink(models.Model):
+    profile_FK = models.ForeignKey(
+        Profile, on_delete=models.PROTECT, null=True)
+    drink_name = models.CharField(max_length=32)
+    description = models.CharField(
+        max_length=100, default='add a description...')
+
+
+class Ingredient(models.Model):
+    user_drink_FK = models.ForeignKey(
+        User_drink, on_delete=models.PROTECT, null=True)
+    ingredient_name = models.CharField(max_length=32)
+    ingredient_quantity = models.CharField(max_length=32)
