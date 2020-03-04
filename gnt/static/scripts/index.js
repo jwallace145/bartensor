@@ -5,8 +5,6 @@ function display_duck() {
 $(document).ready(function() {
     // Listen for input when mic is clicked
     $(".assistant_button").click(function listening() {
-        // https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
-        // https://developer.mozilla.org/en-US/docs/Web/API/MediaStream_Recording_API/Using_the_MediaStream_Recording_API
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             console.log('getUserMedia supported.');
             navigator.mediaDevices.getUserMedia({audio: true})
@@ -44,7 +42,9 @@ $(document).ready(function() {
                         processData: false,
                         contentType: false,
                         success: function (data) {
-                            $("html").html(data); // replace entire page with response
+                            var dom = $(data).find("body")
+                            $("body").html(data);
+                            color_thumbs();// replace entire page with response
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             console.log(xhr.status);
@@ -81,14 +81,14 @@ $(document).ready(function() {
 
     // overwrite form's builtin post request
     $('#index-search-form').on('submit', function() {
-        display_duck();
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
             dataType: 'html',
             data: $(this).serialize(),
             success: function(data) {
-                $("html").html(data); 
+                var dom = $(data).find("body")
+                $("body").html(data);
                 color_thumbs();// replace entire page with response
             },
             error: function (xhr, ajaxOptions, thrownError) {
@@ -96,69 +96,52 @@ $(document).ready(function() {
                 console.log(thrownError);
             }
         });
-        return false;
+        display_duck();
     });
 });
 
 function color_thumbs(){
     //$(window).bind('load', function(){
-        console.log("Running mark_liked_disliked_drinks");
-        var url = APPURL + "/get_liked_disliked_drinks/";
-        var csrftoken = getCookie("csrftoken");
-        $.ajax({
-            url: url,
-            method: "GET",
-            headers: { "X-CSRFToken": csrftoken },
-            data: {csrfmiddlewaretoken: '{{ csrf_token}}' },
-            dataType: "json",
-            success: function(data) {
-                if (data["status"] == 201) {
-                    liked_drinks = data["message"][0];
-                    disliked_drinks = data["message"][1];
-                    $(".thumbsup").each(function(){
-                        var drink_id = $(this).attr("drinkid");
-                        if(liked_drinks.includes(drink_id)){
-                            $(this).children("#blank_thumbsup").hide();
-                            $(this).children("#filled_thumbsup").show();
-                        } else {
-                            $(this).children("#blank_thumbsup").show();
-                            $(this).children("#filled_thumbsup").hide();
-                        }
-                    });
-                    $(".thumbsdown").each(function(){
-                        var drink_id = $(this).attr("drinkid");
-                        if(disliked_drinks.includes(drink_id)){
-                            $(this).children("#blank_thumbsdown").hide();
-                            $(this).children("#filled_thumbsdown").show();
-                        } else {
-                            $(this).children("#blank_thumbsdown").show();
-                            $(this).children("#filled_thumbsdown").hide();
-                        }
-                    });
-                } else {
-                    console.log(data["status"]);
-                    console.log("Error in finding liked and disliked drinks");
-                }
-            },
-            error: function(xhr, ajaxOptions, thrownError) {
-                console.log("ERROR")
+    console.log("Running mark_liked_disliked_drinks");
+    var url = APPURL + "/get_liked_disliked_drinks/";
+    var csrftoken = getCookie("csrftoken");
+    $.ajax({
+        url: url,
+        method: "GET",
+        headers: { "X-CSRFToken": csrftoken },
+        data: {csrfmiddlewaretoken: '{{ csrf_token}}' },
+        dataType: "json",
+        success: function(data) {
+            if (data["status"] == 201) {
+                liked_drinks = data["message"][0];
+                disliked_drinks = data["message"][1];
+                $(".thumbsup").each(function(){
+                    var drink_id = $(this).attr("drinkid");
+                    if(liked_drinks.includes(drink_id)){
+                        $(this).children("#blank_thumbsup").hide();
+                        $(this).children("#filled_thumbsup").show();
+                    } else {
+                        $(this).children("#blank_thumbsup").show();
+                        $(this).children("#filled_thumbsup").hide();
+                    }
+                });
+                $(".thumbsdown").each(function(){
+                    var drink_id = $(this).attr("drinkid");
+                    if(disliked_drinks.includes(drink_id)){
+                        $(this).children("#blank_thumbsdown").hide();
+                        $(this).children("#filled_thumbsdown").show();
+                    } else {
+                        $(this).children("#blank_thumbsdown").show();
+                        $(this).children("#filled_thumbsdown").hide();
+                    }
+                });
+            } else {
+                console.log(data["status"]);
+                console.log("Error in finding liked and disliked drinks");
             }
-        });
-
-function getCookie(name) {
-    var cookieValue = null;
-    if (document.cookie && document.cookie != "") {
-        var cookies = document.cookie.split(";");
-        for (var i = 0; i < cookies.length; i++) {
-            var cookie = jQuery.trim(cookies[i]);
-            // Does this cookie string begin with the name we want?
-            if (cookie.substring(0, name.length + 1) == name + "=") {
-                cookieValue = decodeURIComponent(
-                    cookie.substring(name.length + 1)
-                );
-                break;
-            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            console.log("ERROR")
         }
-    }
-    return cookieValue;
+    });
 }
