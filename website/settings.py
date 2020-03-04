@@ -137,7 +137,7 @@ JENKINS_TASKS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'profile'
+LOGIN_REDIRECT_URL = 'profile_public'
 
 LOGIN_URL = 'login'
 

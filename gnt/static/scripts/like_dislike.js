@@ -24,16 +24,14 @@ $(document).ready(function() {
                         console.log("Drink liked!");
                         likeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
-                        console.log(
-                            "This is already in your liked drinks"
-                        );
+                        console.log("Already liked");
                     } else {
-                        // likeDrinkError("Error in liking drink");
-                        console.log("Error in liking drink");
+                        console.log(data["status"]);
+                        console.log(data["message"]);
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    console.log("Error in liking drink");
+                    console.log(xhr);
                 }
             });
         });
@@ -74,7 +72,7 @@ $(document).ready(function() {
                     }
                 },
                 error: function(xhr, ajaxOptions, thrownError) {
-                    console.log("Error in disliking drink");
+                    console.log(xhr);
                 }
             });
         });
