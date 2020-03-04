@@ -91,7 +91,6 @@ function hark(stream, options) {
             }
 
             var currentVolume = getMaxVolume(analyser, fftBins);
-            console.log(currentVolume);
             harker.emit('volume_change', currentVolume, threshold);
 
             var history = 0;
