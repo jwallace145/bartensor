@@ -1,15 +1,35 @@
 {% extends 'gnt/base.html' %}
-{% block 'content' %}
-{% if user.is_authenticated %}
-{% if drinks %}
-<div class="container title">
-    <h1>Liked Drinks</h1>
+{% load crispy_forms_tags %}
+{% block content %}
+<div class="row">
+    <div class="col-md-3">
+        <div class="content-section">
+            <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+            <h2>{{ user.username }}</h2>
+            <p class='text-muted'>You can put any information here you'd like.
+                <ul class="list-group">
+                    <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' %}">Liked
+                            Drinks</a></li>
+                    <li class="list-group-item list-group-item-light"><a>Disliked Drinks</a></li>
+                    <li class="list-group-item list-group-item-light"><a href="{% url 'profile' %}">Account Info</a>
+                    </li>
+                </ul>
+            </p>
+        </div>
+    </div>
+    <div class="col-md-9">
+        {% if user.is_authenticated %}
+        <div class="container title">
+            <h1>Liked Drinks</h1>
+        </div>
+            {% if drinks %}
+                {% include 'gnt/liked_drinks_with_remove.html' %}
+            {% endif %}
+            {% if not drinks %}
+                You haven't Liked any drinks! Make a query and give feedback on anything you try! We'll save it for you for
+                later.
+            {% endif %}
+        {% endif %}
+    </div>  
 </div>
-{% include 'gnt/liked_drinks_with_remove.html' %}
-{% endif %}
-{% if not drinks %}
-</div>You haven't Liked any drinks! Make a query and give feedback on anything you try! We'll save it for you for later.
-</div>
-{% endif %}
-{% endif %}
-{% endblock 'content' %}
+{% endblock content %}
