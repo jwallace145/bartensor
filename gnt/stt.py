@@ -1,7 +1,7 @@
 '''
 Speech-to-text adapter and implementing classes.
 '''
-import os
+from django.conf import settings
 
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
@@ -15,7 +15,7 @@ class STT:
 
 class IBM(STT):
     def __init__(self):
-        api_key = os.environ['WATSON_SPEECH_TO_TEXT_API_KEY']
+        api_key = getattr(settings, 'WATSON_SPEECH_TO_TEXT_API_KEY', None)
 
         authenticator = IAMAuthenticator(api_key)
         self.speech_to_text = SpeechToTextV1(authenticator=authenticator)
