@@ -1,5 +1,29 @@
 {% extends 'gnt/profile_base.html' %}
 {% load crispy_forms_tags %}
 {% block profile_content %}
-<p>profile content goes here</p>
+{% for drink in drinks %}
+<article class="media content-section">
+  <img class="rounded-circle article-img" src="{{ drink.user.profile.image.url }}">
+  <div class="media-body">
+    <div class="article-metadata">
+      <a class="mr-2" href="#">{{ drink.user }}</a>
+      <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
+    </div>
+    <h2><a class="article-title" href="#">{{ drink.name }}</a></h2>
+    <p class="article-content">{{ drink.description }}</p>
+    <p class="article-content">Ingredients</p>
+    {% for ingredient in drink.ingredient_set.all %}
+    <ul>
+      <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
+    </ul>
+    {% endfor %}
+    <p class="article-content">Instructions</p>
+    {% for instruction in drink.instruction_set.all %}
+    <ul>
+      <li>{{ instruction.instruction }}</li>
+    </ul>
+    {% endfor %}
+  </div>
+</article>
+{% endfor %}
 {% endblock profile_content %}

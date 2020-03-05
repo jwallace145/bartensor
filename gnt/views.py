@@ -1,14 +1,15 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request
+from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request, User_drink
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from django.forms.formsets import formset_factory
 
 from .stt import IBM
 
@@ -70,33 +71,46 @@ def register(request):
 
 @login_required
 def profile_create_drink(request):
+    IngredientFormset = formset_factory(CreateUserDrinkIngredientForm)
+    InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
+
     if request.method == 'POST':
-        profile = Profile.objects.get(id=request.user.profile.id)
-
         create_user_drink_form = CreateUserDrinkForm(request.POST)
+
         if create_user_drink_form.is_valid():
-            user_drink = create_user_drink_form.save()
-            user_drink.profile_FK = profile
-            user_drink.save()
+            drink = create_user_drink_form.save(commit=False)
+            drink.user = request.user
+            drink.save()
 
-            create_user_drink_ingredient_form = CreateUserDrinkIngredientForm(
-                request.POST)
+            ingredient_formset = IngredientFormset(
+                request.POST, prefix='ingredient')
+            if ingredient_formset.is_valid():
+                for ingredient_form in ingredient_formset:
+                    ingredient = ingredient_form.save(commit=False)
+                    ingredient.drink = drink
+                    ingredient.save()
 
-            if create_user_drink_ingredient_form.is_valid():
-                user_drink_ingredient = create_user_drink_ingredient_form.save()
-                user_drink_ingredient.user_drink_FK = user_drink
-                user_drink_ingredient.save()
+            instruction_formset = InstructionFormset(
+                request.POST, prefix='instruction')
+            if instruction_formset.is_valid():
+                for instruction_form in instruction_formset:
+                    instruction = instruction_form.save(commit=False)
+                    instruction.drink = drink
+                    instruction.save()
 
                 messages.success(request, f'Your drink has been created')
                 return redirect('profile_public')
     else:
         create_user_drink_form = CreateUserDrinkForm()
-        create_user_drink_ingredient_form = CreateUserDrinkIngredientForm()
+        ingredient_formset = IngredientFormset(prefix='ingredient')
+        instruction_formset = InstructionFormset(prefix='instruction')
 
     context = {
         'create_user_drink_form': create_user_drink_form,
-        'create_user_drink_ingredient_form': create_user_drink_ingredient_form
+        'ingredient_formset': ingredient_formset,
+        'instruction_formset': instruction_formset
     }
+
     return render(request, 'gnt/profile_create_drink.html', context)
 
 
@@ -110,8 +124,7 @@ def profile_edit(request):
         if user_update_form.is_valid() and profile_update_form.is_valid():
             user_update_form.save()
             profile_update_form.save()
-            messages.success(
-                request, f'Your account has been updated!')
+            messages.success(request, f'Your account has been updated!')
             return redirect('profile_public')
     else:
         user_update_form = UserUpdateForm(instance=request.user)
@@ -127,7 +140,63 @@ def profile_edit(request):
 
 @login_required
 def profile_public(request):
-    return render(request, 'gnt/profile_public.html')
+    drinks = User_drink.objects.filter(
+        user=request.user).order_by('-timestamp')
+    context = {
+        'drinks': drinks
+    }
+    return render(request, 'gnt/profile_public.html', context)
+
+
+def get_liked_disliked_drinks(request):
+    try:
+        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
+        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
+
+        authenticator = IAMAuthenticator(api_key)
+        discovery = DiscoveryV1(
+            version='2019-04-30',
+            authenticator=authenticator
+        )
+        liked_drinks = []
+        disliked_drinks = []
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        # get liked drinks
+        profile_to_liked_drink = Profile_to_liked_drink.objects.filter(
+            profile_FK=profile.id)
+        if profile_to_liked_drink:
+            response = [0 for i in range(len(profile_to_liked_drink))]
+            for i, ptd in enumerate(profile_to_liked_drink):
+                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                obj = discovery.query(
+                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                response[i] = obj[0]['id']
+            liked_drinks = response
+        # get disliked drinks
+        profile_to_disliked_drink = Profile_to_disliked_drink.objects.filter(
+            profile_FK=profile.id)
+        if profile_to_disliked_drink:
+            response = [0 for i in range(len(profile_to_disliked_drink))]
+            for i, ptd in enumerate(profile_to_disliked_drink):
+                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                obj = discovery.query(
+                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                response[i] = obj[0]['id']
+            disliked_drinks = response
+        # return response
+        resp = {
+            'message': [liked_drinks, disliked_drinks],
+            'status': 201
+        }
+        return JsonResponse(resp)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
 
 def liked_drinks(request):
     if request.user.is_authenticated:
@@ -165,6 +234,109 @@ def liked_drinks(request):
 def about(request):
     return render(request, 'gnt/about.html')
 
+def like_drink(request):
+    try:
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+
+        profile = Profile.objects.get(id=request.user.profile.id)
+        # Check to see if drink is disliked then remove
+        disliked_drink = Profile_to_disliked_drink.objects.filter(
+            profile_FK=profile, drink_FK=drink)
+        if disliked_drink:
+            disliked_drink.delete()
+
+        if Profile_to_liked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " has already been liked by " + str(username) + ". No changes to db",
+                'status': 422
+            }
+        else:
+            new_like = Profile_to_liked_drink(
+                profile_FK=profile, drink_FK=drink)
+            new_like.save()
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s liked drinks"
+            response = {
+                'message': msg,
+                'status': 201
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+
+def dislike_drink(request):
+    try:
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        profile = Profile.objects.get(id=request.user.profile.id)
+        # If user has liked drink, remove it from liked table
+        liked_drink = Profile_to_liked_drink.objects.filter(
+            profile_FK=profile, drink_FK=drink)
+        if liked_drink:
+            # Remove liked drink
+            liked_drink.delete()
+
+        if Profile_to_disliked_drink.objects.filter(profile_FK=profile, drink_FK=drink):
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " has already been disliked by " + str(username) + ". No changes to db",
+                'status': 422
+            }
+        else:
+            new_dislike = Profile_to_disliked_drink(
+                profile_FK=profile, drink_FK=drink)
+            new_dislike.save()
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s disliked drinks"
+            response = {
+                'message': msg,
+                'status': 201
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+
+def remove_liked_drink(request):
+    try:
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        profile = Profile.objects.get(id=request.user.profile.id)
+        liked_drink = Profile_to_liked_drink.objects.filter(
+            profile_FK=profile, drink_FK=drink)
+        if liked_drink:
+            liked_drink.delete()
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " deleted for ",
+                'status': 200
+            }
+        else:
+            response = {
+                'message': 'Drink ' + str(drink) + ' not liked for ' + str(username),
+                'status': 404
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
 def disliked_drinks(request):
     if request.user.is_authenticated:
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
@@ -196,3 +368,39 @@ def disliked_drinks(request):
             return render(request, 'gnt/disliked_drinks.html')
     else:
         return HttpResponseRedirect('/home/')
+
+
+def remove_disliked_drink(request):
+    try:
+        username = request.POST['user']
+        drink = Drinks.objects.get(drink_hash=request.POST['drink_id'])
+        profile = Profile.objects.get(id=request.user.profile.id)
+        disliked_drink = Profile_to_disliked_drink.objects.filter(
+            profile_FK=profile, drink_FK=drink)
+        if disliked_drink:
+            disliked_drink.delete()
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " deleted for ",
+                'status': 200
+            }
+        else:
+            response = {
+                'message': 'Drink ' + str(drink) + ' not disliked for ' + str(username),
+                'status': 404
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+
+def timeline(request):
+    drinks = User_drink.objects.all().order_by('-timestamp')
+    context = {
+        'drinks': drinks
+    }
+    return render(request, 'gnt/timeline.html', context)
