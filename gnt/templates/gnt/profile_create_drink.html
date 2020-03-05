@@ -11,22 +11,22 @@
       <legend>Ingredients</legend>
       {{ ingredient_formset.management_form }}
       {% for ingredient_form in ingredient_formset %}
-      <div class="row form-row">
+      <div class="row ingredient-form">
         {{ ingredient_form | crispy }}
       </div>
       {% endfor %}
-      <div class="row ingredient">
-        <button class="btn btn-outline-info" type="button" id="add_more">Add Ingredient</button>
+      <div class="row">
+        <button class="btn btn-outline-info" type="button" id="add_ingredient_form">Add Ingredient</button>
       </div>
       <legend>Instructions</legend>
       {{ instruction_formset.management_form }}
       {% for instruction_form in instruction_formset %}
-      <div class="row form-row-1">
+      <div class="row instruction-form">
         {{ instruction_form | crispy }}
       </div>
       {% endfor %}
       <div class="row">
-        <button class="btn btn-outline-info" type="button" id="add_more_1">Add Instruction</button>
+        <button class="btn btn-outline-info" type="button" id="add_instruction_form">Add Instruction</button>
       </div>
     </fieldset>
     <legend class="border-bottom mb-4"></legend>
@@ -36,11 +36,11 @@
   </form>
 </div>
 <script>
-  $('#add_more').click(function() {
-    cloneMore('div.form-row:last', 'ingredient')
+  $('#add_ingredient_form').click(function() {
+    cloneMore('div.ingredient-form:last', 'ingredient')
   });
-  $('#add_more_1').click(function() {
-    cloneMore('div.form-row-1:last', 'instruction')
+  $('#add_instruction_form').click(function() {
+    cloneMore('div.instruction-form:last', 'instruction')
   });
 </script>
 {% endblock profile_content %}

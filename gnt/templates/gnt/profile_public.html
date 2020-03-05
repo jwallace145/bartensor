@@ -17,6 +17,12 @@
       <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
     </ul>
     {% endfor %}
+    <p class="article-content">Instructions</p>
+    {% for instruction in drink.instruction_set.all %}
+    <ul>
+      <li>{{ instruction.instruction }}</li>
+    </ul>
+    {% endfor %}
   </div>
 </article>
 {% endfor %}
