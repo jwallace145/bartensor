@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.urls import path, re_path
 from django.contrib.auth import views as auth_views
 from gnt import views as gnt_views
+import gnt.db_api as gnt_db_api
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -34,12 +35,12 @@ urlpatterns = [
     path('profile-edit/', gnt_views.profile_edit, name='profile_edit'),
     path('profile-public/', gnt_views.profile_public, name='profile_public'),
     path('liked_drinks/', gnt_views.liked_drinks, name='liked_drinks'),
-    path('get_liked_disliked_drinks/', gnt_views.get_liked_disliked_drinks, name = 'get_liked_disliked_drinks'),
-    path('like_drink/', gnt_views.like_drink, name='like_drink'),
-    path('remove_liked_drink/', gnt_views.remove_liked_drink, name='remove_liked_drink'),
+    path('get_liked_disliked_drinks/', gnt_db_api.get_liked_disliked_drinks, name = 'get_liked_disliked_drinks'),
+    path('like_drink/', gnt_db_api.like_drink, name='like_drink'),
+    path('remove_liked_drink/', gnt_db_api.remove_liked_drink, name='remove_liked_drink'),
     path('disliked_drinks/', gnt_views.disliked_drinks, name='disliked_drinks'),
-    path('dislike_drink/', gnt_views.dislike_drink, name='dislike_drink'),
-    path('remove_disliked_drink/', gnt_views.remove_disliked_drink, name='remove_disliked_drink'),
+    path('dislike_drink/', gnt_db_api.dislike_drink, name='dislike_drink'),
+    path('remove_disliked_drink/', gnt_db_api.remove_disliked_drink, name='remove_disliked_drink'),
     path('password-reset/',
          auth_views.PasswordResetView.as_view(
              template_name='gnt/password_reset.html'),
