@@ -7,21 +7,63 @@
     "id": "95b96fd4-6680-4ce1-92d9-d6d7b40778d8",
     "name": "wrong login",
     "commands": [{
-      "id": "50c2e30d-2453-400d-9e2f-3de55db40906",
+      "id": "094e7b14-020b-4208-a166-9a9936754140",
+      "comment": "",
+      "command": "",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "73ff330e-4f61-472d-bc7f-028c40bd1060",
       "comment": "",
       "command": "open",
-      "target": "/",
+      "target": "http://127.0.0.1:8000",
       "targets": [],
       "value": ""
     }, {
-      "id": "1a722510-e675-4151-a9e1-99b49d7da128",
+      "id": "cf152a47-be13-4b3e-ac68-041a81911f0d",
       "comment": "",
-      "command": "setWindowSize",
-      "target": "1936x1096",
+      "command": "store",
+      "target": "true",
+      "targets": [],
+      "value": "!statusOK"
+    }, {
+      "id": "7bf62e2a-094f-481d-a270-ff55a4a6d53a",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=is21",
       "targets": [],
       "value": ""
     }, {
-      "id": "e00e2294-4f83-4501-8721-88246881a4be",
+      "id": "23572124-acc9-4203-988e-1d7b469c8cad",
+      "comment": "",
+      "command": "if",
+      "target": "${!statusOK}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "aee81b23-6fe8-40f9-8f86-6c865cd778a1",
+      "comment": "",
+      "command": "echo",
+      "target": "modal found",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f36c4bf5-0ca2-4281-84e4-ff89d6c6bcfe",
+      "comment": "",
+      "command": "click",
+      "target": "id=is21",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "cc6a6e83-4719-4c91-a732-614a1fbed488",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "abec4426-6bc6-4004-962a-36e729c7dac6",
       "comment": "",
       "command": "click",
       "target": "linkText=Login",
@@ -94,6 +136,274 @@
         ["css=li", "css:finder"],
         ["xpath=//li", "xpath:position"],
         ["xpath=//li[contains(.,'Please enter a correct username and password. Note that both fields may be case-sensitive.')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "6d9c8f02-446f-4dd6-a80d-46394d095e04",
+    "name": "about page exists",
+    "commands": [{
+      "id": "a4ea7532-0ac8-4029-a392-9a7980b15355",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "ba765f67-ec7e-4b55-a797-b2aa45134cc9",
+      "comment": "",
+      "command": "store",
+      "target": "true",
+      "targets": [],
+      "value": "!statusOK"
+    }, {
+      "id": "6e8de54f-0dab-4f7d-b0d1-46a3da9e4cef",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=is21",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "fca2720e-0b32-4800-9630-be46c3c8d186",
+      "comment": "",
+      "command": "if",
+      "target": "${!statusOK}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f6ad9478-d781-4af0-9d84-12cfbed31a24",
+      "comment": "",
+      "command": "echo",
+      "target": "modal found",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "37ed02e5-365b-42ff-9db4-e7610fb6fbab",
+      "comment": "",
+      "command": "click",
+      "target": "id=is21",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "72a3b0b5-3add-416d-a1cc-883a0df53225",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "23e7a9a5-aeaf-4e44-8a9b-c9053ef24ed3",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=About",
+      "targets": [
+        ["linkText=About", "linkText"],
+        ["css=.mr-auto > .nav-item", "css:finder"],
+        ["xpath=//a[contains(text(),'About')]", "xpath:link"],
+        ["xpath=//div[@id='navbarToggle']/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/about/')]", "xpath:href"],
+        ["xpath=//div/div/a", "xpath:position"],
+        ["xpath=//a[contains(.,'About')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "7997b8b4-57e6-432e-a90a-4bbceceeb115",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.col-md-12 > .text-light:nth-child(1)",
+      "targets": [
+        ["css=.col-md-12 > .text-light:nth-child(1)", "css:finder"],
+        ["xpath=//h2", "xpath:position"],
+        ["xpath=//h2[contains(.,'About Bartensor')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "c16d0cd5-3969-4129-b2ca-bb931327638d",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.col-12:nth-child(1) > .cnt-block",
+      "targets": [
+        ["css=.col-12:nth-child(1) > .cnt-block", "css:finder"],
+        ["xpath=//li/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "7078eb58-85cd-4ce0-862a-d5a42965cef6",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.col-12:nth-child(2) > .cnt-block",
+      "targets": [
+        ["css=.col-12:nth-child(2) > .cnt-block", "css:finder"],
+        ["xpath=//li[2]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "03070326-b51e-48d2-a089-4693a05c45ce",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.col-12:nth-child(3) > .cnt-block",
+      "targets": [
+        ["css=.col-12:nth-child(3) > .cnt-block", "css:finder"],
+        ["xpath=//li[3]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c0685b41-4e8e-4a01-ac85-d6f45e7f29a6",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.col-12:nth-child(4) > .cnt-block",
+      "targets": [
+        ["css=.col-12:nth-child(4) > .cnt-block", "css:finder"],
+        ["xpath=//li[4]/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "09f215dc-c55f-4028-ab70-35a63bd9ae97",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.col-12:nth-child(5) > .cnt-block",
+      "targets": [
+        ["css=.col-12:nth-child(5) > .cnt-block", "css:finder"],
+        ["xpath=//li[5]/div", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }, {
+    "id": "e3556168-9ac3-4494-a667-af6d3d2c389a",
+    "name": "how do i make a white russian",
+    "commands": [{
+      "id": "db3e7f92-f9ae-4ce8-9af6-7676586d801f",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "309bae69-c558-45db-b0d6-9bd9853f59d4",
+      "comment": "",
+      "command": "store",
+      "target": "true",
+      "targets": [],
+      "value": "!statusOK"
+    }, {
+      "id": "09ff8fe7-49e7-42e7-9351-d0c4ec7d9eef",
+      "comment": "",
+      "command": "verifyElementPresent",
+      "target": "id=is21",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "3f60adb5-bf58-49fb-93d3-599249a10423",
+      "comment": "",
+      "command": "echo",
+      "target": "${!statusOK}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "549d02fc-c02f-46d4-87f5-64fa9e7b617b",
+      "comment": "",
+      "command": "if",
+      "target": "${!statusOK}",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "38d7321b-7dab-4572-b2fb-37c0e36498a5",
+      "comment": "",
+      "command": "echo",
+      "target": "modal found",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "f794af89-e5cc-4d90-a07d-a750f24e8c95",
+      "comment": "",
+      "command": "click",
+      "target": "id=is21",
+      "targets": [
+        ["id=is21", "id"],
+        ["css=#is21", "css:finder"],
+        ["xpath=//button[@id='is21']", "xpath:attributes"],
+        ["xpath=//div[@id='myModal']/div/div/div[3]/div[2]/button", "xpath:idRelative"],
+        ["xpath=//div[2]/button", "xpath:position"],
+        ["xpath=//button[contains(.,'Yes')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "fee3f663-2dd7-4ba7-8a15-02b3d95e78d4",
+      "comment": "",
+      "command": "end",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "0ef0cf62-f3df-4ad6-9641-9b3edd790ebe",
+      "comment": "",
+      "command": "click",
+      "target": "name=search_bar",
+      "targets": [
+        ["name=search_bar", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='search_bar']", "xpath:attributes"],
+        ["xpath=//form/div/input", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "9e5800df-5327-41af-a2f0-6359331ae453",
+      "comment": "",
+      "command": "type",
+      "target": "name=search_bar",
+      "targets": [
+        ["name=search_bar", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='search_bar']", "xpath:attributes"],
+        ["xpath=//form/div/input", "xpath:position"]
+      ],
+      "value": "white russian"
+    }, {
+      "id": "abee350d-4087-450c-98c7-9e9554aa6e42",
+      "comment": "",
+      "command": "sendKeys",
+      "target": "name=search_bar",
+      "targets": [
+        ["name=search_bar", "name"],
+        ["css=.form-control", "css:finder"],
+        ["xpath=//input[@name='search_bar']", "xpath:attributes"],
+        ["xpath=//form/div/input", "xpath:position"]
+      ],
+      "value": "${KEY_ENTER}"
+    }, {
+      "id": "d2b04710-8d97-407a-bde5-8b3253b4cd09",
+      "comment": "",
+      "command": "click",
+      "target": "xpath=(//button[@type='button'])[2]",
+      "targets": [
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='1']/div/h2/button", "xpath:idRelative"],
+        ["xpath=//h2/button", "xpath:position"],
+        ["xpath=//button[contains(.,'White Russian')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "a8d6b558-1581-43c9-93e6-e0eebe5e9d72",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "xpath=(//button[@type='button'])[2]",
+      "targets": [
+        ["xpath=(//button[@type='button'])[2]", "xpath:attributes"],
+        ["xpath=//div[@id='1']/div/h2/button", "xpath:idRelative"],
+        ["xpath=//h2/button", "xpath:position"],
+        ["xpath=//button[contains(.,'White Russian')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "04a1b896-0ac1-4a88-a697-d396305e7dd0",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=#header1 img",
+      "targets": [
+        ["css=#header1 img", "css:finder"],
+        ["xpath=(//img[@alt='picture lost :('])[2]", "xpath:img"],
+        ["xpath=//div[@id='header1']/div/div[2]/img", "xpath:idRelative"],
+        ["xpath=//div[2]/img", "xpath:position"]
       ],
       "value": ""
     }]
