@@ -2,15 +2,12 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.contrib.auth.models import User
 from django.conf import settings
-from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request, User_drink
-from ibm_watson import DiscoveryV1
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from .models import Profile, Drinks, Profile_to_liked_drink, Profile_to_disliked_drink, User_drink
 from django.forms.formsets import formset_factory
-from .stt import IBM
+from gnt.adapters.stt_adapter import IBM
 from gnt.adapters import drink_adapter
 
 # get api key from settings.py which is stored as an environment variable

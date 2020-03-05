@@ -104,10 +104,8 @@ $(document).ready(function() {
     });
 });
 
-function color_thumbs(){
-    //$(window).bind('load', function(){
-
-    console.log("Running mark_liked_disliked_drinks");
+function color_thumbs() {
+    console.log("Marking liked/disliked drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
