@@ -37,6 +37,7 @@ def results(request):
         response = discovery_adapter.natural_language_search(text)
 
         return render(request, 'gnt/results.html', {
+            'query': text,
             'drinks': response
         })
     else:
