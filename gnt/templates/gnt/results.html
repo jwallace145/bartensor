@@ -2,8 +2,10 @@
 {% load static %}
 
 {% block 'content' %}
-<div class="container title">
-    <h1>Results</h1>
+<div id='result_container'>
+    <div class="container title">
+        <h1>Results</h1>
+    </div>
+    {% include 'gnt/drink_results_with_voting.html' %}
 </div>
-{% include 'gnt/drink_results_with_voting.html' %}
 {% endblock 'content' %}
