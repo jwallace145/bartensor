@@ -9,9 +9,13 @@ from django.conf import settings
 from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request, User_drink
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+<<<<<<< Updated upstream
 from django.forms.formsets import formset_factory
 
+=======
+>>>>>>> Stashed changes
 from .stt import IBM
+from gnt.adapters import drink_adapter
 
 # get api key from settings.py which is stored as an environment variable
 api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
@@ -33,19 +37,8 @@ def results(request):
         else:
             text = request.POST['search_bar']
 
-        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
-        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
-
-        authenticator = IAMAuthenticator(api_key)
-        discovery = DiscoveryV1(
-            version='2019-04-30',
-            authenticator=authenticator
-        )
-        discovery.set_service_url(
-            'https://api.us-south.discovery.watson.cloud.ibm.com/')
-
-        response = discovery.query(
-            environment_id, collection_id, natural_language_query=text).result['results']
+        discovery_adapter = drink_adapter.DiscoveryAdapter()
+        response = discovery_adapter.natural_language_search(text)
 
         return render(request, 'gnt/results.html', {
             'drinks': response
@@ -200,27 +193,16 @@ def get_liked_disliked_drinks(request):
 
 def liked_drinks(request):
     if request.user.is_authenticated:
-        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
-        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
-
-        authenticator = IAMAuthenticator(api_key)
-        discovery = DiscoveryV1(
-            version='2019-04-30',
-            authenticator=authenticator
-        )
-        discovery.set_service_url(
-            'https://api.us-south.discovery.watson.cloud.ibm.com/')
-
         user = request.user
         profile = Profile.objects.get(user=user)
         profile_to_drink = Profile_to_liked_drink.objects.filter(
             profile_FK=profile.id)
         if profile_to_drink:
             response = [0 for i in range(len(profile_to_drink))]
+            discovery_adapter = drink_adapter.DiscoveryAdapter()
             for i, ptd in enumerate(profile_to_drink):
                 drink = Drinks.objects.get(id=ptd.drink_FK.id)
-                obj = discovery.query(
-                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                obj = discovery_adapter.get_drink(drink.drink_hash)
                 response[i] = obj[0]
             return render(request, 'gnt/liked_drinks.html', {
                 'drinks': response
@@ -339,27 +321,16 @@ def remove_liked_drink(request):
 
 def disliked_drinks(request):
     if request.user.is_authenticated:
-        environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
-        collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
-
-        authenticator = IAMAuthenticator(api_key)
-        discovery = DiscoveryV1(
-            version='2019-04-30',
-            authenticator=authenticator
-        )
-        discovery.set_service_url(
-            'https://api.us-south.discovery.watson.cloud.ibm.com/')
-
         user = request.user
         profile = Profile.objects.get(user=user)
         profile_to_drink = Profile_to_disliked_drink.objects.filter(
             profile_FK=profile.id)
         if profile_to_drink:
             response = [0 for i in range(len(profile_to_drink))]
+            discovery_adapter = drink_adapter.DiscoveryAdapter()
             for i, ptd in enumerate(profile_to_drink):
                 drink = Drinks.objects.get(id=ptd.drink_FK.id)
-                obj = discovery.query(
-                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
+                obj = discovery_adapter.get_drink(drink.drink_hash)
                 response[i] = obj[0]
             return render(request, 'gnt/disliked_drinks.html', {
                 'drinks': response

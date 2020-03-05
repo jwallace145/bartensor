@@ -126,11 +126,10 @@ def remove_disliked_drink(request):
             'message': str(e),
             'status': 500
         }
-        return JsonResponse(response)
+        return JsonResponse(response) 
 
 def get_liked_disliked_drinks(request):
     try:
-        print('here')
         liked_drinks = []
         disliked_drinks = []
         user = request.user
@@ -156,7 +155,6 @@ def get_liked_disliked_drinks(request):
         }    
         return JsonResponse(resp)
     except Exception as e:
-        print('error')
         print(str(e))
         response = {
             'message': str(e),
