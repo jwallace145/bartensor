@@ -88,9 +88,9 @@ $(document).ready(function() {
             dataType: 'html',
             data: $(this).serialize(),
             success: function(data) {
-                var dom = $(data).find("body")
-                $("body").html(data);
-                color_thumbs();// replace entire page with response
+                var dom = $(data).find("#result_container")
+                $("#content_here").replaceWith(dom);
+                color_thumbs();
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr.status);
