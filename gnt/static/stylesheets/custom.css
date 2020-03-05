@@ -122,7 +122,7 @@ a.article-title:hover {
 /*
  * Search bar
  */
-.search-bar {
+#search-bar {
   border-top: none;
   border-right: none;
   border-bottom: 2px solid #000000;
@@ -131,14 +131,14 @@ a.article-title:hover {
   border-radius: 0;
 }
 
-.search-bar:focus {
+#search-bar:focus {
   -webkit-box-shadow: none;
   border-right: none;
   border-left: 1px solid #dee2e6;
   box-shadow: none;
 }
 
-.search-button {
+#main-search-button {
   background: white;
   border-top: none;
   border-right: 1px solid #dee2e6;
@@ -147,7 +147,7 @@ a.article-title:hover {
   border-radius: 1px;
 }
 
-.search-button:hover {
+#main-search-button:hover {
   background: #dee2e6;
   border-top: none;
   border-right: 1px solid #dee2e6;
@@ -160,7 +160,7 @@ a.article-title:hover {
   height: 20px;
 }
 
-.search-nav-link {
+#search-nav-link {
   cursor: pointer;
   /* using important here to override bootstrap's specificity */
   border: 1px solid #dee2e6 !important;

@@ -31,10 +31,10 @@
         </li>
       </ul>
       <div class="input-group">
-        <input type="text" class="form-control search-bar" name="search_bar" placeholder="Search" aria-label="Search"
+        <input type="text" class="form-control search-bar" id="search-bar" name="search_bar" placeholder="Search" aria-label="Search"
           aria-describedby="search-bar">
         <div class="input-group-append">
-          <button id="main-search-button" class="btn btn-outline-primary search-button" type="submit">
+          <button id="main-search-button" class="btn btn-outline-primary" type="submit">
             <img class="search-icon" src="{% static 'images/search.png' %}" alt="Search" />
           </button>
         </div>
@@ -44,5 +44,21 @@
       <!-- for spacing -->
     </div>
   </div>
+  <!--
+  <div class="row">
+    <div class="col"></div>
+    <div class="text-left">
+      <span>"What can I make with..."</span>
+    </div>
+    <div class="col"></div>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div>
+      <span>"How do I make..."</span>
+    </div>
+    <div class="col"></div>
+  </div>
+  -->
 </div>
 {% endblock 'content' %}

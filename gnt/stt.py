@@ -3,6 +3,7 @@ Speech-to-text adapter and implementing classes.
 '''
 from django.conf import settings
 
+# from google.cloud import speech
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
@@ -12,6 +13,7 @@ class STT:
 
     def transcribe(self, audio):
         raise NotImplementedError('transcribe() not implemented in speech-to-text adapter')
+
 
 class IBM(STT):
     def __init__(self):
@@ -28,4 +30,23 @@ class IBM(STT):
             results = self.speech_to_text.recognize(audio).result['results']
             return results[0]['alternatives'][0]['transcript']
         except:
-            return 'Sweaty Mexican'
+            return 'white russian'
+
+
+class Google(STT):
+    def __init__(self):
+        self.client = speech.SpeechClient()
+
+    def transcribe(self, audio):
+        config = speech.types.RecognitionConfig(
+            encoding=speech.enums.RecognitionConfig.AudioEncoding.OGG_OPUS,
+            language_code='en-US',
+            sample_rate_hertz=8000, # 8000, 12000, 16000, 24000, and 48000 all fail, the only ones allowed for ogg
+            # we know its ogg cause printing the blob in the javascript console tells us the mime type is "audio/ogg"
+        )
+        recognition_audio = speech.types.RecognitionAudio(content=audio.read())
+        results = self.client.recognize(config, recognition_audio).results
+        print(results)
+        print(dir(results))
+        print(type(results))
+        return results[0].alternatives[0]
