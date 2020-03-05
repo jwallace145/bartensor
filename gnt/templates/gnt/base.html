@@ -34,9 +34,6 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarToggle">
           <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="{% url 'timeline' %}">Home</a>
-          </div>
-          <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
           </div>
 
@@ -87,18 +84,14 @@
   <main role="main" class="container">
     <div class="row">
       <div class="col-lg-12">
-        {% if messages %}
-        {% for message in messages %}
+        {% if messages %} {% for message in messages %}
         <div class=" alert alert-{{ message.tags }}">
           {{ message }}
         </div>
-
-        {% endfor %}
-        {% endif %}
-        
-        {% block 'content' %}
-        {% endblock 'content' %}
-
+        {% endfor %} {% endif %}
+        <div id="content_here">
+        {% block 'content' %} {% endblock %}
+      </div>
       </div>
     </div>
   </main>
@@ -140,7 +133,6 @@
   <script type="text/javascript" src="{% static 'scripts/hark.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/like_dislike.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/remove_like_dislike.js' %}"></script>
-  <script type="text/javascript" src="{% static 'scripts/clone_more.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/index.js' %}"></script>
 
   <!-- Controls 21+ modal -->
