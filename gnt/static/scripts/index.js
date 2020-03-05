@@ -45,6 +45,7 @@ $(document).ready(function() {
                             var dom = $(data).find("body")
                             $("body").html(data);
                             color_thumbs();// replace entire page with response
+
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             console.log(xhr.status);
@@ -102,6 +103,7 @@ $(document).ready(function() {
 
 function color_thumbs(){
     //$(window).bind('load', function(){
+
     console.log("Running mark_liked_disliked_drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
@@ -138,6 +140,7 @@ function color_thumbs(){
             } else {
                 console.log(data["status"]);
                 console.log("Error in finding liked and disliked drinks");
+
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
