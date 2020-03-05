@@ -87,3 +87,8 @@ class Ingredient(models.Model):
     drink = models.ForeignKey(User_drink, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
     quantity = models.CharField(max_length=32)
+
+
+class Instruction(models.Model):
+    drink = models.ForeignKey(User_drink, on_delete=models.CASCADE)
+    instruction = models.CharField(max_length=100)

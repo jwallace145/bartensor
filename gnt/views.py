@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
@@ -70,32 +70,58 @@ def register(request):
 @login_required
 def profile_create_drink(request):
     IngredientFormset = formset_factory(CreateUserDrinkIngredientForm)
+    InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
     if request.method == 'POST':
+        print('POST DATA')
+        print(request.POST)
         create_user_drink_form = CreateUserDrinkForm(request.POST)
+
+        print('\n\n\n\n')
+        for key, value in request.POST.items():
+            print(f'key: { key } value: { value }')
+        print('\n\n\n\n')
+        print(request.POST.get('forms-TOTAL_FORMS'))
 
         if create_user_drink_form.is_valid():
             drink = create_user_drink_form.save(commit=False)
             drink.user = request.user
             drink.save()
 
-            ingredient_formset = IngredientFormset(request.POST)
+            ingredient_formset = IngredientFormset(
+                request.POST, prefix='ingredient')
             if ingredient_formset.is_valid():
                 for ingredient_form in ingredient_formset:
                     ingredient = ingredient_form.save(commit=False)
                     ingredient.drink = drink
                     ingredient.save()
 
+            instruction_formset = InstructionFormset(
+                request.POST, prefix='instruction')
+            if instruction_formset.is_valid():
+                for instruction_form in instruction_formset:
+                    instruction = instruction_form.save(commit=False)
+                    instruction.drink = drink
+                    instruction.save()
+
                 messages.success(request, f'Your drink has been created')
+                print('FROM POST')
+                print(ingredient_formset)
+                print(instruction_formset)
                 return redirect('profile_public')
     else:
-        ingredient_formset = IngredientFormset()
         create_user_drink_form = CreateUserDrinkForm()
+        ingredient_formset = IngredientFormset(prefix='ingredient')
+        instruction_formset = InstructionFormset(prefix='instruction')
+        print(ingredient_formset)
+        print(instruction_formset)
 
     context = {
         'create_user_drink_form': create_user_drink_form,
-        'ingredient_formset': ingredient_formset
+        'ingredient_formset': ingredient_formset,
+        'instruction_formset': instruction_formset
     }
+
     return render(request, 'gnt/profile_create_drink.html', context)
 
 

@@ -2,7 +2,7 @@
 {% load crispy_forms_tags %}
 {% block profile_content %}
 <div class="content-section">
-  <form method="POST" enctype="multipart/form-data">
+  <form method="POST">
     {% csrf_token %}
     <fieldset class="form-group">
       <legend class="border-bottom mb-4">Create a Drink</legend>
@@ -12,19 +12,21 @@
       {{ ingredient_formset.management_form }}
       {% for ingredient_form in ingredient_formset %}
       <div class="row form-row">
-        <div class="col-lg-3">
-          <label>Name</label>
-          {{ ingredient_form.name }}
-        </div>
-        <div class="col-lg-1"></div>
-        <div class="col-lg-3">
-          <label>Quantity</label>
-          {{ ingredient_form.quantity }}
-        </div>
+        {{ ingredient_form | crispy }}
       </div>
       {% endfor %}
       <div class="row ingredient">
-        <button class="btn btn-outline-info add-form-row">Add Ingredient</button>
+        <button class="btn btn-outline-info" type="button" id="add_more">Add Ingredient</button>
+      </div>
+      <legend>Instructions</legend>
+      {{ instruction_formset.management_form }}
+      {% for instruction_form in instruction_formset %}
+      <div class="row form-row-1">
+        {{ instruction_form | crispy }}
+      </div>
+      {% endfor %}
+      <div class="row">
+        <button class="btn btn-outline-info" type="button" id="add_more_1">Add Instruction</button>
       </div>
     </fieldset>
     <legend class="border-bottom mb-4"></legend>
@@ -33,4 +35,12 @@
     </div>
   </form>
 </div>
+<script>
+  $('#add_more').click(function() {
+    cloneMore('div.form-row:last', 'ingredient')
+  });
+  $('#add_more_1').click(function() {
+    cloneMore('div.form-row-1:last', 'instruction')
+  });
+</script>
 {% endblock profile_content %}

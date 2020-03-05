@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
-from .models import Profile, User_drink, Ingredient
+from .models import Profile, User_drink, Ingredient, Instruction
 
 
 class UserRegisterForm(UserCreationForm):
@@ -52,4 +52,12 @@ class CreateUserDrinkIngredientForm(forms.ModelForm):
         fields = [
             'name',
             'quantity'
+        ]
+
+
+class CreateUserDrinkInstructionForm(forms.ModelForm):
+    class Meta:
+        model = Instruction
+        fields = [
+            'instruction'
         ]
