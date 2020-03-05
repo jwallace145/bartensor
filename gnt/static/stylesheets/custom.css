@@ -309,16 +309,14 @@ a {
 }
 
 .fa-cocktail {
-  margin-top: 10px;
+  margin-top: 10px; 
 }
 
 .thumbsup:active {
-  box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
 
 .thumbsdown:active {
-  box-shadow: 0 5px #666;
   transform: translateY(4px);
 }
 
