@@ -26,8 +26,11 @@ class IBM(STT):
 
     def transcribe(self, audio):
         # returns 1 alternative by default
-        results = self.speech_to_text.recognize(audio).result['results']
-        return results[0]['alternatives'][0]['transcript']
+        try:
+            results = self.speech_to_text.recognize(audio).result['results']
+            return results[0]['alternatives'][0]['transcript']
+        except:
+            return 'white russian'
 
 
 class Google(STT):
