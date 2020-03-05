@@ -11,7 +11,6 @@ $(document).ready(function() {
                 user: user
             };
             var csrftoken = getCookie("csrftoken");
-            var currentNode = $(this);
             var thumbsup = $("a[drinkid='" + drink_id + "']:first");
             var thumbsdown = $("a[drinkid='" + drink_id + "']:last");
             $.ajax({
@@ -22,7 +21,7 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data["status"] == 201) {
-                        likeDrinkFeedback("Drink liked!");
+                        console.log("Drink liked!");
                         likeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
                         console.log("Already liked");
@@ -62,10 +61,12 @@ $(document).ready(function() {
                 dataType: "json",
                 success: function(data) {
                     if (data["status"] == 201) {
-                        likeDrinkFeedback("Drink disliked!");
+                        console.log("Drink disliked!");
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
                     } else if (data["status"] == 422) {
-                        console.log("already disliked");
+                        console.log(
+                            "This is already in your disliked drinks"
+                        );
                     } else {
                         console.log("Error in disliking drink");
                     }

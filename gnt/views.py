@@ -11,12 +11,13 @@ from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from django.forms.formsets import formset_factory
 
+from .stt import IBM
+
 # get api key from settings.py which is stored as an environment variable
 api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
 
-
 def bad_request(request, *args, **kwargs):
-    return HttpResponseRedirect('/home/')
+    return HttpResponseRedirect(reverse('home'))
 
 
 def home(request):
@@ -24,8 +25,14 @@ def home(request):
 
 
 def results(request):
-
     if request.method == 'POST':
+        if 'audio' in request.FILES:
+            audio = request.FILES['audio']
+            text = IBM().transcribe(audio)
+            print(text)
+        else:
+            text = request.POST['search_bar']
+
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
         collection_id = '7c11f329-5f31-4e59-aa63-fde1e91ff681'
 
@@ -37,7 +44,6 @@ def results(request):
         discovery.set_service_url(
             'https://api.us-south.discovery.watson.cloud.ibm.com/')
 
-        text = request.POST['search_bar']
         response = discovery.query(
             environment_id, collection_id, natural_language_query=text).result['results']
 
@@ -46,10 +52,6 @@ def results(request):
         })
     else:
         return HttpResponseRedirect(reverse('home'))
-
-
-def loading(request):
-    return render(request, 'gnt/loading.html')
 
 
 def register(request):
@@ -196,7 +198,6 @@ def get_liked_disliked_drinks(request):
         }
         return JsonResponse(response)
 
-
 def liked_drinks(request):
     if request.user.is_authenticated:
         environment_id = 'b7d1486c-2fdc-40c5-a2ce-2d78ec48fa76'
@@ -232,7 +233,6 @@ def liked_drinks(request):
 
 def about(request):
     return render(request, 'gnt/about.html')
-
 
 def like_drink(request):
     try:
@@ -336,7 +336,6 @@ def remove_liked_drink(request):
             'status': 500
         }
         return JsonResponse(response)
-
 
 def disliked_drinks(request):
     if request.user.is_authenticated:
