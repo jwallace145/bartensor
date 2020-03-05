@@ -123,8 +123,7 @@ a.article-title:hover {
  * Search bar
  */
 #search-bar {
-  border-top: none;
-  border-right: none;
+  border: none;
   border-bottom: 2px solid #000000;
   -webkit-box-shadow: none;
   box-shadow: none;
@@ -133,15 +132,14 @@ a.article-title:hover {
 
 #search-bar:focus {
   -webkit-box-shadow: none;
-  border-right: none;
-  border-left: 1px solid #dee2e6;
+  border: none;
+  border-bottom: 2px solid #000000;
   box-shadow: none;
 }
 
 #main-search-button {
   background: white;
-  border-top: none;
-  border-right: 1px solid #dee2e6;
+  border: none;
   border-bottom: 2px solid #000000;
   border-left: none;
   border-radius: 1px;
@@ -149,8 +147,7 @@ a.article-title:hover {
 
 #main-search-button:hover {
   background: #dee2e6;
-  border-top: none;
-  border-right: 1px solid #dee2e6;
+  border: none;
   border-bottom: 2px solid #000000;
   border-left: none;
   border-radius: 1px;
@@ -215,7 +212,9 @@ a {
   cursor: pointer;
 }
 
-/* CSS For expanding search bar */
+/*
+ * Navbar searchbar
+ */
 .searchbar {
   margin-bottom: auto;
   margin-top: auto;
