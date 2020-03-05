@@ -7,7 +7,7 @@
   <div class="media-body">
     <div class="article-metadata">
       <a class="mr-2" href="#">{{ drink.user }}</a>
-      <small class="text-muted">{{ drink.timestamp | date:"F d, Y" }}</small>
+      <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
     </div>
     <h2><a class="article-title" href="#">{{ drink.name }}</a></h2>
     <p class="article-content">{{ drink.description }}</p>

@@ -11,21 +11,21 @@
       <legend>Ingredients</legend>
       {{ ingredient_formset.management_form }}
       {% for ingredient_form in ingredient_formset %}
-      <div class="row ingredient-form">
+      <div class="row ingredient-form" style="padding-left:15px;">
         {{ ingredient_form | crispy }}
       </div>
       {% endfor %}
-      <div class="row">
+      <div class="row" style="padding-left:15px;">
         <button class="btn btn-outline-info" type="button" id="add_ingredient_form">Add Ingredient</button>
       </div>
       <legend>Instructions</legend>
       {{ instruction_formset.management_form }}
       {% for instruction_form in instruction_formset %}
-      <div class="row instruction-form">
+      <div class="row instruction-form" style="padding-left:15px;">
         {{ instruction_form | crispy }}
       </div>
       {% endfor %}
-      <div class="row">
+      <div class="row" style="padding-left:15px;">
         <button class="btn btn-outline-info" type="button" id="add_instruction_form">Add Instruction</button>
       </div>
     </fieldset>

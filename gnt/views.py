@@ -138,7 +138,8 @@ def profile_edit(request):
 
 @login_required
 def profile_public(request):
-    drinks = User_drink.objects.filter(user=request.user)
+    drinks = User_drink.objects.filter(
+        user=request.user).order_by('-timestamp')
     context = {
         'drinks': drinks
     }
@@ -396,3 +397,11 @@ def remove_disliked_drink(request):
             'status': 500
         }
         return JsonResponse(response)
+
+
+def timeline(request):
+    drinks = User_drink.objects.all().order_by('-timestamp')
+    context = {
+        'drinks': drinks
+    }
+    return render(request, 'gnt/timeline.html', context)
