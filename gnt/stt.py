@@ -3,7 +3,7 @@ Speech-to-text adapter and implementing classes.
 '''
 from django.conf import settings
 
-from google.cloud import speech
+# from google.cloud import speech
 from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 
