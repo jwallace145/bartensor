@@ -168,10 +168,7 @@ def get_liked_disliked_drinks(request):
         if profile_to_liked_drink:
             response = [0 for i in range(len(profile_to_liked_drink))]
             for i, ptd in enumerate(profile_to_liked_drink):
-                drink = Drinks.objects.get(id=ptd.drink_FK.id)
-                obj = discovery.query(
-                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
-                response[i] = obj[0]['id']
+                response[i] = ptd.drink_FK.drink_hash
             liked_drinks = response
         # get disliked drinks
         profile_to_disliked_drink = Profile_to_disliked_drink.objects.filter(
@@ -179,10 +176,7 @@ def get_liked_disliked_drinks(request):
         if profile_to_disliked_drink:
             response = [0 for i in range(len(profile_to_disliked_drink))]
             for i, ptd in enumerate(profile_to_disliked_drink):
-                drink = Drinks.objects.get(id=ptd.drink_FK.id)
-                obj = discovery.query(
-                    environment_id, collection_id, query=f'id::"{drink.drink_hash}"').result['results']
-                response[i] = obj[0]['id']
+                response[i] = ptd.drink_FK.drink_hash
             disliked_drinks = response
         # return response
         resp = {
