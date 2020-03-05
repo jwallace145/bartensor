@@ -44,7 +44,8 @@ $(document).ready(function() {
                         processData: false,
                         contentType: false,
                         success: function (data) {
-                            $("html").html(data); // replace entire page with response
+                            $("body").html(data);
+                            color_thumbs(); // replace entire page with response
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             console.log(xhr.status);
@@ -88,8 +89,8 @@ $(document).ready(function() {
             dataType: 'html',
             data: $(this).serialize(),
             success: function(data) {
-                $("html").html(data); 
-                color_thumbs();// replace entire page with response
+                $("body").html(data);// replace entire page with response
+                color_thumbs();
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr.status);
@@ -144,6 +145,7 @@ function color_thumbs(){
                 console.log("ERROR")
             }
         });
+}
 
 function getCookie(name) {
     var cookieValue = null;

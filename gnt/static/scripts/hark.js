@@ -5,11 +5,12 @@
 // edited by Muaz Khan for RTCMultiConnection.js
 function hark(stream, options) {
     var audioContextType = window.webkitAudioContext || window.AudioContext;
-
+    
     var harker = this;
     harker.events = {};
     harker.on = function (event, callback) {
         harker.events[event] = callback;
+        
     };
 
     harker.emit = function () {
@@ -116,8 +117,10 @@ function hark(stream, options) {
             harker.speakingHistory.push(0 + (currentVolume > threshold));
 
             looper();
+            
         }, interval);
     };
+    $("#wave").show();
     looper();
 
     function getMaxVolume(analyser, fftBins) {
