@@ -44,8 +44,16 @@ class Command(BaseCommand):
             user_d = User_drink(user=u, name=f'drink{i}', description=f'description{i}', image=django_file)
             user_d.save()
             print(f'CREATED USER DRINK: drink{i}')
-        User.objects.create_superuser(username="Caleb", email = "woyboy9@gmail.com", password='password')
+        User.objects.create_superuser(username="Caleb", email = "caleb@gmail.com", password='password')
         print(f'CREATED ADMIN ACCOUNT USERNAME: Caleb, PASSWORD: password')
+        User.objects.create_superuser(username="Jimmy", email = "jimmy@gmail.com", password='password')
+        print(f'CREATED ADMIN ACCOUNT USERNAME: Jimmy, PASSWORD: password')
+        User.objects.create_superuser(username="Eric", email = "Eric@gmail.com", password='password')
+        print(f'CREATED ADMIN ACCOUNT USERNAME: Eric, PASSWORD: password')
+        User.objects.create_superuser(username="Michael", email = "Michael@gmail.com", password='password')
+        print(f'CREATED ADMIN ACCOUNT USERNAME: Michael, PASSWORD: password')
+        User.objects.create_superuser(username="Jack", email = "Jack@gmail.com", password='password')
+        print(f'CREATED ADMIN ACCOUNT USERNAME: Jack, PASSWORD: password')
             
 
     def handle(self, *args, **options):
