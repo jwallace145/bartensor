@@ -7,13 +7,13 @@
     <div class="col-md-9" style="display: inline-block">
       <div class="content-section">
         <div class="media">
-          <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+          <img class="rounded-circle account-img" src="{{ username.profile.image.url }}">
           <div class="media-body">
-            <h2 class="account-heading">{{ user.username }}</h2>
-            <p class="text-secondary">{{ user.email }}</p>
+            <h2 class="account-heading">{{ username.username }}</h2>
+            <p class="text-secondary">{{ username.email }}</p>
           </div>
         </div>
-        <p class="text-secondary">{{ user.profile.bio }}</p>
+        <p class="text-secondary">{{ username.profile.bio }}</p>
       </div>
       {% block profile_content %}
       {% endblock profile_content %}

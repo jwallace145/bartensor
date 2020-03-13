@@ -61,6 +61,7 @@ urlpatterns = [
          auth_views.PasswordResetCompleteView.as_view(
              template_name='gnt/password_reset_complete.html'),
          name='password_reset_complete'),
+    path('search/', gnt_views.search, name='search'),
     # Following two lines handle all non matching urls
     re_path(r'^(?P<path>.*)/$', gnt_views.bad_request, name='bad_request'),
     path('', gnt_views.home, name='empty')

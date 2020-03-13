@@ -131,17 +131,14 @@ def profile_edit(request):
     return render(request, 'gnt/profile_edit.html', context)
 
 
-@login_required
 def profile_public(request, username):
-    user = User.objects.get(username=username)
-    drinks = User_drink.objects.filter(
-        user=request.user).order_by('-timestamp')
+    username = User.objects.get(username=username)
+    drinks = User_drink.objects.filter(user=username).order_by('-timestamp')
     context = {
+        'username': username,
         'drinks': drinks
     }
-    print(context)
     return render(request, 'gnt/profile_public.html', context)
-    return HttpResponse('<h1>username: {}</h1>'.format(username))
 
 
 def liked_drinks(request):
@@ -198,3 +195,10 @@ def timeline(request):
         'drinks': drinks
     }
     return render(request, 'gnt/timeline.html', context)
+
+
+def search(request):
+    if request.method == 'POST':
+        username = request.POST['search_input']
+        print(username)
+        return redirect('profile_public', username=username)
