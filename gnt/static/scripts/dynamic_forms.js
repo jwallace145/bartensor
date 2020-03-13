@@ -1,6 +1,7 @@
 function addForm(selector, type) {
   var newElement = $(selector).clone(true);
   var total = $('#id_' + type + '-TOTAL_FORMS').val();
+
   newElement.find(':input').each(function() {
     var name = $(this).attr('name').replace('-' + (total - 1) + '-', '-' + total + '-');
     var id = 'id_' + name;
@@ -9,10 +10,12 @@ function addForm(selector, type) {
       'id': id
     }).val('').removeAttr('checked');
   });
+
   newElement.find('label').each(function() {
     var newFor = $(this).attr('for').replace('-' + (total - 1) + '-', '-' + total + '-');
     $(this).attr('for', newFor);
   });
+
   total++;
   $('#id_' + type + '-TOTAL_FORMS').val(total);
   $(selector).after(newElement);
@@ -22,7 +25,7 @@ function deleteForm(prefix, button) {
   var total = parseInt($('#id_' + prefix + '-TOTAL_FORMS').val());
 
   if (total > 1) {
-    $('.' + prefix + '-form').first().remove()
+    $('.' + prefix + '-form').last().remove()
 
     var forms = $('.' + prefix + '-form');
     $('#id_' + prefix + '-TOTAL_FORMS').val(forms.length);
