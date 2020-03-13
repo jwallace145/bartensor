@@ -16,6 +16,7 @@ from gnt.adapters import drink_adapter
 # get api key from settings.py which is stored as an environment variable
 api_key = getattr(settings, 'WATSON_DISCOVERY_API_KEY', None)
 
+
 def bad_request(request, *args, **kwargs):
     return HttpResponseRedirect(reverse('home'))
 
@@ -65,6 +66,7 @@ def profile_create_drink(request):
     InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
     if request.method == 'POST':
+        print(request.POST)
         create_user_drink_form = CreateUserDrinkForm(request.POST)
 
         if create_user_drink_form.is_valid():

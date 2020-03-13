@@ -27,6 +27,7 @@
       {% endfor %}
       <div class="row" style="padding-left:15px;">
         <button class="btn btn-outline-info" type="button" id="add_instruction_form">Add Instruction</button>
+        <button class="btn btn-outline-info" type="button" id="remove_instruction_form">Remove Instruction</button>
       </div>
     </fieldset>
     <legend class="border-bottom mb-4"></legend>
@@ -40,7 +41,45 @@
     cloneMore('div.ingredient-form:last', 'ingredient')
   });
   $('#add_instruction_form').click(function() {
+    console.log('whats happening')
     cloneMore('div.instruction-form:last', 'instruction')
+  });
+  $('#remove_instruction_form').click(function() {
+    console.log('hit here')
+    // deleteForm('instruction', $(this))
+    var total = parseInt($('#id_' + 'instruction' + '-TOTAL_FORMS').val());
+    console.log('var total = ' + total)
+
+    if (total > 1) {
+      $('.instruction-form').first().remove()
+
+      var forms = $('.instruction-form');
+      $('#id_' + 'instruction' + '-TOTAL_FORMS').val(forms.length);
+
+      console.log('length = ' + forms.length)
+
+      for (var i = 0; i < forms.length; i++) {
+        $(forms.get(i)).find(':input').each(function() {
+          console.log('index = ' + i)
+
+          var id_regex = new RegExp('(' + 'instruction' + '-\\d+)');
+          var replacement = 'instruction' + '-' + i;
+          console.log('id_regex = ' + id_regex)
+          console.log('replacement = ' + replacement)
+          if ($(this).attr("for")) {
+            $(this).attr("for", $(el).attr("for").replace(id_regex, replacement));
+          }
+
+          if (this.id) {
+            this.id = this.id.replace(id_regex, replacement);
+          }
+
+          if (this.name) {
+            this.name = this.name.replace(id_regex, replacement);
+          }
+        });
+      }
+    }
   });
 </script>
 {% endblock profile_content %}
