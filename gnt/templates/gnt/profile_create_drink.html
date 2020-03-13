@@ -1,6 +1,7 @@
 {% extends 'gnt/profile_base.html' %}
 {% load crispy_forms_tags %}
 {% block profile_content %}
+
 <div class="content-section">
   <form method="POST">
     {% csrf_token %}
@@ -17,6 +18,7 @@
       {% endfor %}
       <div class="row" style="padding-left:15px;">
         <button class="btn btn-outline-info" type="button" id="add_ingredient_form">Add Ingredient</button>
+        <button class="btn btn-outline-info" type="button" id="remove_ingredient_form">Remove Ingredient</button>
       </div>
       <legend>Instructions</legend>
       {{ instruction_formset.management_form }}
@@ -36,6 +38,7 @@
     </div>
   </form>
 </div>
+
 <script>
   $('#add_ingredient_form').click(function() {
     cloneMore('div.ingredient-form:last', 'ingredient')
@@ -81,5 +84,40 @@
       }
     }
   });
+  $('#remove_ingredient_form').click(function() {
+    var total = parseInt($('#id_' + 'ingredient' + '-TOTAL_FORMS').val());
+    console.log('var total = ' + total)
+
+    if (total > 1) {
+      $('.ingredient-form').first().remove()
+
+      var forms = $('.ingredient-form');
+      $('#id_' + 'ingredient' + '-TOTAL_FORMS').val(forms.length);
+
+      console.log('length = ' + forms.length)
+
+      for (var i = 0; i < forms.length; i++) {
+        $(forms.get(i)).find(':input').each(function() {
+          console.log('index = ' + i)
+
+          var id_regex = new RegExp('(' + 'ingredient' + '-\\d+)');
+          var replacement = 'ingredient' + '-' + i;
+          console.log('id_regex = ' + id_regex)
+          console.log('replacement = ' + replacement)
+          if ($(this).attr("for")) {
+            $(this).attr("for", $(el).attr("for").replace(id_regex, replacement));
+          }
+
+          if (this.id) {
+            this.id = this.id.replace(id_regex, replacement);
+          }
+
+          if (this.name) {
+            this.name = this.name.replace(id_regex, replacement);
+          }
+        });
+      }
+    }
+  })
 </script>
 {% endblock profile_content %}
