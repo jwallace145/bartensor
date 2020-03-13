@@ -41,83 +41,17 @@
 
 <script>
   $('#add_ingredient_form').click(function() {
-    cloneMore('div.ingredient-form:last', 'ingredient')
+    addForm('div.ingredient-form:last', 'ingredient')
   });
   $('#add_instruction_form').click(function() {
-    console.log('whats happening')
-    cloneMore('div.instruction-form:last', 'instruction')
+    addForm('div.instruction-form:last', 'instruction')
   });
   $('#remove_instruction_form').click(function() {
-    console.log('hit here')
-    // deleteForm('instruction', $(this))
-    var total = parseInt($('#id_' + 'instruction' + '-TOTAL_FORMS').val());
-    console.log('var total = ' + total)
-
-    if (total > 1) {
-      $('.instruction-form').first().remove()
-
-      var forms = $('.instruction-form');
-      $('#id_' + 'instruction' + '-TOTAL_FORMS').val(forms.length);
-
-      console.log('length = ' + forms.length)
-
-      for (var i = 0; i < forms.length; i++) {
-        $(forms.get(i)).find(':input').each(function() {
-          console.log('index = ' + i)
-
-          var id_regex = new RegExp('(' + 'instruction' + '-\\d+)');
-          var replacement = 'instruction' + '-' + i;
-          console.log('id_regex = ' + id_regex)
-          console.log('replacement = ' + replacement)
-          if ($(this).attr("for")) {
-            $(this).attr("for", $(el).attr("for").replace(id_regex, replacement));
-          }
-
-          if (this.id) {
-            this.id = this.id.replace(id_regex, replacement);
-          }
-
-          if (this.name) {
-            this.name = this.name.replace(id_regex, replacement);
-          }
-        });
-      }
-    }
+    deleteForm('instruction', this)
   });
   $('#remove_ingredient_form').click(function() {
-    var total = parseInt($('#id_' + 'ingredient' + '-TOTAL_FORMS').val());
-    console.log('var total = ' + total)
-
-    if (total > 1) {
-      $('.ingredient-form').first().remove()
-
-      var forms = $('.ingredient-form');
-      $('#id_' + 'ingredient' + '-TOTAL_FORMS').val(forms.length);
-
-      console.log('length = ' + forms.length)
-
-      for (var i = 0; i < forms.length; i++) {
-        $(forms.get(i)).find(':input').each(function() {
-          console.log('index = ' + i)
-
-          var id_regex = new RegExp('(' + 'ingredient' + '-\\d+)');
-          var replacement = 'ingredient' + '-' + i;
-          console.log('id_regex = ' + id_regex)
-          console.log('replacement = ' + replacement)
-          if ($(this).attr("for")) {
-            $(this).attr("for", $(el).attr("for").replace(id_regex, replacement));
-          }
-
-          if (this.id) {
-            this.id = this.id.replace(id_regex, replacement);
-          }
-
-          if (this.name) {
-            this.name = this.name.replace(id_regex, replacement);
-          }
-        });
-      }
-    }
-  })
+    deleteForm('ingredient', this)
+  });
 </script>
+
 {% endblock profile_content %}

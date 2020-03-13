@@ -32,8 +32,8 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarToggle">
-          <div class="navbar-nav mr-auto">	
-            <a class="nav-item nav-link" href="{% url 'timeline' %}">Home</a>	
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{% url 'timeline' %}">Home</a>
           </div>
           <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
@@ -92,8 +92,8 @@
         </div>
         {% endfor %} {% endif %}
         <div id="content_here">
-        {% block 'content' %} {% endblock %}
-      </div>
+          {% block 'content' %} {% endblock %}
+        </div>
       </div>
     </div>
   </main>
@@ -133,7 +133,7 @@
   <script type="text/javascript" src="{% static 'scripts/like_dislike.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/remove_like_dislike.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/index.js' %}"></script>
-  <script type="text/javascript" src="{% static 'scripts/clone_more.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scripts/dynamic_forms.js' %}"></script>
 
   <!-- Controls 21+ modal -->
   <script>
