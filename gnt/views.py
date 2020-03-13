@@ -66,8 +66,9 @@ def profile_create_drink(request):
     IngredientFormset = formset_factory(CreateUserDrinkIngredientForm)
     InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
+    profile = request.user
+
     if request.method == 'POST':
-        print(request.POST)
         create_user_drink_form = CreateUserDrinkForm(request.POST)
 
         if create_user_drink_form.is_valid():
@@ -99,6 +100,7 @@ def profile_create_drink(request):
         instruction_formset = InstructionFormset(prefix='instruction')
 
     context = {
+        'profile': profile,
         'create_user_drink_form': create_user_drink_form,
         'ingredient_formset': ingredient_formset,
         'instruction_formset': instruction_formset
@@ -109,6 +111,7 @@ def profile_create_drink(request):
 
 @login_required
 def profile_edit(request):
+    username = User.objects.get(username=request.user)
     if request.method == 'POST':
         user_update_form = UserUpdateForm(request.POST, instance=request.user)
         profile_update_form = ProfileUpdateForm(
@@ -124,6 +127,7 @@ def profile_edit(request):
         profile_update_form = ProfileUpdateForm(instance=request.user.profile)
 
     context = {
+        'profile': username,
         'user_update_form': user_update_form,
         'profile_update_form': profile_update_form
     }
@@ -135,7 +139,7 @@ def profile_public(request, username):
     username = User.objects.get(username=username)
     drinks = User_drink.objects.filter(user=username).order_by('-timestamp')
     context = {
-        'username': username,
+        'profile': username,
         'drinks': drinks
     }
     return render(request, 'gnt/profile_public.html', context)
@@ -199,6 +203,9 @@ def timeline(request):
 
 def search(request):
     if request.method == 'POST':
-        username = request.POST['search_input']
-        print(username)
-        return redirect('profile_public', username=username)
+        profiles = User.objects.filter(
+            username__startswith=request.POST['search_input'])
+        context = {
+            'profiles': profiles
+        }
+        return render(request, 'gnt/search.html', context)
