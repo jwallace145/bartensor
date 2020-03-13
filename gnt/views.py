@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from django.http import HttpResponse
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse
@@ -91,7 +92,7 @@ def profile_create_drink(request):
                     instruction.save()
 
                 messages.success(request, f'Your drink has been created')
-                return redirect('profile_public')
+                return redirect('profile_public', username=request.user.username)
     else:
         create_user_drink_form = CreateUserDrinkForm()
         ingredient_formset = IngredientFormset(prefix='ingredient')
@@ -117,7 +118,7 @@ def profile_edit(request):
             user_update_form.save()
             profile_update_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('profile_public')
+            return redirect('profile_public', username=request.user.username)
     else:
         user_update_form = UserUpdateForm(instance=request.user)
         profile_update_form = ProfileUpdateForm(instance=request.user.profile)
@@ -131,13 +132,16 @@ def profile_edit(request):
 
 
 @login_required
-def profile_public(request):
+def profile_public(request, username):
+    user = User.objects.get(username=username)
     drinks = User_drink.objects.filter(
         user=request.user).order_by('-timestamp')
     context = {
         'drinks': drinks
     }
+    print(context)
     return render(request, 'gnt/profile_public.html', context)
+    return HttpResponse('<h1>username: {}</h1>'.format(username))
 
 
 def liked_drinks(request):
