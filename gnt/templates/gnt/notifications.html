@@ -1,0 +1,31 @@
+{% extends 'gnt/base.html' %}
+
+{% block 'content' %}
+<div class="content-section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="article-title">
+        <h1>Notifications Page</h1>
+      </div>
+    </div>
+  </div>
+  {% for request in requests %}
+  <div class="row">
+    <div class="col-lg-12">
+      <aritcle class="media content-section">
+        <img class="rounded-circle article-img" src="{{ request.request_FK.image.url }}">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2" href="{% url 'profile_public' username=request.request_FK.user %}">{{ request.request_FK.user }}</a>
+            <!-- <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small> -->
+          </div>
+          <p class="article-content">{{ request.request_FK.bio }}</p>
+          <button class="btn btn-outline-info" type="submit">Add Friend</button>
+          <button class="btn btn-outline-info" type="submit">Remove Friend</button>
+        </div>
+      </aritcle>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock 'content' %}

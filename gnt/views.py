@@ -138,9 +138,11 @@ def profile_edit(request):
 def profile_public(request, username):
     username = User.objects.get(username=username)
     drinks = User_drink.objects.filter(user=username).order_by('-timestamp')
+    requests = (Friend_request.objects.filter(profile_FK=request.user.profile) | Friend_request.objects.filter(request_FK=request.user.profile)) & (
+        Friend_request.objects.filter(profile_FK=username.profile) | Friend_request.objects.filter(request_FK=username.profile))
+    print(requests)
 
     if request.method == 'POST':
-        print('add friend')
         friend_request = Friend_request()
         friend_request.profile_FK = username.profile
         friend_request.request_FK = request.user.profile
@@ -148,11 +150,13 @@ def profile_public(request, username):
 
     context = {
         'profile': username,
-        'drinks': drinks
+        'drinks': drinks,
+        'requests': requests
     }
     return render(request, 'gnt/profile_public.html', context)
 
 
+@login_required
 def liked_drinks(request):
     if request.user.is_authenticated:
         user = request.user
@@ -166,11 +170,17 @@ def liked_drinks(request):
                 drink = Drinks.objects.get(id=ptd.drink_FK.id)
                 obj = discovery_adapter.get_drink(drink.drink_hash)
                 response[i] = obj[0]
-            return render(request, 'gnt/liked_drinks.html', {
+
+            context = {
+                'profile': user,
                 'drinks': response
-            })
+            }
+            return render(request, 'gnt/liked_drinks.html', context)
         else:
-            return render(request, 'gnt/liked_drinks.html')
+            context = {
+                'profile': user
+            }
+            return render(request, 'gnt/liked_drinks.html', context)
     else:
         return HttpResponseRedirect('/home/')
 
@@ -192,11 +202,16 @@ def disliked_drinks(request):
                 drink = Drinks.objects.get(id=ptd.drink_FK.id)
                 obj = discovery_adapter.get_drink(drink.drink_hash)
                 response[i] = obj[0]
-            return render(request, 'gnt/disliked_drinks.html', {
+            context = {
+                'profile': request.user,
                 'drinks': response
-            })
+            }
+            return render(request, 'gnt/disliked_drinks.html', context)
         else:
-            return render(request, 'gnt/disliked_drinks.html')
+            context = {
+                'profile': request.user
+            }
+            return render(request, 'gnt/disliked_drinks.html', context)
     else:
         return HttpResponseRedirect('/home/')
 
@@ -217,3 +232,12 @@ def search(request):
             'profiles': profiles
         }
         return render(request, 'gnt/search.html', context)
+
+
+def notifications(request, username):
+    requests = Friend_request.objects.filter(profile_FK=request.user.profile)
+    context = {
+        'requests': requests
+    }
+
+    return render(request, 'gnt/notifications.html', context)
