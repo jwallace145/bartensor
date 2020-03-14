@@ -15,7 +15,7 @@
         <img class="rounded-circle article-img" src="{{ drink.user.profile.image.url }}">
         <div class="media-body">
           <div class="article-metadata">
-            <a class="mr-2" href="#">{{ drink.user }}</a>
+            <a class="mr-2" href="{% url 'profile_public' username=drink.user %}">{{ drink.user }}</a>
             <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
           </div>
           <h2><a class="article-title" href="#">{{ drink.name }}</a></h2>
