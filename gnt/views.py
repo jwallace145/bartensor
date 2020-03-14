@@ -138,6 +138,14 @@ def profile_edit(request):
 def profile_public(request, username):
     username = User.objects.get(username=username)
     drinks = User_drink.objects.filter(user=username).order_by('-timestamp')
+
+    if request.method == 'POST':
+        print('add friend')
+        friend_request = Friend_request()
+        friend_request.profile_FK = username.profile
+        friend_request.request_FK = request.user.profile
+        friend_request.save()
+
     context = {
         'profile': username,
         'drinks': drinks

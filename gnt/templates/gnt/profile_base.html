@@ -14,6 +14,12 @@
           </div>
         </div>
         <p class="text-secondary">{{ profile.profile.bio }}</p>
+        {% if user != profile %}
+        <form method="POST">
+          {% csrf_token %}
+          <button class="btn btn-outline-info" type="submit">Add Friend</button>
+        </form>
+        {% endif %}
       </div>
 
       {% block profile_content %}
