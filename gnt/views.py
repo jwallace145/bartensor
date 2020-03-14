@@ -141,6 +141,8 @@ def profile_public(request, username):
     requests = (Friend_request.objects.filter(profile_FK=request.user.profile) | Friend_request.objects.filter(request_FK=request.user.profile)) & (
         Friend_request.objects.filter(profile_FK=username.profile) | Friend_request.objects.filter(request_FK=username.profile))
     print(requests)
+    friends = (Friend.objects.filter(profile_FK=username.profile) & Friend.objects.filter(friend_FK=request.user.profile)) | (
+        Friend.objects.filter(profile_FK=request.user.profile) & Friend.objects.filter(friend_FK=username.profile))
 
     if request.method == 'POST':
         friend_request = Friend_request()
@@ -151,7 +153,8 @@ def profile_public(request, username):
     context = {
         'profile': username,
         'drinks': drinks,
-        'requests': requests
+        'requests': requests,
+        'friends': friends
     }
     return render(request, 'gnt/profile_public.html', context)
 
@@ -251,18 +254,27 @@ def friends(request, username):
         if 'add-friend' in request.POST:
             print('add friend')
             # get rid of friend request
+            requestor = User.objects.get(username=request.POST['requestor'])
+            friend_request = Friend_request.objects.get(
+                request_FK=requestor.profile)
+            friend_request.delete()
             friends = Friend()
             friends.profile_FK = request.user.profile
-            friend = User.objects.get(username=request.POST['requestor'])
-            friends.friend_FK = friend.profile
+            friends.friend_FK = requestor.profile
             friends.save()
 
             # create friends relationship
 
         elif 'remove-friend' in request.POST:
             print('remove friend')
+            # get rid of friend request
+            requestor = User.objects.get(username=request.POST['requestor'])
+            friend_request = Friend_request.objects.get(
+                request_FK=requestor.profile)
+            friend_request.delete()
 
-    friends = Friend.objects.filter(profile_FK=request.user.profile)
+    friends = Friend.objects.filter(profile_FK=request.user.profile) | Friend.objects.filter(
+        friend_FK=request.user.profile)
 
     context = {
         'profile': request.user,
