@@ -263,6 +263,9 @@ def friends(request, username):
             friends.friend_FK = requestor.profile
             friends.save()
 
+            messages.success(
+                request, f'you have successfully added friend { requestor.profile.user }')
+
             # create friends relationship
 
         elif 'remove-friend' in request.POST:
@@ -270,8 +273,11 @@ def friends(request, username):
             # get rid of friend request
             requestor = User.objects.get(username=request.POST['requestor'])
             friend_request = Friend_request.objects.get(
-                request_FK=requestor.profile)
+                request_FK=requestor.profile, profile_FK=request.user.profile)
             friend_request.delete()
+
+            messages.info(
+                request, f'you have denied to add friend {requestor.profile.user}')
 
     friends = Friend.objects.filter(profile_FK=request.user.profile) | Friend.objects.filter(
         friend_FK=request.user.profile)
