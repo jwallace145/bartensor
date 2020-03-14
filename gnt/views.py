@@ -145,10 +145,15 @@ def profile_public(request, username):
         Friend.objects.filter(profile_FK=request.user.profile) & Friend.objects.filter(friend_FK=username.profile))
 
     if request.method == 'POST':
-        friend_request = Friend_request()
-        friend_request.profile_FK = username.profile
-        friend_request.request_FK = request.user.profile
-        friend_request.save()
+        if 'add-friend' in request.POST:
+            friend_request = Friend_request()
+            friend_request.profile_FK = username.profile
+            friend_request.request_FK = request.user.profile
+            friend_request.save()
+        elif 'remove-friend' in request.POST:
+            friend = Friend.objects.filter(profile_FK=request.user.profile, friend_FK=username.profile) | Friend.objects.filter(
+                profile_FK=username.profile, friend_FK=request.user.profile)
+            friend.delete()
 
     context = {
         'profile': username,
@@ -156,6 +161,7 @@ def profile_public(request, username):
         'requests': requests,
         'friends': friends
     }
+
     return render(request, 'gnt/profile_public.html', context)
 
 

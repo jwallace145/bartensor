@@ -17,8 +17,15 @@
         {% if user != profile and not requests and not friends %}
         <form method="POST">
           {% csrf_token %}
-          <button class="btn btn-outline-info" type="submit">Add Friend</button>
+          <button class="btn btn-outline-info" type="submit" name="add-friend">Add Friend</button>
         </form>
+        {% else %}
+        {% if user != profile and friends %}
+        <form method="POST">
+          {% csrf_token %}
+          <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
+        </form>
+        {% endif %}
         {% endif %}
       </div>
 
