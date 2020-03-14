@@ -256,7 +256,7 @@ def friends(request, username):
             # get rid of friend request
             requestor = User.objects.get(username=request.POST['requestor'])
             friend_request = Friend_request.objects.get(
-                request_FK=requestor.profile)
+                request_FK=requestor.profile, profile_FK=request.user.profile)
             friend_request.delete()
             friends = Friend()
             friends.profile_FK = request.user.profile
