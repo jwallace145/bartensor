@@ -250,11 +250,22 @@ def friends(request, username):
 
         if 'add-friend' in request.POST:
             print('add friend')
+            # get rid of friend request
+            friends = Friend()
+            friends.profile_FK = request.user.profile
+            friend = User.objects.get(username=request.POST['requestor'])
+            friends.friend_FK = friend.profile
+            friends.save()
+
+            # create friends relationship
 
         elif 'remove-friend' in request.POST:
             print('remove friend')
 
+    friends = Friend.objects.filter(profile_FK=request.user.profile)
+
     context = {
-        'profile': request.user
+        'profile': request.user,
+        'friends': friends
     }
     return render(request, 'gnt/friends.html', context)

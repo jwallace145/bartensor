@@ -22,6 +22,7 @@
           <p class="article-content">{{ request.request_FK.bio }}</p>
           <form action="{% url 'friends' username=user %}" method="POST">
             {% csrf_token %}
+            <input type="hidden" name="requestor" value="{{ request.request_FK.user }}" />
             <button class=" btn btn-outline-info" type="submit" name="add-friend">Add Friend</button>
             <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
           </form>

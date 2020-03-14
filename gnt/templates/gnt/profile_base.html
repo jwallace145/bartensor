@@ -36,7 +36,7 @@
             <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' %}">Disliked Drinks</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_edit' %}">Edit Profile</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_create_drink' %}">Create Drink</a></li>
-            <li class="list-group-item list-group-item-light"><a href="#">Friends</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=user %}">Friends</a></li>
             <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>
             <li class="list-group-item list-group-item-light"><a href="#">Edit Flavor Profile</a></li>
           </ul>
