@@ -33,6 +33,7 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(template_name='gnt/logout.html'), name='logout'),
     path('profile-create-drink', gnt_views.profile_create_drink,
          name='profile_create_drink'),
+    path('profile/<username>/friends/', gnt_views.friends, name='friends'),
     path('profile-edit/', gnt_views.profile_edit, name='profile_edit'),
     path('profile/<username>/', gnt_views.profile_public, name='profile_public'),
     path('notifications/<username>', gnt_views.notifications, name='notifications'),

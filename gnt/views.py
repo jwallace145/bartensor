@@ -241,3 +241,20 @@ def notifications(request, username):
     }
 
     return render(request, 'gnt/notifications.html', context)
+
+
+@login_required
+def friends(request, username):
+    if request.method == 'POST':
+        print(request.POST)
+
+        if 'add-friend' in request.POST:
+            print('add friend')
+
+        elif 'remove-friend' in request.POST:
+            print('remove friend')
+
+    context = {
+        'profile': request.user
+    }
+    return render(request, 'gnt/friends.html', context)

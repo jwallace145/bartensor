@@ -20,8 +20,11 @@
             <!-- <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small> -->
           </div>
           <p class="article-content">{{ request.request_FK.bio }}</p>
-          <button class="btn btn-outline-info" type="submit">Add Friend</button>
-          <button class="btn btn-outline-info" type="submit">Remove Friend</button>
+          <form action="{% url 'friends' username=user %}" method="POST">
+            {% csrf_token %}
+            <button class=" btn btn-outline-info" type="submit" name="add-friend">Add Friend</button>
+            <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
+          </form>
         </div>
       </aritcle>
     </div>
