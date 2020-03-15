@@ -316,7 +316,7 @@ def notifications(request, username):
             friends.save()
 
             messages.success(
-                request, f'you have successfully added friend { requestor.profile.user }')
+                request, f'You have added friend { requestor.profile.user }!')
 
         elif 'deny-friend' in request.POST:
             requestor = User.objects.get(username=request.POST['requestor'])

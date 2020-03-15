@@ -1,3 +1,7 @@
+"""
+Admin Site Module
+"""
+
 from django.contrib import admin
 from .models import Profile, Drink, DrinkName, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest
 
