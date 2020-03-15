@@ -1,0 +1,10 @@
+[run]
+omit =
+  # exclude test coverage of virtual environment modules
+  */env/*
+
+  # exclude test coverage of database migrations
+  */migrations/*
+
+[html]
+directory = coverage_reports
