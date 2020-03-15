@@ -1,6 +1,8 @@
 {% extends 'gnt/profile_base.html' %}
 {% load crispy_forms_tags %}
+
 {% block profile_content %}
+{% if drinks %}
 {% for drink in drinks %}
 <article class="media content-section">
   <img class="rounded-circle article-img" src="{{ profile.profile.image.url }}">
@@ -26,4 +28,11 @@
   </div>
 </article>
 {% endfor %}
+{% else %}
+<article class="content-section">
+  <div>
+    You haven't created any drinks yet. <a href="{% url 'profile_create_drink' %}">Create a drink</a> to populate your profile!
+  </div>
+</article>
+{% endif %}
 {% endblock profile_content %}
