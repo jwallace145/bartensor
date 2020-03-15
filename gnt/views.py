@@ -245,6 +245,29 @@ def search(request):
 
 def notifications(request, username):
     requests = Friend_request.objects.filter(profile_FK=request.user.profile)
+
+    if 'add-friend' in request.POST:
+        requestor = User.objects.get(username=request.POST['requestor'])
+        friend_request = Friend_request.objects.get(
+            request_FK=requestor.profile, profile_FK=request.user.profile)
+        friend_request.delete()
+        friends = Friend()
+        friends.profile_FK = request.user.profile
+        friends.friend_FK = requestor.profile
+        friends.save()
+
+        messages.success(
+            request, f'you have successfully added friend { requestor.profile.user }')
+
+    elif 'deny-friend' in request.POST:
+        requestor = User.objects.get(username=request.POST['requestor'])
+        friend_request = Friend_request.objects.get(
+            request_FK=requestor.profile, profile_FK=request.user.profile)
+        friend_request.delete()
+
+        messages.info(
+            request, f'you have denied to add friend { requestor.profile.user }')
+
     context = {
         'requests': requests
     }
@@ -278,12 +301,12 @@ def friends(request, username):
             print('remove friend')
             # get rid of friend request
             requestor = User.objects.get(username=request.POST['requestor'])
-            friend_request = Friend_request.objects.get(
-                request_FK=requestor.profile, profile_FK=request.user.profile)
-            friend_request.delete()
+            friends = Friend.objects.get(
+                friend_FK=requestor.profile, profile_FK=request.user.profile)
+            friends.delete()
 
-            messages.info(
-                request, f'you have denied to add friend {requestor.profile.user}')
+            messages.success(
+                request, f'you have removed friend { requestor.profile.user }')
 
     friends = Friend.objects.filter(profile_FK=request.user.profile) | Friend.objects.filter(
         friend_FK=request.user.profile)

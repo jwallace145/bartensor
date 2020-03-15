@@ -18,6 +18,11 @@
       </div>
       <h2><a class="article-title" href="{% url 'profile_public' username=friend.profile_FK.user %}">{{ friend.profile_FK.user }}</a></h2>
       <p class="article-content">{{ friend.profile_FK.bio }}</p>
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="requestor" value="{{ friend.profile_FK.user }}" />
+        <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
+      </form>
     </div>
     {% else %}
     <img class="rounded-circle article-img" src="{{ friend.friend_FK.image.url }}">
@@ -27,6 +32,11 @@
       </div>
       <h2><a class="article-title" href="{% url 'profile_public' username=friend.friend_FK.user %}">{{ friend.friend_FK.user }}</a></h2>
       <p class="article-content">{{ friend.friend_FK.bio }}</p>
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="requestor" value="{{ friend.friend_FK.user }}" />
+        <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
+      </form>
     </div>
     {% endif %}
   </article>
