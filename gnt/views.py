@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from gnt.adapters import drink_adapter
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
-from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink
+from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, LikeUserDrink
 from .stt import IBM
 
 
@@ -93,6 +93,7 @@ def profile_create_drink(request):
         if create_user_drink_form.is_valid():
             drink = create_user_drink_form.save(commit=False)
             drink.user = request.user
+            drink.likes = 0
             drink.save()
 
             ingredient_formset = IngredientFormset(
@@ -185,11 +186,20 @@ def profile_public(request, username):
 
             messages.info(request, f'Removed friend { username }!')
 
+        elif 'like-drink' in request.POST:
+            drink = UserDrink.objects.get(name=request.POST['drink'])
+            profile = request.user.profile
+            if LikeUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
+                drink.likes += 1
+                drink.save()
+                like = LikeUserDrink(drink=drink, profile=profile)
+                like.save()
+
     context = {
         'profile': username,
         'drinks': drinks,
         'requests': requests,
-        'friends': friends
+        'friends': friends,
     }
 
     return render(request, 'gnt/profile_public.html', context)

@@ -11,7 +11,7 @@
       <a class="mr-2" href="{% url 'profile_public' username=profile %}">{{ profile }}</a>
       <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
     </div>
-    <h2><a class="article-title" href="#">{{ drink.name }}</a></h2>
+    <h2><a class="article-title" href="{% url 'profile_public' username=profile %}">{{ drink.name }}</a></h2>
     <p class="article-content">{{ drink.description }}</p>
     <p class="article-content">Ingredients</p>
     {% for ingredient in drink.ingredient_set.all %}
@@ -25,6 +25,15 @@
       <li>{{ instruction.instruction }}</li>
     </ul>
     {% endfor %}
+    <div class="article-metadata">
+      <small>Likes: {{ drink.likes }}</small>
+    </div>
+    <form method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="drink" value="{{ drink.name }}" />
+      <button class="btn btn-outline-info" type="submit" name="like-drink">Like</button>
+      <button class="btn btn-outline-info" type="submit" name="comment-drink">Comment</button>
+    </form>
   </div>
 </article>
 {% endfor %}
