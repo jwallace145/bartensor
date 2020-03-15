@@ -1,11 +1,10 @@
 from django.contrib import admin
-from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request
+from .models import Profile, Drink, DrinkName, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest
 
 admin.site.register(Profile)
-admin.site.register(Drinks)
-admin.site.register(Drink_names)
-admin.site.register(Profile_to_liked_drink)
-admin.site.register(Profile_to_disliked_drink)
+admin.site.register(Drink)
+admin.site.register(DrinkName)
+admin.site.register(ProfileToLikedDrink)
+admin.site.register(ProfileToDislikedDrink)
 admin.site.register(Friend)
-admin.site.register(Friend_request)
-
+admin.site.register(FriendRequest)

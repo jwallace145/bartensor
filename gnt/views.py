@@ -7,7 +7,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.urls import reverse
 from django.contrib.auth.models import User
 from django.conf import settings
-from .models import Profile, Drinks, Drink_names, Profile_to_liked_drink, Profile_to_disliked_drink, Friend, Friend_request, User_drink
+from .models import Profile, Drink, DrinkName, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from django.forms.formsets import formset_factory
@@ -137,22 +137,21 @@ def profile_edit(request):
 
 def profile_public(request, username):
     username = User.objects.get(username=username)
-    drinks = User_drink.objects.filter(user=username).order_by('-timestamp')
-    requests = (Friend_request.objects.filter(profile_FK=request.user.profile) | Friend_request.objects.filter(request_FK=request.user.profile)) & (
-        Friend_request.objects.filter(profile_FK=username.profile) | Friend_request.objects.filter(request_FK=username.profile))
-    print(requests)
-    friends = (Friend.objects.filter(profile_FK=username.profile) & Friend.objects.filter(friend_FK=request.user.profile)) | (
-        Friend.objects.filter(profile_FK=request.user.profile) & Friend.objects.filter(friend_FK=username.profile))
+    drinks = UserDrink.objects.filter(user=username).order_by('-timestamp')
+    requests = (FriendRequest.objects.filter(requestee=request.user.profile) | FriendRequest.objects.filter(requestor=request.user.profile)) & (
+        FriendRequest.objects.filter(requestee=username.profile) | FriendRequest.objects.filter(requestor=username.profile))
+    friends = (Friend.objects.filter(friend1=username.profile) & Friend.objects.filter(friend2=request.user.profile)) | (
+        Friend.objects.filter(friend1=request.user.profile) & Friend.objects.filter(friend2=username.profile))
 
     if request.method == 'POST':
         if 'add-friend' in request.POST:
-            friend_request = Friend_request()
-            friend_request.profile_FK = username.profile
-            friend_request.request_FK = request.user.profile
+            friend_request = FriendRequest()
+            friend_request.requestee = username.profile
+            friend_request.requestor = request.user.profile
             friend_request.save()
         elif 'remove-friend' in request.POST:
-            friend = Friend.objects.filter(profile_FK=request.user.profile, friend_FK=username.profile) | Friend.objects.filter(
-                profile_FK=username.profile, friend_FK=request.user.profile)
+            friend = Friend.objects.filter(friend1=request.user.profile, friend2=username.profile) | Friend.objects.filter(
+                friend1=username.profile, friend2=request.user.profile)
             friend.delete()
 
     context = {
@@ -170,13 +169,13 @@ def liked_drinks(request):
     if request.user.is_authenticated:
         user = request.user
         profile = Profile.objects.get(user=user)
-        profile_to_drink = Profile_to_liked_drink.objects.filter(
+        profile_to_drink = ProfileToLikedDrink.objects.filter(
             profile_FK=profile.id)
         if profile_to_drink:
             response = [0 for i in range(len(profile_to_drink))]
             discovery_adapter = drink_adapter.DiscoveryAdapter()
             for i, ptd in enumerate(profile_to_drink):
-                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                drink = Drink.objects.get(id=ptd.drink_FK.id)
                 obj = discovery_adapter.get_drink(drink.drink_hash)
                 response[i] = obj[0]
 
@@ -202,13 +201,13 @@ def disliked_drinks(request):
     if request.user.is_authenticated:
         user = request.user
         profile = Profile.objects.get(user=user)
-        profile_to_drink = Profile_to_disliked_drink.objects.filter(
+        profile_to_drink = ProfileToDislikedDrink.objects.filter(
             profile_FK=profile.id)
         if profile_to_drink:
             response = [0 for i in range(len(profile_to_drink))]
             discovery_adapter = drink_adapter.DiscoveryAdapter()
             for i, ptd in enumerate(profile_to_drink):
-                drink = Drinks.objects.get(id=ptd.drink_FK.id)
+                drink = Drink.objects.get(id=ptd.drink_FK.id)
                 obj = discovery_adapter.get_drink(drink.drink_hash)
                 response[i] = obj[0]
             context = {
@@ -226,7 +225,7 @@ def disliked_drinks(request):
 
 
 def timeline(request):
-    drinks = User_drink.objects.all().order_by('-timestamp')
+    drinks = UserDrink.objects.all().order_by('-timestamp')
     context = {
         'drinks': drinks
     }
@@ -244,11 +243,11 @@ def search(request):
 
 
 def notifications(request, username):
-    requests = Friend_request.objects.filter(profile_FK=request.user.profile)
+    requests = FriendRequest.objects.filter(profile_FK=request.user.profile)
 
     if 'add-friend' in request.POST:
         requestor = User.objects.get(username=request.POST['requestor'])
-        friend_request = Friend_request.objects.get(
+        friend_request = FriendRequest.objects.get(
             request_FK=requestor.profile, profile_FK=request.user.profile)
         friend_request.delete()
         friends = Friend()
@@ -261,7 +260,7 @@ def notifications(request, username):
 
     elif 'deny-friend' in request.POST:
         requestor = User.objects.get(username=request.POST['requestor'])
-        friend_request = Friend_request.objects.get(
+        friend_request = FriendRequest.objects.get(
             request_FK=requestor.profile, profile_FK=request.user.profile)
         friend_request.delete()
 
@@ -278,38 +277,31 @@ def notifications(request, username):
 @login_required
 def friends(request, username):
     if request.method == 'POST':
-        print(request.POST)
 
         if 'add-friend' in request.POST:
-            print('add friend')
-            # get rid of friend request
             requestor = User.objects.get(username=request.POST['requestor'])
-            friend_request = Friend_request.objects.get(
-                request_FK=requestor.profile, profile_FK=request.user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestor=requestor.profile, requestee=request.user.profile)
             friend_request.delete()
             friends = Friend()
-            friends.profile_FK = request.user.profile
-            friends.friend_FK = requestor.profile
+            friends.friend1 = request.user.profile
+            friends.friend2 = requestor.profile
             friends.save()
 
             messages.success(
                 request, f'you have successfully added friend { requestor.profile.user }')
 
-            # create friends relationship
-
         elif 'remove-friend' in request.POST:
-            print('remove friend')
-            # get rid of friend request
             requestor = User.objects.get(username=request.POST['requestor'])
             friends = Friend.objects.get(
-                friend_FK=requestor.profile, profile_FK=request.user.profile)
+                friend1=requestor.profile, friend2=request.user.profile)
             friends.delete()
 
             messages.success(
                 request, f'you have removed friend { requestor.profile.user }')
 
-    friends = Friend.objects.filter(profile_FK=request.user.profile) | Friend.objects.filter(
-        friend_FK=request.user.profile)
+    friends = Friend.objects.filter(friend1=request.user.profile) | Friend.objects.filter(
+        friend2=request.user.profile)
 
     context = {
         'profile': request.user,
