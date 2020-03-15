@@ -9,6 +9,7 @@
       </div>
     </div>
   </div>
+  {% if requests %}
   {% for request in requests %}
   <div class="row">
     <div class="col-lg-12">
@@ -30,5 +31,12 @@
     </div>
   </div>
   {% endfor %}
+  {% else %}
+  <article class="content-section">
+    <div>
+      Notifications right now, check back later!
+    </div>
+  </article>
+  {% endif %}
 </div>
 {% endblock 'content' %}

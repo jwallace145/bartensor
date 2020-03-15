@@ -8,6 +8,7 @@
       </div>
     </div>
   </div>
+  {% if friends %}
   {% for friend in friends %}
   <article class="media content-section">
     {% if friend.friend1 != user.profile %}
@@ -41,5 +42,12 @@
     {% endif %}
   </article>
   {% endfor %}
+  {% else %}
+  <article class="content-section">
+    <div>
+      No friends yet. Search for your friends and add them to see them here!
+    </div>
+  </article>
+  {% endif %}
 </div>
 {% endblock profile_content %}
