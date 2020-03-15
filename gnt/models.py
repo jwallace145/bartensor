@@ -78,11 +78,11 @@ class DrinkName(models.Model):
     Drink Name Model Class
     """
 
-    drink_FK = models.ForeignKey(Drink, on_delete=models.PROTECT)
+    drink = models.ForeignKey(Drink, on_delete=models.PROTECT)
     drink_name = models.CharField(max_length=32)
 
     def __str__(self):
-        return str(self.id) + ", " + str(self.drink_FK.drink_hash) + ", " + str(self.drink_name)
+        return str(self.id) + ", " + str(self.drink.drink_hash) + ", " + str(self.drink_name)
 
 
 class ProfileToLikedDrink(models.Model):
@@ -90,11 +90,11 @@ class ProfileToLikedDrink(models.Model):
     Profile to Liked Drink Model Class
     """
 
-    profile_FK = models.ForeignKey(Profile, on_delete=models.PROTECT)
-    drink_FK = models.ForeignKey(Drink, on_delete=models.PROTECT)
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    drink = models.ForeignKey(Drink, on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.id) + ", " + str(self.profile_FK.user.username) + ", " + str(self.drink_FK.drink_hash)
+        return str(self.id) + ", " + str(self.profile.user.username) + ", " + str(self.drink.drink_hash)
 
 
 class ProfileToDislikedDrink(models.Model):
@@ -102,11 +102,11 @@ class ProfileToDislikedDrink(models.Model):
     Profile to Disliked Drink Model Class
     """
 
-    profile_FK = models.ForeignKey(Profile, on_delete=models.PROTECT)
-    drink_FK = models.ForeignKey(Drink, on_delete=models.PROTECT)
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    drink = models.ForeignKey(Drink, on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.id) + ", " + str(self.profile_FK.user.username) + ", " + str(self.drink_FK.drink_hash)
+        return str(self.id) + ", " + str(self.profile.user.username) + ", " + str(self.drink.drink_hash)
 
 
 class UserDrink(models.Model):
@@ -114,10 +114,13 @@ class UserDrink(models.Model):
     User Drink Model Class
     """
 
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     name = models.CharField(max_length=32)
     description = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return 'user drink'
 
 
 class Ingredient(models.Model):
@@ -125,9 +128,12 @@ class Ingredient(models.Model):
     Ingredient Model Class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
+    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
     name = models.CharField(max_length=32)
     quantity = models.CharField(max_length=32)
+
+    def __str__(self):
+        return 'ingredient'
 
 
 class Instruction(models.Model):
@@ -135,5 +141,8 @@ class Instruction(models.Model):
     Instruction Model Class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
+    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
     instruction = models.CharField(max_length=100)
+
+    def __str__(self):
+        return 'instruction'

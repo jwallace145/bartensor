@@ -31,7 +31,6 @@ def results(request):
         if 'audio' in request.FILES:
             audio = request.FILES['audio']
             text = IBM().transcribe(audio)
-            print(text)
         else:
             text = request.POST['search_bar']
 
@@ -149,10 +148,14 @@ def profile_public(request, username):
             friend_request.requestee = username.profile
             friend_request.requestor = request.user.profile
             friend_request.save()
+
+            messages.success(request, f'Friend request sent to { username }!')
         elif 'remove-friend' in request.POST:
             friend = Friend.objects.filter(friend1=request.user.profile, friend2=username.profile) | Friend.objects.filter(
                 friend1=username.profile, friend2=request.user.profile)
             friend.delete()
+
+            messages.info(request, f'Removed friend { username }!')
 
     context = {
         'profile': username,
@@ -170,12 +173,12 @@ def liked_drinks(request):
         user = request.user
         profile = Profile.objects.get(user=user)
         profile_to_drink = ProfileToLikedDrink.objects.filter(
-            profile_FK=profile.id)
+            profile=profile.id)
         if profile_to_drink:
             response = [0 for i in range(len(profile_to_drink))]
             discovery_adapter = drink_adapter.DiscoveryAdapter()
             for i, ptd in enumerate(profile_to_drink):
-                drink = Drink.objects.get(id=ptd.drink_FK.id)
+                drink = Drink.objects.get(id=ptd.drink.id)
                 obj = discovery_adapter.get_drink(drink.drink_hash)
                 response[i] = obj[0]
 
@@ -202,12 +205,12 @@ def disliked_drinks(request):
         user = request.user
         profile = Profile.objects.get(user=user)
         profile_to_drink = ProfileToDislikedDrink.objects.filter(
-            profile_FK=profile.id)
+            profile=profile.id)
         if profile_to_drink:
             response = [0 for i in range(len(profile_to_drink))]
             discovery_adapter = drink_adapter.DiscoveryAdapter()
             for i, ptd in enumerate(profile_to_drink):
-                drink = Drink.objects.get(id=ptd.drink_FK.id)
+                drink = Drink.objects.get(id=ptd.drink.id)
                 obj = discovery_adapter.get_drink(drink.drink_hash)
                 response[i] = obj[0]
             context = {
@@ -243,16 +246,16 @@ def search(request):
 
 
 def notifications(request, username):
-    requests = FriendRequest.objects.filter(profile_FK=request.user.profile)
+    requests = FriendRequest.objects.filter(requestee=request.user.profile)
 
     if 'add-friend' in request.POST:
         requestor = User.objects.get(username=request.POST['requestor'])
         friend_request = FriendRequest.objects.get(
-            request_FK=requestor.profile, profile_FK=request.user.profile)
+            requestor=requestor.profile, requestee=request.user.profile)
         friend_request.delete()
         friends = Friend()
-        friends.profile_FK = request.user.profile
-        friends.friend_FK = requestor.profile
+        friends.friend1 = request.user.profile
+        friends.friend2 = requestor.profile
         friends.save()
 
         messages.success(
@@ -261,7 +264,7 @@ def notifications(request, username):
     elif 'deny-friend' in request.POST:
         requestor = User.objects.get(username=request.POST['requestor'])
         friend_request = FriendRequest.objects.get(
-            request_FK=requestor.profile, profile_FK=request.user.profile)
+            requestor=requestor.profile, requestee=request.user.profile)
         friend_request.delete()
 
         messages.info(
@@ -271,6 +274,7 @@ def notifications(request, username):
         'requests': requests
     }
 
+    # return HttpResponse('<h1>hello</h1>')
     return render(request, 'gnt/notifications.html', context)
 
 
