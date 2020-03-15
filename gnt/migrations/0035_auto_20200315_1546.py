@@ -11,22 +11,22 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.RenameField(
-            model_name='friend',
+            model_name='Friend',
             old_name='profile_FK',
             new_name='friend1',
         ),
         migrations.RenameField(
-            model_name='friend',
+            model_name='Friend',
             old_name='friend_FK',
             new_name='friend2',
         ),
         migrations.RenameField(
-            model_name='friendrequest',
+            model_name='FriendRequest',
             old_name='profile_FK',
             new_name='requestee',
         ),
         migrations.RenameField(
-            model_name='friendrequest',
+            model_name='FriendRequest',
             old_name='request_FK',
             new_name='requestor',
         ),

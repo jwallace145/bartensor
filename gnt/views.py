@@ -89,6 +89,7 @@ def profile_create_drink(request):
 
     if request.method == 'POST':
         create_user_drink_form = CreateUserDrinkForm(request.POST)
+        print(request.POST)
 
         if create_user_drink_form.is_valid():
             drink = create_user_drink_form.save(commit=False)

@@ -119,9 +119,8 @@ class UserDrink(models.Model):
     description = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     likes = models.IntegerField(default=0)
-
-    def __str__(self):
-        return str(self.id) + ', ' + str(self.user.username) + ', ' + str(self.name) + ', ' + str(self.description)
+    image = models.ImageField(default='default.jpg',
+                              upload_to='user_drink_pics')
 
 
 class Ingredient(models.Model):

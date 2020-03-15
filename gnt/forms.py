@@ -18,7 +18,8 @@ class CreateUserDrinkForm(forms.ModelForm):
         model = UserDrink
         fields = [
             'name',
-            'description'
+            'description',
+            'image'
         ]
 
 
