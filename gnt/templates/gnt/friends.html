@@ -10,31 +10,31 @@
   </div>
   {% for friend in friends %}
   <article class="media content-section">
-    {% if friend.profile_FK != user.profile %}
-    <img class="rounded-circle article-img" src="{{ friend.profile_FK.image.url }}">
+    {% if friend.friend1 != user.profile %}
+    <img class="rounded-circle article-img" src="{{ friend.friend1.image.url }}">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="#">{{ friend.profile_FK.user }}</a>
+        <a class="mr-2" href="{% url 'profile_public' username=friend.friend1.user %}">{{ friend.friend1.user }}</a>
       </div>
-      <h2><a class="article-title" href="{% url 'profile_public' username=friend.profile_FK.user %}">{{ friend.profile_FK.user }}</a></h2>
-      <p class="article-content">{{ friend.profile_FK.bio }}</p>
+      <h2><a class="article-title" href="{% url 'profile_public' username=friend.friend1.user %}">{{ friend.friend1.user }}</a></h2>
+      <p class="article-content">{{ friend.friend1.bio }}</p>
       <form method="POST">
         {% csrf_token %}
-        <input type="hidden" name="requestor" value="{{ friend.profile_FK.user }}" />
+        <input type="hidden" name="requestor" value="{{ friend.friend1.user }}" />
         <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
       </form>
     </div>
     {% else %}
-    <img class="rounded-circle article-img" src="{{ friend.friend_FK.image.url }}">
+    <img class="rounded-circle article-img" src="{{ friend.friend2.image.url }}">
     <div class="media-body">
       <div class="article-metadata">
-        <a class="mr-2" href="#">{{ friend.friend_FK.user }}</a>
+        <a class="mr-2" href="{% url 'profile_public' username=friend.friend2.user %}">{{ friend.friend2.user }}</a>
       </div>
-      <h2><a class="article-title" href="{% url 'profile_public' username=friend.friend_FK.user %}">{{ friend.friend_FK.user }}</a></h2>
-      <p class="article-content">{{ friend.friend_FK.bio }}</p>
+      <h2><a class="article-title" href="{% url 'profile_public' username=friend.friend2.user %}">{{ friend.friend2.user }}</a></h2>
+      <p class="article-content">{{ friend.friend2.bio }}</p>
       <form method="POST">
         {% csrf_token %}
-        <input type="hidden" name="requestor" value="{{ friend.friend_FK.user }}" />
+        <input type="hidden" name="requestor" value="{{ friend.friend2.user }}" />
         <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
       </form>
     </div>

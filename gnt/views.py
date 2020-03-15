@@ -305,27 +305,27 @@ def notifications(request, username):
 
     requests = FriendRequest.objects.filter(requestee=request.user.profile)
 
-    if 'add-friend' in request.POST:
-        requestor = User.objects.get(username=request.POST['requestor'])
-        friend_request = FriendRequest.objects.get(
-            requestor=requestor.profile, requestee=request.user.profile)
-        friend_request.delete()
-        friends = Friend()
-        friends.friend1 = request.user.profile
-        friends.friend2 = requestor.profile
-        friends.save()
+    if request.method == 'POST':
+        if 'add-friend' in request.POST:
+            requestor = User.objects.get(username=request.POST['requestor'])
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=requestor.profile)
+            friend_request.delete()
+            friends = Friend(friend1=request.user.profile,
+                             friend2=requestor.profile)
+            friends.save()
 
-        messages.success(
-            request, f'you have successfully added friend { requestor.profile.user }')
+            messages.success(
+                request, f'you have successfully added friend { requestor.profile.user }')
 
-    elif 'deny-friend' in request.POST:
-        requestor = User.objects.get(username=request.POST['requestor'])
-        friend_request = FriendRequest.objects.get(
-            requestor=requestor.profile, requestee=request.user.profile)
-        friend_request.delete()
+        elif 'deny-friend' in request.POST:
+            requestor = User.objects.get(username=request.POST['requestor'])
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=requestor.profile)
+            friend_request.delete()
 
-        messages.info(
-            request, f'you have denied to add friend { requestor.profile.user }')
+            messages.info(
+                request, f'you have denied to add friend { requestor.profile.user }')
 
     context = {
         'requests': requests
@@ -343,8 +343,8 @@ def friends(request, username):
     if request.method == 'POST':
         if 'remove-friend' in request.POST:
             requestor = User.objects.get(username=request.POST['requestor'])
-            friends = Friend.objects.get(
-                friend1=requestor.profile, friend2=request.user.profile)
+            friends = Friend.objects.filter(friend1=requestor.profile, friend2=request.user.profile) | Friend.objects.filter(
+                friend1=request.user.profile, friend2=requestor.profile)
             friends.delete()
 
             messages.success(
@@ -357,4 +357,5 @@ def friends(request, username):
         'profile': request.user,
         'friends': friends
     }
+
     return render(request, 'gnt/friends.html', context)
