@@ -8,7 +8,7 @@ import datetime
 import pytz
 from unittest import mock
 from django.contrib.auth.models import User
-from gnt.models import Friend, FriendRequest, Profile, UserDrink
+from gnt.models import Friend, FriendRequest, Ingredient, Instruction, LikeUserDrink, Profile, UserDrink
 
 
 class UserModelTest(TestCase):
@@ -23,7 +23,7 @@ class UserModelTest(TestCase):
 
     def test_create_and_save_user(self):
         """
-        Test Create and Save User
+        Test Create and Save User Model
         """
 
         user = User.objects.create(username=self.TEST_USERNAME,
@@ -49,7 +49,7 @@ class ProfileModelTest(TestCase):
 
     def test_create_and_save_profile(self):
         """
-        Test Create and Save Profile
+        Test Create and Save Profile Model
         """
 
         user = User.objects.create(
@@ -85,7 +85,7 @@ class FriendRequestModelTest(TestCase):
 
     def test_create_and_save_friend_request(self):
         """
-        Test Create and Save Friend Request
+        Test Create and Save Friend Request Model
         """
 
         user_requestee = User.objects.create(
@@ -132,7 +132,7 @@ class FriendModelTest(TestCase):
 
     def test_create_and_save_friends(self):
         """
-        Test Create and Save Friends
+        Test Create and Save Friend Model
         """
 
         user_friend1 = User.objects.create(
@@ -175,6 +175,10 @@ class UserDrinkModelTest(TestCase):
     TEST_IMAGE = 'default.jpg'
 
     def test_create_and_save_user_drink(self):
+        """
+        Test Create and Save User Drink Model
+        """
+
         mocked = datetime.datetime(2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
         with mock.patch('django.utils.timezone.now', mock.Mock(return_value=mocked)):
             user = User.objects.create(
@@ -190,3 +194,134 @@ class UserDrinkModelTest(TestCase):
             self.assertEquals(self.TEST_TIMESTAMP, drink.timestamp)
             self.assertEquals(self.TEST_LIKES, drink.likes)
             self.assertEquals(self.TEST_IMAGE, drink.image)
+
+
+class IngredientModelTest(TestCase):
+    """
+    Ingredient Model Test
+    """
+
+    # constants
+    TEST_USERNAME = 'test_username'
+    TEST_EMAIL = 'test_email'
+    TEST_PASSWORD = 'test_password'
+    TEST_DRINK_NAME = 'test_name'
+    TEST_DRINK_DESCRIPTION = 'test_description'
+    TEST_DRINK_TIMESTAMP = datetime.datetime(
+        2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
+    TEST_DRINK_LIKES = 0
+    TEST_DRINK_IMAGE = 'default.jpg'
+    TEST_INGREDIENT_NAME = 'test_ingredient_name'
+    TEST_INGREDIENT_QUANTITY = 'test_ingredient_quantity'
+
+    def test_create_and_save_ingredient(self):
+        """
+        Test Create and Save Ingredient Model
+        """
+
+        mocked = datetime.datetime(2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
+        with mock.patch('django.utils.timezone.now', mock.Mock(return_value=mocked)):
+            user = User.objects.create(
+                username=self.TEST_USERNAME, email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
+
+            drink = UserDrink.objects.create(
+                user=user, name=self.TEST_DRINK_NAME, description=self.TEST_DRINK_DESCRIPTION, likes=self.TEST_DRINK_LIKES, image=self.TEST_DRINK_IMAGE)
+
+            ingredient = Ingredient.objects.create(
+                drink=drink, name=self.TEST_INGREDIENT_NAME, quantity=self.TEST_INGREDIENT_QUANTITY)
+
+            self.assertTrue(isinstance(ingredient, Ingredient))
+            self.assertTrue(isinstance(ingredient.drink.user, User))
+            self.assertTrue(isinstance(ingredient.drink, UserDrink))
+            self.assertEquals(user, ingredient.drink.user)
+            self.assertEquals(drink, ingredient.drink)
+            self.assertEquals(self.TEST_INGREDIENT_NAME, ingredient.name)
+            self.assertEquals(self.TEST_INGREDIENT_QUANTITY,
+                              ingredient.quantity)
+
+
+class InstructionModelTest(TestCase):
+    """
+    Instruction Model Test
+    """
+
+    # constants
+    TEST_USERNAME = 'test_username'
+    TEST_EMAIL = 'test_email'
+    TEST_PASSWORD = 'test_password'
+    TEST_DRINK_NAME = 'test_name'
+    TEST_DRINK_DESCRIPTION = 'test_description'
+    TEST_DRINK_TIMESTAMP = datetime.datetime(
+        2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
+    TEST_DRINK_LIKES = 0
+    TEST_DRINK_IMAGE = 'default.jpg'
+    TEST_INSTRUCTION = 'test_instruction'
+
+    def test_create_and_save_instruction(self):
+        """
+        Test Create and Save Instruction Model
+        """
+
+        mocked = datetime.datetime(2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
+        with mock.patch('django.utils.timezone.now', mock.Mock(return_value=mocked)):
+            user = User.objects.create(
+                username=self.TEST_USERNAME, email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
+
+            drink = UserDrink.objects.create(
+                user=user, name=self.TEST_DRINK_NAME, description=self.TEST_DRINK_DESCRIPTION, likes=self.TEST_DRINK_LIKES, image=self.TEST_DRINK_IMAGE)
+
+            instruction = Instruction.objects.create(
+                drink=drink, instruction=self.TEST_INSTRUCTION)
+
+            self.assertTrue(isinstance(instruction, Instruction))
+            self.assertTrue(isinstance(instruction.drink.user, User))
+            self.assertTrue(isinstance(instruction.drink, UserDrink))
+            self.assertEquals(user, instruction.drink.user)
+            self.assertEquals(drink, instruction.drink)
+            self.assertEquals(self.TEST_INSTRUCTION, instruction.instruction)
+
+
+class LikeUserDrinkTest(TestCase):
+    """
+    Like User Drink Model Test
+    """
+
+    # constants
+    TEST_USERNAME = 'test_username'
+    TEST_EMAIL = 'test_email'
+    TEST_PASSWORD = 'test_password'
+    TEST_PROFILE_BIO = 'test_bio'
+    TEST_PROFILE_IMAGE = 'default.jpg'
+    TEST_DRINK_NAME = 'test_name'
+    TEST_DRINK_DESCRIPTION = 'test_description'
+    TEST_DRINK_TIMESTAMP = datetime.datetime(
+        2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
+    TEST_DRINK_LIKES = 0
+    TEST_DRINK_IMAGE = 'default.jpg'
+
+    def test_create_and_save_like_user_drink(self):
+        """
+        Test Create and Save Like User Drink Model
+        """
+
+        mocked = datetime.datetime(2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
+        with mock.patch('django.utils.timezone.now', mock.Mock(return_value=mocked)):
+            user = User.objects.create(
+                username=self.TEST_USERNAME, email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
+
+            profile = Profile.objects.get(user=user)
+            profile.bio = self.TEST_PROFILE_BIO
+            profile.image = self.TEST_PROFILE_IMAGE
+            profile.save()
+
+            drink = UserDrink.objects.create(
+                user=user, name=self.TEST_DRINK_NAME, description=self.TEST_DRINK_DESCRIPTION, likes=self.TEST_DRINK_LIKES, image=self.TEST_DRINK_IMAGE)
+
+            like_drink = LikeUserDrink.objects.create(
+                drink=drink, profile=profile)
+
+            self.assertTrue(isinstance(like_drink, LikeUserDrink))
+            self.assertTrue(isinstance(like_drink.drink, UserDrink))
+            self.assertTrue(isinstance(like_drink.profile, Profile))
+            self.assertEquals(drink, like_drink.drink)
+            self.assertEquals(profile, like_drink.profile)
