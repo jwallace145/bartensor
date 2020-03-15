@@ -66,11 +66,11 @@ class Drink(models.Model):
     """
 
     drink_hash = models.CharField(
-        max_length=64, default="emptydrink", unique=True)
+        max_length=64, default='emptydrink', unique=True)
     image = models.ImageField(default='default.jpg', upload_to='drink_pics')
 
     def __str__(self):
-        return str(self.id) + ", " + str(self.drink_hash)
+        return str(self.id) + ', ' + str(self.drink_hash)
 
 
 class DrinkName(models.Model):
@@ -82,7 +82,7 @@ class DrinkName(models.Model):
     drink_name = models.CharField(max_length=32)
 
     def __str__(self):
-        return str(self.id) + ", " + str(self.drink.drink_hash) + ", " + str(self.drink_name)
+        return str(self.id) + ', ' + str(self.drink.drink_hash) + ', ' + str(self.drink_name)
 
 
 class ProfileToLikedDrink(models.Model):
@@ -94,7 +94,7 @@ class ProfileToLikedDrink(models.Model):
     drink = models.ForeignKey(Drink, on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.id) + ", " + str(self.profile.user.username) + ", " + str(self.drink.drink_hash)
+        return str(self.id) + ', ' + str(self.profile.user.username) + ', ' + str(self.drink.drink_hash)
 
 
 class ProfileToDislikedDrink(models.Model):
@@ -106,7 +106,7 @@ class ProfileToDislikedDrink(models.Model):
     drink = models.ForeignKey(Drink, on_delete=models.PROTECT)
 
     def __str__(self):
-        return str(self.id) + ", " + str(self.profile.user.username) + ", " + str(self.drink.drink_hash)
+        return str(self.id) + ', ' + str(self.profile.user.username) + ', ' + str(self.drink.drink_hash)
 
 
 class UserDrink(models.Model):
@@ -120,7 +120,7 @@ class UserDrink(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return 'user drink'
+        return str(self.id) + ', ' + str(self.user.username) + ', ' + str(self.name) + ', ' + str(self.description)
 
 
 class Ingredient(models.Model):
@@ -133,7 +133,7 @@ class Ingredient(models.Model):
     quantity = models.CharField(max_length=32)
 
     def __str__(self):
-        return 'ingredient'
+        return str(self.id) + ', ' + str(self.drink.name) + ', ' + str(self.name) + ', ' + str(self.quantity)
 
 
 class Instruction(models.Model):
@@ -145,4 +145,4 @@ class Instruction(models.Model):
     instruction = models.CharField(max_length=100)
 
     def __str__(self):
-        return 'instruction'
+        return str(self.id) + ', ' + str(self.drink.name) + ', ' + str(self.instruction)
