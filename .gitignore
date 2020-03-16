@@ -133,6 +133,7 @@ dmypy.json
 
 .idea/
 reports/
+user_drink_pics/
 .vscode/
 
 run.sh
