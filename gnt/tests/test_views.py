@@ -10,10 +10,11 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-class RegisterNewUserTest(StaticLiveServerTestCase):
+class RegisterUserTest(StaticLiveServerTestCase):
     """
-    Register New User Test
+    Register User Test Class
     """
+
     port = 8081
 
     # constants
