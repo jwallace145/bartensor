@@ -1,5 +1,5 @@
 from django.core.management.base import BaseCommand
-from gnt.models import Drink, DrinkName, UserDrink
+from gnt.models import Drink, DrinkName, UserDrink, Profile
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from django.conf import settings
@@ -34,21 +34,61 @@ class Command(BaseCommand):
                 d_name.save()
 
     def _create_fake_users(self):
-        User.objects.create_superuser(
-            username="Caleb", email="caleb@gmail.com", password='password')
-        print(f'CREATED ADMIN ACCOUNT USERNAME: Caleb, PASSWORD: password')
-        User.objects.create_superuser(
-            username="Jimmy", email="jimmy@gmail.com", password='password')
-        print(f'CREATED ADMIN ACCOUNT USERNAME: Jimmy, PASSWORD: password')
-        User.objects.create_superuser(
-            username="Eric", email="Eric@gmail.com", password='password')
-        print(f'CREATED ADMIN ACCOUNT USERNAME: Eric, PASSWORD: password')
-        User.objects.create_superuser(
-            username="Michael", email="Michael@gmail.com", password='password')
-        print(f'CREATED ADMIN ACCOUNT USERNAME: Michael, PASSWORD: password')
-        User.objects.create_superuser(
-            username="Jack", email="Jack@gmail.com", password='password')
+        user = User.objects.create_superuser(
+            username="Caleb",
+            email="caleb@gmail.com",
+            password='password'
+        )
+        profile = Profile.objects.get(user=user)
+        profile.bio = 'B2B Flip Cup Champ'
+        profile.image = 'profile_pics/biggie.jpeg'
+        profile.save()
+        print('CREATED ADMIN ACCOUNT USERNAME: Caleb, PASSWORD: password')
+
+        user = User.objects.create_superuser(
+            username="Jimmy",
+            email="jimmy@gmail.com",
+            password='password'
+        )
+        profile = Profile.objects.get(user=user)
+        profile.bio = 'Keep it 300'
+        profile.image = 'profile_pics/chance.jpeg'
+        profile.save()
+        print('CREATED ADMIN ACCOUNT USERNAME: Jimmy, PASSWORD: password')
+
+        user = User.objects.create_superuser(
+            username="Eric",
+            email="Eric@gmail.com",
+            password='password'
+        )
+        profile = Profile.objects.get(user=user)
+        profile.bio = 'Hide yo girl bruh'
+        profile.image = 'profile_pics/dababy.jpeg'
+        profile.save()
+        print('CREATED ADMIN ACCOUNT USERNAME: Eric, PASSWORD: password')
+
+        user = User.objects.create_superuser(
+            username="Michael",
+            email="Michael@gmail.com",
+            password='password'
+        )
+        profile = Profile.objects.get(user=user)
+        profile.bio = 'They call me Dirty Mike'
+        profile.image = 'profile_pics/kanye.jpeg'
+        profile.save()
+        print('CREATED ADMIN ACCOUNT USERNAME: Michael, PASSWORD: password')
+
+        user = User.objects.create_superuser(
+            username="Jack",
+            email="Jack@gmail.com",
+            password='password'
+        )
+        profile = Profile.objects.get(user=user)
+        profile.bio = 'I once ate a whole jar of peanut butter without using my hands'
+        profile.image = 'profile_pics/jcole.jpg'
+        profile.save()
         print(f'CREATED ADMIN ACCOUNT USERNAME: Jack, PASSWORD: password')
+
         drink_images_folder = [
             x[0] + '/' for x in os.walk('gnt/static/data/drink_images/')]
         drink_images_folder = drink_images_folder[2:]
