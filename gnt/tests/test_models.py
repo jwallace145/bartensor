@@ -3,12 +3,23 @@ Model Tests
 """
 
 # import necessary modules
-from django.test import TestCase
 import datetime
 import pytz
-from unittest import mock
 from django.contrib.auth.models import User
-from gnt.models import Friend, FriendRequest, Ingredient, Instruction, LikeUserDrink, Profile, UserDrink
+from django.test import TestCase
+from unittest import mock
+from gnt.models import Friend
+from gnt.models import FriendRequest
+from gnt.models import Drink
+from gnt.models import DrinkName
+from gnt.models import Ingredient
+from gnt.models import Instruction
+from gnt.models import LikeUserDrink
+from gnt.models import Profile
+from gnt.models import ProfileToDislikedDrink
+from gnt.models import ProfileToLikedDrink
+from gnt.models import UserDrink
+from gnt.tests import constants
 
 
 class UserModelTest(TestCase):
@@ -16,23 +27,21 @@ class UserModelTest(TestCase):
     User Model Test
     """
 
-    # constants
-    TEST_USERNAME = 'test_username'
-    TEST_EMAIL = 'test_email'
-    TEST_PASSWORD = 'test_password'
-
     def test_create_and_save_user(self):
         """
-        Test Create and Save User Model
+        Create User Model Test
         """
 
-        user = User.objects.create(username=self.TEST_USERNAME,
-                                   email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
+        user = User.objects.create(
+            username=constants.TEST_USERNAME,
+            email=constants.TEST_EMAIL,
+            password=constants.TEST_PASSWORD
+        )
 
         self.assertTrue(isinstance(user, User))
-        self.assertEqual(self.TEST_USERNAME, user.username)
-        self.assertEqual(self.TEST_EMAIL, user.email)
-        self.assertEqual(self.TEST_PASSWORD, user.password)
+        self.assertEqual(constants.TEST_USERNAME, user.username)
+        self.assertEqual(constants.TEST_EMAIL, user.email)
+        self.assertEqual(constants.TEST_PASSWORD, user.password)
 
 
 class ProfileModelTest(TestCase):
@@ -40,30 +49,31 @@ class ProfileModelTest(TestCase):
     Profile Model Test
     """
 
-    # constants
-    TEST_USERNAME = 'test_username'
-    TEST_EMAIL = 'test_email'
-    TEST_PASSWORD = 'test_password'
-    TEST_IMAGE = 'default.jpg'
-    TEST_BIO = 'test_bio'
+    def setUp(self):
+        """
+        Test Set Up
+        """
+
+        self.user = User.objects.create(
+            username=constants.TEST_USERNAME,
+            email=constants.TEST_EMAIL,
+            password=constants.TEST_PASSWORD
+        )
 
     def test_create_and_save_profile(self):
         """
-        Test Create and Save Profile Model
+        Create Profile Model Test
         """
 
-        user = User.objects.create(
-            username=self.TEST_USERNAME, email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
-
-        profile = Profile.objects.get(user=user)
-        profile.image = self.TEST_IMAGE
-        profile.bio = self.TEST_BIO
+        profile = Profile.objects.get(user=self.user)
+        profile.image = constants.TEST_IMAGE
+        profile.bio = constants.TEST_BIO
         profile.save()
 
         self.assertTrue(isinstance(profile, Profile))
-        self.assertEqual(user, profile.user)
-        self.assertEqual(self.TEST_IMAGE, profile.image)
-        self.assertEqual(self.TEST_BIO, profile.bio)
+        self.assertEqual(self.user, profile.user)
+        self.assertEqual(constants.TEST_IMAGE, profile.image)
+        self.assertEqual(constants.TEST_BIO, profile.bio)
 
 
 class FriendRequestModelTest(TestCase):
