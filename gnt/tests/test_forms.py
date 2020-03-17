@@ -11,10 +11,6 @@ from gnt.forms import CreateUserDrinkInstructionForm
 from gnt.forms import ProfileUpdateForm
 from gnt.forms import UserRegisterForm
 from gnt.forms import UserUpdateForm
-from gnt.models import Ingredient
-from gnt.models import Instruction
-from gnt.models import Profile
-from gnt.models import UserDrink
 from gnt.tests import constants
 
 
@@ -22,18 +18,6 @@ class CreateUserDrinkFormTest(TestCase):
     """
     Create User Drink Form Test Class
     """
-
-    def setUp(self):
-        """
-        Test Set Up
-        """
-
-        # populate test database with an existing user
-        User.objects.create(
-            username=constants.TEST_EXISTING_USERNAME,
-            email=constants.TEST_EMAIL,
-            password=constants.TEST_PASSWORD
-        )
 
     def test_create_user_drink_form_success(self):
         """
@@ -50,36 +34,11 @@ class CreateUserDrinkFormTest(TestCase):
         # assert the form is valid
         self.assertTrue(form.is_valid())
 
-        # save the user drink with the form data and referenced user
-        drink = form.save(commit=False)
-        user = User.objects.get(username=constants.TEST_EXISTING_USERNAME)
-        drink.user = user
-        drink.save()
-
-        # assert the drink fields are equal to the test constants
-        self.assertTrue(isinstance(drink, UserDrink))
-        self.assertEquals(user, drink.user)
-        self.assertEquals(constants.TEST_DRINK_NAME, drink.name)
-        self.assertEquals(constants.TEST_DRINK_DESCRIPTION, drink.description)
-        self.assertEquals(constants.TEST_DRINK_IMAGE, drink.image)
-
 
 class CreateUserDrinkIngredientFormTest(TestCase):
     """
     Create User Drink Ingredient Form Test Class
     """
-
-    def setUp(self):
-        """
-        Test Set Up
-        """
-
-        # populate test database with an existing user
-        User.objects.create(
-            username=constants.TEST_EXISTING_USERNAME,
-            email=constants.TEST_EMAIL,
-            password=constants.TEST_PASSWORD
-        )
 
     def test_create_user_drink_ingredient_form_success(self):
         """
@@ -101,18 +60,6 @@ class CreateUserDrinkInstructionFormTest(TestCase):
     Create User Drink Instruction Form Test Class
     """
 
-    def setUp(self):
-        """
-        Test Set Up
-        """
-
-        # populate test database with an existing user
-        User.objects.create(
-            username=constants.TEST_EXISTING_USERNAME,
-            email=constants.TEST_EMAIL,
-            password=constants.TEST_PASSWORD
-        )
-
     def test_create_user_drink_instruction_form_success(self):
         """
         Successful Create User Drink Instruction Form Test
@@ -131,18 +78,6 @@ class ProfileUpdateFormTest(TestCase):
     """
     Profile Update Form Test Class
     """
-
-    def setUp(self):
-        """
-        Test Set Up
-        """
-
-        # populate test database with an existing user
-        User.objects.create(
-            username=constants.TEST_EXISTING_USERNAME,
-            email=constants.TEST_EMAIL,
-            password=constants.TEST_PASSWORD
-        )
 
     def test_profile_update_form_success(self):
         """
@@ -255,17 +190,6 @@ class UserUpdateFormTest(TestCase):
 
         # assert the form is valid
         self.assertTrue(form.is_valid())
-
-        # save the form
-        form.save()
-
-        # retrieve updated user
-        user = User.objects.get(username=constants.TEST_USERNAME)
-
-        # assert the updated user fields are equal to the test constants
-        self.assertTrue(isinstance(user, User))
-        self.assertEquals(constants.TEST_USERNAME, user.username)
-        self.assertEquals(constants.TEST_EMAIL, user.email)
 
     def test_user_update_form_existing_user(self):
         """
