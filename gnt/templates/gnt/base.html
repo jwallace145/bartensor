@@ -124,9 +124,7 @@
             </button>
           </div>
           <div class="col">
-            <button id="is21" type="button" class="btn btn-outline-success btn-block">
-              Yes
-            </button>
+            <input id="is21" type="submit" value = "Yes" class="btn btn-outline-success btn-block">
           </div>
           <p class="collapse" id="not21">
             Sorry, you are not old enough to use Bartensor
@@ -160,9 +158,16 @@
           document.cookie =
             "ModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
         });
+        document.querySelector("#myModal").addEventListener("keyup", event => {
+          if(event.key !== "Enter") return;
+          document.querySelector("#is21").click();
+          event.preventDefault();
+        });
       }
+
     });
   </script>
+
 </body>
 
 </html>
