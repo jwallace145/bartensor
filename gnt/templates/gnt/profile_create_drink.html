@@ -1,8 +1,9 @@
 {% extends 'gnt/profile_base.html' %}
 {% load crispy_forms_tags %}
 {% block profile_content %}
+
 <div class="content-section">
-  <form method="POST">
+  <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset class="form-group">
       <legend class="border-bottom mb-4">Create a Drink</legend>
@@ -17,6 +18,7 @@
       {% endfor %}
       <div class="row" style="padding-left:15px;">
         <button class="btn btn-outline-info" type="button" id="add_ingredient_form">Add Ingredient</button>
+        <button class="btn btn-outline-info" type="button" id="remove_ingredient_form">Remove Ingredient</button>
       </div>
       <legend>Instructions</legend>
       {{ instruction_formset.management_form }}
@@ -27,6 +29,7 @@
       {% endfor %}
       <div class="row" style="padding-left:15px;">
         <button class="btn btn-outline-info" type="button" id="add_instruction_form">Add Instruction</button>
+        <button class="btn btn-outline-info" type="button" id="remove_instruction_form">Remove Instruction</button>
       </div>
     </fieldset>
     <legend class="border-bottom mb-4"></legend>
@@ -35,12 +38,20 @@
     </div>
   </form>
 </div>
+
 <script>
   $('#add_ingredient_form').click(function() {
-    cloneMore('div.ingredient-form:last', 'ingredient')
+    addForm('div.ingredient-form:last', 'ingredient')
   });
   $('#add_instruction_form').click(function() {
-    cloneMore('div.instruction-form:last', 'instruction')
+    addForm('div.instruction-form:last', 'instruction')
+  });
+  $('#remove_instruction_form').click(function() {
+    deleteForm('instruction', this)
+  });
+  $('#remove_ingredient_form').click(function() {
+    deleteForm('ingredient', this)
   });
 </script>
+
 {% endblock profile_content %}

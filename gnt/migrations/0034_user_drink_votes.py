@@ -11,7 +11,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AddField(
-            model_name='user_drink',
+            model_name='UserDrink',
             name='votes',
             field=models.IntegerField(default=1),
         ),

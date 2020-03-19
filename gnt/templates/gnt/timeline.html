@@ -17,7 +17,7 @@
         <img class="rounded-circle article-img" src="{{ drink.user.profile.image.url }}">
         <div class="media-body">
           <div class="article-metadata">
-            <a class="mr-2" href="#">{{ drink.user }}</a>
+            <a class="mr-2" href="{% url 'profile_public' username=drink.user %}">{{ drink.user }}</a>
             <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
           </div>
           <div class="row">
@@ -38,12 +38,12 @@
               {% endfor %}
             </div>
             <div class="col-lg-5" style="text-align: right;">
-              <img src="{{ drink.image.url }}" width="60%" style="margin-left: auto;"/>
+              <img src="{{ drink.image.url }}" width="60%" style="margin-left: auto;" />
             </div>
             <div class="col-lg-1" style="text-align: center;">
-              <img  src="{% static 'images/thumbsup.png' %}" alt="thumbs up"  width="30em" />
+              <img src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em" />
               <div id='drink{{forloop.counter}}_votes'>{{drink.votes}}</div>
-              <img  src="{% static 'images/thumbsdown.png' %}" alt="thumbs down"  width="30em" />
+              <img src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em" />
             </div>
           </div>
         </div>

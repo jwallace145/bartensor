@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+# import necessary modules
 import os
 
 
@@ -136,7 +137,7 @@ JENKINS_TASKS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'profile_public'
+LOGIN_REDIRECT_URL = 'home'
 
 LOGIN_URL = 'login'
 
