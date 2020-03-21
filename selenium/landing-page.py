@@ -44,16 +44,16 @@ class ChromeSearch(unittest.TestCase):
 
     def test_login_link(self):
         self.driver.get(WEBSITE_URL)
-        about = self.driver.find_element_by_link_text('Login')
-        about.click()
+        login = self.driver.find_element_by_link_text('Login')
+        login.click()
         self.driver.implicitly_wait(5)
         self.assertTrue(self.driver.current_url ==
                         (WEBSITE_URL + '/login/'))
 
-    def test_login_link(self):
+    def test_register_link(self):
         self.driver.get(WEBSITE_URL)
-        about = self.driver.find_element_by_link_text('Register')
-        about.click()
+        register = self.driver.find_element_by_link_text('Register')
+        register.click()
         self.driver.implicitly_wait(5)
         self.assertTrue(self.driver.current_url ==
                         (WEBSITE_URL + '/register/'))
