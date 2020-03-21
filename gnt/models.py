@@ -118,7 +118,7 @@ class UserDrink(models.Model):
     name = models.CharField(max_length=32)
     description = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
-    likes = models.IntegerField(default=0)
+    votes = models.IntegerField(default=0)
     image = models.ImageField(default='default.jpg',
                               upload_to='user_drink_pics')
 
