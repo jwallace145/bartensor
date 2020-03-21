@@ -164,13 +164,16 @@ def profile_public(request, username):
     """
     Profile View
     """
-
     username = User.objects.get(username=username)
     drinks = UserDrink.objects.filter(user=username).order_by('-timestamp')
-    requests = (FriendRequest.objects.filter(requestee=request.user.profile) | FriendRequest.objects.filter(requestor=request.user.profile)) & (
-        FriendRequest.objects.filter(requestee=username.profile) | FriendRequest.objects.filter(requestor=username.profile))
-    friends = (Friend.objects.filter(friend1=username.profile) & Friend.objects.filter(friend2=request.user.profile)) | (
-        Friend.objects.filter(friend1=request.user.profile) & Friend.objects.filter(friend2=username.profile))
+    if request.user.is_authenticated:
+        requests = (FriendRequest.objects.filter(requestee=request.user.profile) | FriendRequest.objects.filter(requestor=request.user.profile)) & (
+            FriendRequest.objects.filter(requestee=username.profile) | FriendRequest.objects.filter(requestor=username.profile))
+        friends = (Friend.objects.filter(friend1=username.profile) & Friend.objects.filter(friend2=request.user.profile)) | (
+            Friend.objects.filter(friend1=request.user.profile) & Friend.objects.filter(friend2=username.profile))
+    else:
+        requests = []
+        friends = []
 
     if request.method == 'POST':
         if 'add-friend' in request.POST:
