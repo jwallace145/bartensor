@@ -7,6 +7,10 @@
         <h1>Results</h1>
         <h3>Query: {{query}}</h3>
     </div>
+    <div class="form-check">
+        <input type="checkbox" onclick="hide_disliked_drinks()" class="form-check-input"  id="hide-disliked-drinks-checkbox" checked/>
+        <label class="form-check-label" for="hide-disliked-drinks-checkbox">Hide disliked drinks</label>
+    </div>
     {% include 'gnt/drink_results_with_voting.html' %}
 </div>
 {% endblock 'content' %}
