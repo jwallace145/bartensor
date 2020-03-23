@@ -1,6 +1,6 @@
 {% extends 'gnt/base.html' %}
 {% load crispy_forms_tags %}
-{% block content %}
+{% block 'content' %}
 <div class="content-section">
   <form method="POST">
     {% csrf_token %}
@@ -9,7 +9,7 @@
       {{ form | crispy }}
     </fieldset>
     <div class="form-group">
-      <button class="btn btn-outline-info" type="submit">Sign up</button>
+      <button class="btn btn-outline-info" type="submit" name="register">Sign up</button>
     </div>
   </form>
   <div class="border-top pt-3">
@@ -18,4 +18,4 @@
     </small>
   </div>
 </div>
-{% endblock content %}
+{% endblock 'content' %}

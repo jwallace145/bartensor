@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.0/ref/settings/
 """
 
+# import necessary modules
 import os
 
 
@@ -34,7 +35,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'django_jenkins',
     'gnt.apps.GntConfig',
-    #    'users.apps.UsersConfig',
     'crispy_forms',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -137,7 +137,7 @@ JENKINS_TASKS = [
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'profile_public'
+LOGIN_REDIRECT_URL = 'home'
 
 LOGIN_URL = 'login'
 
@@ -152,5 +152,5 @@ EMAIL_USE_TLS = True
 EMAIL_HOST_USER = os.environ.get('BARTENSOR_EMAIL_USERNAME')
 EMAIL_HOST_PASSWORD = os.environ.get('BARTENSOR_EMAIL_PASSWORD')
 
-# WATSON_DISCOVERY_API_KEY = 'Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2'
 WATSON_DISCOVERY_API_KEY = os.environ.get('WATSON_DISCOVERY_API_KEY')
+WATSON_SPEECH_TO_TEXT_API_KEY = os.environ.get('WATSON_SPEECH_TO_TEXT_API_KEY')

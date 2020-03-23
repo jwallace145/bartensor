@@ -1,6 +1,6 @@
 {% extends 'gnt/base.html' %}
 {% load crispy_forms_tags %}
-{% block content %}
+{% block 'content' %}
 <div class="content-section">
   <form method="POST">
     {% csrf_token %}
@@ -9,7 +9,7 @@
       {{ form | crispy }}
     </fieldset>
     <div class="form-group">
-      <button class="btn btn-outline-info" type="submit">Login</button>
+      <button class="btn btn-outline-info" type="submit" name="login">Login</button>
       <small class="text-muted">
         <a href="{% url 'password_reset' %}">Forgot Password?</a>
       </small>
@@ -21,4 +21,4 @@
     </small>
   </div>
 </div>
-{% endblock content %}
+{% endblock 'content' %}
