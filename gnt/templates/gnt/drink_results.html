@@ -1,4 +1,8 @@
 {% load static %}
+<div class="form-check">
+  <input type="checkbox" onclick="hide_disliked_drinks()" class="form-check-input"  id="hide-disliked-drinks-checkbox" checked/>
+  <label class="form-check-label" for="hide-disliked-drinks-checkbox">Hide disliked drinks</label>
+</div>
 <div class="container results accordion" id="results">
   {% for drink in drinks %}
   <div class="row" id="drink_id_{{drink.id}}">
