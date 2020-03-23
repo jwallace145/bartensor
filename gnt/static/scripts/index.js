@@ -44,9 +44,11 @@ $(document).ready(function() {
                         success: function (data) {
                             var dom = $(data).find("#result_container")
                             $("#content_here").replaceWith(dom);
+                            hide_disliked_drinks();
                             color_thumbs();// replace entire page with response
                             thumbs_up();
                             thumbs_down();
+                            
                         },
                         error: function (xhr, ajaxOptions, thrownError) {
                             console.log(xhr.status);
@@ -94,6 +96,7 @@ $(document).ready(function() {
                 color_thumbs();
                 thumbs_up();
                 thumbs_down();
+                hide_disliked_drinks();
             },
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr.status);
@@ -105,8 +108,6 @@ $(document).ready(function() {
 });
 
 function color_thumbs(){
-    //$(window).bind('load', function(){
-
     console.log("Running mark_liked_disliked_drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
@@ -151,7 +152,41 @@ function color_thumbs(){
         }
     });
 }
-
+function hide_disliked_drinks() {
+    const checkbox = $("#hide-disliked-drinks-checkbox");
+    var url = APPURL + "/get_liked_disliked_drinks/";
+    var csrftoken = getCookie("csrftoken");
+    $.ajax({
+        url: url,
+        method: "GET",
+        headers: { "X-CSRFToken": csrftoken },
+        data: {csrfmiddlewaretoken: '{{ csrf_token}}' },
+        dataType: "json",
+        success: function(data) {
+            if (data["status"] == 201) {
+                liked_drinks = data["message"][0];
+                disliked_drinks = data["message"][1];
+                $(".thumbsdown").each(function(){
+                    var drink_id = $(this).attr("drinkid");
+                    var checked = checkbox.prop("checked");
+                    if(disliked_drinks.includes(drink_id)){
+                        if(checked){
+                            $("#drink_id_"+drink_id).hide();
+                        }else{
+                            $("#drink_id_"+drink_id).show();
+                        }
+                    }
+                });
+            } else {
+                console.log(data["status"]);
+                console.log("Error in hide disliked drinks checkbox");
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            console.log("ERROR")
+        }
+    });    
+}
 function thumbs_up() {
     var anchor = $(".thumbsup");
     // Add click listener to each thumbs up button

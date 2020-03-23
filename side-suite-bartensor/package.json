@@ -1,0 +1,25 @@
+{
+  "name": "bartensor",
+  "version": "0.0.0",
+  "jest": {
+    "extraGlobals": [],
+    "modulePaths": [
+      "E:\\Code\\Python Projects\\Gin-and-Tensor\\node_modules\\selenium-side-runner\\node_modules",
+      "E:\\Code\\Python Projects\\Gin-and-Tensor\\node_modules"
+    ],
+    "setupFilesAfterEnv": [
+      "E:\\Code\\Python Projects\\Gin-and-Tensor\\node_modules\\jest-environment-selenium\\dist\\setup.js"
+    ],
+    "testEnvironment": "jest-environment-selenium",
+    "testEnvironmentOptions": {
+      "capabilities": {
+        "browserName": "chrome"
+      },
+      "params": {},
+      "runId": "0e822f9ca92c29e7d183a035166ebf63",
+      "path": "E:\\Code\\Python Projects\\Gin-and-Tensor\\node_modules\\",
+      "timeout": 15000
+    }
+  },
+  "dependencies": {}
+}

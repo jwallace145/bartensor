@@ -139,3 +139,6 @@ user_drink_pics/
 run.sh
 secret.txt
 google-stt-secrets.json
+
+# Node Modules
+node_modules
