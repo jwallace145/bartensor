@@ -13,12 +13,16 @@
   <link rel="stylesheet" type="text/css" href="{% static 'stylesheets/custom.css' %}" />
 
   <!-- Navbar Searchbar CSS -->
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css"
+    integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous" />
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
 
   <!-- Jquery and Bootstrap -->
-  <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+    integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous">
+  </script>
 
   <title>Bartensor</title>
 </head>
@@ -28,7 +32,8 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
       <div class="container">
         <a class="navbar-brand mr-4" href="{% url 'home' %}">Bartensor</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+          aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarToggle">
@@ -45,7 +50,7 @@
               <form action="{% url 'search' %}" method="POST">
                 {% csrf_token %}
                 <div class="searchbar">
-                  <input class="search_input" type="text" name="search_input" placeholder="Search..." />
+                  <input class="search_input" type="text" name="search_input" placeholder="Friend search..." />
                   <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
                 </div>
               </form>
@@ -68,7 +73,8 @@
               <i class="fas fa-bell fa-lg"></i>
             </a>
             <div class="dropdown">
-              <button class="btn btn-ellipsis" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              <button class="btn btn-ellipsis" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+                aria-haspopup="true" aria-expanded="false">
                 <i class="fas fa-ellipsis-h fa-lg"></i>
               </button>
               <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -116,12 +122,13 @@
         </div>
         <div class="modal-footer d-flex justify-content-around">
           <div class="col">
-            <button type="button" class="btn btn-outline-secondary btn-block" data-toggle="collapse" data-target="#not21" aria-expanded="false" aria-controls="not21">
+            <button type="button" class="btn btn-outline-secondary btn-block" data-toggle="collapse"
+              data-target="#not21" aria-expanded="false" aria-controls="not21">
               No
             </button>
           </div>
           <div class="col">
-            <input id="is21" type="submit" value = "Yes" class="btn btn-outline-success btn-block">
+            <input id="is21" type="submit" value="Yes" class="btn btn-outline-success btn-block">
           </div>
           <p class="collapse" id="not21">
             Sorry, you are not old enough to use Bartensor
@@ -141,16 +148,16 @@
 
   <!-- Controls 21+ modal -->
   <script>
-    $(document).ready(function() {
+    $(document).ready(function () {
       //if cookie hasn't been set...
       if (document.cookie.indexOf(" ModalShown=true") < 0) {
         $("#myModal").modal("show");
-        $("#is21").click(function() {
+        $("#is21").click(function () {
           $("#myModal").modal("hide");
           document.cookie = "ModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
         });
         document.querySelector("#myModal").addEventListener("keyup", event => {
-          if(event.key !== "Enter") return;
+          if (event.key !== "Enter") return;
           document.querySelector("#is21").click();
           event.preventDefault();
         });
