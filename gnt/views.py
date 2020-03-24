@@ -1,21 +1,17 @@
 """
 Views Module
 """
-
-# import necessary modules
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from gnt.adapters.stt_adapter import IBM
 from django.contrib.auth.models import User
 from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from gnt.adapters import drink_adapter
+from gnt.adapters.stt_adapter import IBM
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
 from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, LikeUserDrink
-from .adapters.stt_adapter import IBM
-
 
 def bad_request(request):
     """
