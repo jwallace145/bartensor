@@ -19,6 +19,9 @@ class DrinkInterface():
     def natural_language_search(self, text):
         raise NotImplementedError()
 
+    def search(self, query):
+        raise NotImplementedError()
+
     def get_drink(self, drink_id):
         raise NotImplementedError()
 
@@ -31,6 +34,9 @@ class DiscoveryAdaptee():
     def natural_language_search(self, text):
         return discovery.query(
             environment_id, collection_id, natural_language_query=text).result['results']
+
+    def search(self, query):
+        return discovery.query(environment_id, collection_id, query=text).result['results']
 
     def get_drink(self, drink_id):
         return discovery.query(
@@ -47,6 +53,9 @@ class DiscoveryAdapter(DrinkInterface):
 
     def natural_language_search(self, text):
         return self.adaptee.natural_language_search(text)
+
+    def search(self, query):
+        return self.adaptee.search(query)
 
     def get_drink(self, drink_id):
         return self.adaptee.get_drink(drink_id)
