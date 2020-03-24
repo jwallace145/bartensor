@@ -192,7 +192,7 @@ a.article-title:hover {
   height: 66px;
 }
 
-.mic_icon {
+.mic_icon:active {
   transform: scale(1.1);
 }
 
