@@ -14,7 +14,7 @@ from django.urls import reverse
 from gnt.adapters import drink_adapter
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
 from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, LikeUserDrink
-from .stt import IBM
+from .adapters.stt_adapter import IBM
 
 
 def bad_request(request):
