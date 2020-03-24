@@ -1,29 +1,55 @@
 {% extends 'gnt/profile_base.html' %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block profile_content %}
+{% if drinks %}
 {% for drink in drinks %}
 <article class="media content-section">
-  <img class="rounded-circle article-img" src="{{ drink.user.profile.image.url }}">
+  <img class="rounded-circle article-img" src="{{ profile.profile.image.url }}">
   <div class="media-body">
     <div class="article-metadata">
-      <a class="mr-2" href="#">{{ drink.user }}</a>
+      <a class="mr-2" href="{% url 'profile_public' username=profile %}">{{ profile }}</a>
       <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
     </div>
-    <h2><a class="article-title" href="#">{{ drink.name }}</a></h2>
-    <p class="article-content">{{ drink.description }}</p>
-    <p class="article-content">Ingredients</p>
-    {% for ingredient in drink.ingredient_set.all %}
-    <ul>
-      <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
-    </ul>
-    {% endfor %}
-    <p class="article-content">Instructions</p>
-    {% for instruction in drink.instruction_set.all %}
-    <ul>
-      <li>{{ instruction.instruction }}</li>
-    </ul>
-    {% endfor %}
+    <div class="row">
+      <div class="col-lg-6">
+        <h2><a class="article-title" href="{% url 'profile_public' username=profile %}">{{ drink.name }}</a></h2>
+        <p class="article-content">{{ drink.description }}</p>
+        <p class="article-content">Ingredients</p>
+        {% for ingredient in drink.ingredient_set.all %}
+        <ul>
+          <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
+        </ul>
+        {% endfor %}
+        <p class="article-content">Instructions</p>
+        {% for instruction in drink.instruction_set.all %}
+        <ul>
+          <li>{{ instruction.instruction }}</li>
+        </ul>
+        {% endfor %}
+        <form method="POST">
+          {% csrf_token %}
+          <input type="hidden" name="drink" value="{{ drink.name }}" />
+          <button class="btn btn-outline-info" type="submit" name="comment-drink">Comment</button>
+        </form>
+      </div>
+      <div class="col-lg-5" style="text-align: right;">
+        <img src="{{ drink.image.url }}" width="60%" style="margin-left: auto;" />
+      </div>
+      <div class="col-lg-1" style="text-align: center;">
+        <img src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em" />
+        <div id='drink{{forloop.counter}}_votes'>{{drink.votes}}</div>
+        <img src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em" />
+      </div>
+    </div>
   </div>
 </article>
 {% endfor %}
+{% else %}
+<article class="content-section">
+  <div>
+    You haven't created any drinks yet. <a href="{% url 'profile_create_drink' %}">Create a drink</a> to populate your profile!
+  </div>
+</article>
+{% endif %}
 {% endblock profile_content %}

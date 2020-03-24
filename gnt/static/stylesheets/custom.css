@@ -336,3 +336,8 @@ a {
   padding-top: 15px;
   padding-left: 15px;
 }
+
+/* filters */
+#hide-disliked-drinks {
+  margin-right: 30px;
+}

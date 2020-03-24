@@ -1,0 +1,53 @@
+{% extends 'gnt/profile_base.html' %}
+{% block profile_content %}
+<div class="content-section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="article-title">
+        <h1>Friends</h1>
+      </div>
+    </div>
+  </div>
+  {% if friends %}
+  {% for friend in friends %}
+  <article class="media content-section">
+    {% if friend.friend1 != user.profile %}
+    <img class="rounded-circle article-img" src="{{ friend.friend1.image.url }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="{% url 'profile_public' username=friend.friend1.user %}">{{ friend.friend1.user }}</a>
+      </div>
+      <h2><a class="article-title" href="{% url 'profile_public' username=friend.friend1.user %}">{{ friend.friend1.user }}</a></h2>
+      <p class="article-content">{{ friend.friend1.bio }}</p>
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="requestor" value="{{ friend.friend1.user }}" />
+        <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
+      </form>
+    </div>
+    {% else %}
+    <img class="rounded-circle article-img" src="{{ friend.friend2.image.url }}">
+    <div class="media-body">
+      <div class="article-metadata">
+        <a class="mr-2" href="{% url 'profile_public' username=friend.friend2.user %}">{{ friend.friend2.user }}</a>
+      </div>
+      <h2><a class="article-title" href="{% url 'profile_public' username=friend.friend2.user %}">{{ friend.friend2.user }}</a></h2>
+      <p class="article-content">{{ friend.friend2.bio }}</p>
+      <form method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="requestor" value="{{ friend.friend2.user }}" />
+        <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
+      </form>
+    </div>
+    {% endif %}
+  </article>
+  {% endfor %}
+  {% else %}
+  <article class="content-section">
+    <div>
+      No friends yet. Search for your friends and add them to see them here!
+    </div>
+  </article>
+  {% endif %}
+</div>
+{% endblock profile_content %}

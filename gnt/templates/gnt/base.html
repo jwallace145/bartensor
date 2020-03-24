@@ -4,7 +4,7 @@
 <html lang="en">
 
 <head>
-  <!-- Required meta tags -->
+  <!-- Required Meta Tags -->
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 
@@ -16,7 +16,7 @@
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous" />
   <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css" />
 
-  <!-- jquery and bootstrap -->
+  <!-- Jquery and Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 
@@ -32,8 +32,8 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarToggle">
-          <div class="navbar-nav mr-auto">	
-            <a class="nav-item nav-link" href="{% url 'timeline' %}">Home</a>	
+          <div class="navbar-nav mr-auto">
+            <a class="nav-item nav-link" href="{% url 'timeline' %}">Proposals</a>
           </div>
           <div class="navbar-nav mr-auto">
             <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
@@ -42,10 +42,13 @@
           <!-- Navbar Searchbar -->
           <div class="container h-100">
             <div class="d-flex justify-content-center h-100">
-              <div class="searchbar">
-                <input class="search_input" type="text" name="" placeholder="Search..." />
-                <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
-              </div>
+              <form action="{% url 'search' %}" method="POST">
+                {% csrf_token %}
+                <div class="searchbar">
+                  <input class="search_input" type="text" name="search_input" placeholder="Search..." />
+                  <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
+                </div>
+              </form>
             </div>
           </div>
 
@@ -56,12 +59,12 @@
               <img class="rounded-circle account-header-img" src="{{ user.profile.image.url }}" />
             </a>
 
-            <a class="nav-item nav-link" href="{% url 'profile_public' %}">{{ user.username }}</a>
+            <a class="nav-item nav-link" href="{% url 'profile_public' username=user %}">{{ user.username }}</a>
 
             <a class="nav-item nav-link" href="#">
               <i class="fas fa-comment-dots fa-lg"></i>
             </a>
-            <a class="nav-item nav-link" href="#">
+            <a class="nav-item nav-link" href="{% url 'notifications' username=user %}">
               <i class="fas fa-bell fa-lg"></i>
             </a>
             <div class="dropdown">
@@ -86,14 +89,17 @@
   <main role="main" class="container">
     <div class="row">
       <div class="col-lg-12">
-        {% if messages %} {% for message in messages %}
+        {% if messages %}
+        {% for message in messages %}
         <div class=" alert alert-{{ message.tags }}">
           {{ message }}
         </div>
-        {% endfor %} {% endif %}
+        {% endfor %}
+        {% endif %}
         <div id="content_here">
-        {% block 'content' %} {% endblock %}
-      </div>
+          {% block 'content' %}
+          {% endblock %}
+        </div>
       </div>
     </div>
   </main>
@@ -115,9 +121,7 @@
             </button>
           </div>
           <div class="col">
-            <button id="is21" type="button" class="btn btn-outline-success btn-block">
-              Yes
-            </button>
+            <input id="is21" type="submit" value = "Yes" class="btn btn-outline-success btn-block">
           </div>
           <p class="collapse" id="not21">
             Sorry, you are not old enough to use Bartensor
@@ -133,7 +137,7 @@
   <script type="text/javascript" src="{% static 'scripts/like_dislike.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/remove_like_dislike.js' %}"></script>
   <script type="text/javascript" src="{% static 'scripts/index.js' %}"></script>
-  <script type="text/javascript" src="{% static 'scripts/clone_more.js' %}"></script>
+  <script type="text/javascript" src="{% static 'scripts/dynamic_forms.js' %}"></script>
 
   <!-- Controls 21+ modal -->
   <script>
@@ -145,7 +149,13 @@
           $("#myModal").modal("hide");
           document.cookie = "ModalShown=true; expires=Fri, 31 Dec 9999 23:59:59 GMT; path=/";
         });
+        document.querySelector("#myModal").addEventListener("keyup", event => {
+          if(event.key !== "Enter") return;
+          document.querySelector("#is21").click();
+          event.preventDefault();
+        });
       }
+
     });
   </script>
   <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
