@@ -3,11 +3,12 @@
 
 {% block 'content' %}
 <div id='result_container'>
-    <div class="container title">
-        <h1>Results</h1>
-        <h3>Query: {{query}}</h3>
-    </div>
+    <div class="results-header">
+        <h1 class="drink-menu-header">Menu</h1>
+        <h4 class="query-header">Query: {{query}}</h4>
+    </div>   
     <div class = "row justify-content-end">
+        <button type="button" class="btn btn-outline-dark filter-button">Filter <i class="fas fa-filter fa-xs"></i></button>
         <div class="form-check" id="hide-disliked-drinks">
             <input type="checkbox" onclick="hide_disliked_drinks()" class="form-check-input"  id="hide-disliked-drinks-checkbox" checked/>
             <label class="form-check-label" for="hide-disliked-drinks-checkbox">Hide disliked drinks</label>

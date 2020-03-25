@@ -16,14 +16,10 @@
     {% endif %}
       <div class="card">
         <div class="card-header" id="{{forloop.counter}}" style="display: flex">
-          <div style="display:inline-block">
-            <h2 class="mb-0">
-              <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#header{{forloop.counter}}"
+              <button class="btn btn-drink-names btn-block text-left" type="button" data-toggle="collapse" data-target="#header{{forloop.counter}}"
                 aria-expanded="false" aria-controls="{{forloop.counter}}">
                 {{ drink.names | first }}
               </button>
-            </h2>
-          </div>
           <div style="display:inline-block; margin-left:auto;">
             {% block 'like-dislike' %}{% endblock 'like-dislike' %}
           </div>
