@@ -49,7 +49,7 @@ $(document).ready(function () {
                                 $("#index-div").hide();
                                 $("#content_here").append(data);
                                 hide_disliked_drinks();
-                                color_thumbs(); // replace entire page with response
+                                color_thumbs();
                                 thumbs_up();
                                 thumbs_down();
 
@@ -57,6 +57,8 @@ $(document).ready(function () {
                             error: function (xhr, ajaxOptions, thrownError) {
                                 console.log(xhr.status);
                                 console.log(thrownError);
+                                $("#index-div").hide();
+                                $("#content_here").append('<h6 class="backend-error">Error searching drinks</h6>');
                             }
                         });
                         display_duck();
@@ -105,6 +107,8 @@ $(document).ready(function () {
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr.status);
                 console.log(thrownError);
+                $("#index-div").hide();
+                $("#content_here").append('<h6 class="backend-error">Error searching drinks</h6>');
             }
         });
         display_duck();
@@ -202,6 +206,10 @@ function hide_disliked_drinks() {
 
 function thumbs_up() {
     var anchor = $(".thumbsup");
+    // Remove listeners if there were any
+    anchor.each(function removeListner() {
+        $(this).unbind();
+    })
     // Add click listener to each thumbs up button
     anchor.each(function likeDrink(index, element) {
         $(this).on("click", function likeDrink() {
@@ -244,6 +252,10 @@ function thumbs_up() {
 
 function thumbs_down() {
     var anchor = $(".thumbsdown");
+    // Remove listeners if there were any
+    anchor.each(function removeListner() {
+        $(this).unbind();
+    })
     // Add click listener to each thumbs up button
     anchor.each(function likeDrink(index, element) {
         $(this).on("click", function likeDrink() {
@@ -282,5 +294,38 @@ function thumbs_down() {
                 }
             });
         });
+    });
+}
+
+var offset = 0;
+
+function load_more_drinks() {
+    offset += 1;
+    var url = APPURL + '/more_results/';
+    var csrftoken = getCookie("csrftoken");
+    query = $(".query").text();
+    $.ajax({
+        url: url,
+        type: 'POST',
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+        data: {
+            text: query,
+            offset: offset * 10
+        },
+        dataType: "html",
+        success: function (data) {
+            $(".load-more").before(data);
+            color_thumbs();
+            thumbs_up();
+            thumbs_down();
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status);
+            console.log(thrownError);
+            $(".load-more-error").html('');
+            $("#content_here").append('<div class="load-more-error">Cannot load more drinks</div>');
+        }
     });
 }

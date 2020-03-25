@@ -18,6 +18,7 @@ urlpatterns = [
     path('', gnt_views.home, name='home'),
     path('timeline/', gnt_views.timeline, name='timeline'),
     path('results/', gnt_views.results, name='results'),
+    path('more_results/', gnt_views.more_results, name='more_results'),
     path('register/', gnt_views.register, name='register'),
     path('login/', auth_views.LoginView.as_view(template_name='gnt/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(template_name='gnt/logout.html'), name='logout'),

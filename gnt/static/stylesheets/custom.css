@@ -289,6 +289,16 @@ a {
   text-align: center;
 }
 
+.backend-error {
+  text-align: center;
+  padding-top: 10%;
+}
+
+.load-more button {
+  margin: 5% auto;
+  display: block;
+}
+
 /* font awesome styling */
 .fa-bell {
   margin-left: 12px;

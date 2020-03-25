@@ -55,6 +55,21 @@ def results(request):
         return HttpResponseRedirect(reverse('home'))
 
 
+def more_results(request):
+    """
+    More results with an offset
+    """
+    text = request.POST['text']
+    offset = request.POST['offset']
+    discovery_adapter = drink_adapter.DiscoveryAdapter()
+    response = discovery_adapter.natural_language_search_offset(
+        text, offset)
+    return render(request, 'gnt/drink_results_with_voting.html', {
+        'query': text,
+        'drinks': response
+    })
+
+
 def register(request):
     """
     Register View
