@@ -1,18 +1,28 @@
-{% extends 'gnt/base.html' %}
 {% load static %}
-
-{% block 'content' %}
 <div id='result_container'>
     <div class="container title">
         <h1>Results</h1>
-        <h3>Query: {{query}}</h3>
+        <h3 class="query">Query: {{query}}</h3>
     </div>
-    <div class = "row justify-content-end">
+    {% if drinks %}
+    <div class="row justify-content-end">
         <div class="form-check" id="hide-disliked-drinks">
-            <input type="checkbox" onclick="hide_disliked_drinks()" class="form-check-input"  id="hide-disliked-drinks-checkbox" checked/>
+            <input type="checkbox" onclick="hide_disliked_drinks()" class="form-check-input"
+                id="hide-disliked-drinks-checkbox" checked />
             <label class="form-check-label" for="hide-disliked-drinks-checkbox">Hide disliked drinks</label>
         </div>
     </div>
-    {% include 'gnt/drink_results_with_voting.html' %}
+    <div class="container results accordion" id="results">
+        {% include 'gnt/drink_results_with_voting.html' %}
+        <div class="load-more">
+            <button class="btn btn-outline-info" type="button" onclick="load_more_drinks()">Load more</button>
+        </div>
+    </div>
+    {% else %}
+    <div class=" row no-results">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h6>Sorry your search provided no results. Try searching 'White Russian'</h6>
+        </div>
+    </div>
+    {% endif %}
 </div>
-{% endblock 'content' %}
