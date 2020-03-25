@@ -46,8 +46,8 @@ $(document).ready(function () {
                             processData: false,
                             contentType: false,
                             success: function (data) {
-                                var dom = $(data).find("#result_container")
-                                $("#content_here").replaceWith(dom);
+                                $("#index-div").hide();
+                                $("#content_here").append(data);
                                 hide_disliked_drinks();
                                 color_thumbs(); // replace entire page with response
                                 thumbs_up();
@@ -112,7 +112,6 @@ $(document).ready(function () {
 });
 
 function color_thumbs() {
-    console.log("Running mark_liked_disliked_drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({

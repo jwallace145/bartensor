@@ -284,6 +284,11 @@ a {
   text-decoration: none;
 }
 
+.no-results {
+  padding-top: 10%;
+  text-align: center;
+}
+
 /* font awesome styling */
 .fa-bell {
   margin-left: 12px;
