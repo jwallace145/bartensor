@@ -12,6 +12,12 @@
             <label class="form-check-label" for="hide-disliked-drinks-checkbox">Hide disliked drinks</label>
         </div>
     </div>
-    {% endif %}
     {% include 'gnt/drink_results_with_voting.html' %}
+    {% else %}
+    <div class="row no-results">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            <h6>Sorry your search provided no results. Try searching 'White Russian'</h6>
+        </div>
+    </div>
+    {% endif %}
 </div>

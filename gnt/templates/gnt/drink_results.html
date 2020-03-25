@@ -1,5 +1,4 @@
 {% load static %}
-{% if drinks %}
 <div class="container results accordion" id="results">
   {% for drink in drinks %}
   <div class="row" id="drink_id_{{drink.id}}">
@@ -59,10 +58,3 @@
     </div>
     {% endfor %}
   </div>
-  {% else %}
-  <div class="row no-results">
-    <div class="col-lg-12 col-md-12 col-sm-12">
-      <h6>Sorry your search provided no results. Try searching 'White Russian'</h6>
-    </div>
-  </div>
-  {% endif %}
