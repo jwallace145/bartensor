@@ -16,6 +16,7 @@ urlpatterns = [
     path('about/', gnt_views.about, name='about'),
     path('admin/', admin.site.urls),
     path('', gnt_views.home, name='home'),
+    path('timeline_pop/', gnt_views.timeline_pop, name='timeline_pop'),
     path('timeline/', gnt_views.timeline, name='timeline'),
     path('results/', gnt_views.results, name='results'),
     path('more_results/', gnt_views.more_results, name='more_results'),

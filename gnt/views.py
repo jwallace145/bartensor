@@ -297,6 +297,19 @@ def disliked_drinks(request):
         return HttpResponseRedirect('/home/')
 
 
+def timeline_pop(request):
+    """
+    Timeline View
+    """
+
+    drinks = UserDrink.objects.all().order_by('-votes')
+
+    context = {
+        'drinks': drinks
+    }
+
+    return render(request, 'gnt/timeline.html', context)
+
 def timeline(request):
     """
     Timeline View

@@ -124,9 +124,6 @@ function color_thumbs() {
         headers: {
             "X-CSRFToken": csrftoken
         },
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token}}'
-        },
         dataType: "json",
         success: function (data) {
             if (data["status"] == 201) {
