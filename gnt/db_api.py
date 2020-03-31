@@ -214,19 +214,29 @@ def like_user_drink(request):
         drink = UserDrink.objects.get(id=request.POST['drink_id'])
 
         profile = Profile.objects.get(id=request.user.profile.id)
-
-        # Check to see if drink is disliked then remove
-        disliked_drink = DownvotedUserDrink.objects.filter(
-            profile=profile, drink=drink)
-        if disliked_drink:
+        if DownvotedUserDrink.objects.filter(profile=profile, drink=drink):
+            # Check to see if drink is disliked then remove
+            disliked_drink = DownvotedUserDrink.objects.filter(profile=profile, drink=drink)
             disliked_drink.delete()
-            drink.votes += 1
+            drink.votes += 2
             drink.save()
-
-        if UpvotedUserDrink.objects.filter(profile=profile, drink=drink):
+            new_like = UpvotedUserDrink(profile=profile, drink=drink)
+            new_like.save()
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s liked drinks"
             response = {
-                'message': "Drink " + str(request.POST['drink_id']) + " has already been liked by " + str(username) + ". No changes to db",
-                'status': 422
+                'message': msg,
+                'status': 201
+            }
+        elif UpvotedUserDrink.objects.filter(profile=profile, drink=drink):
+            upvoted_drink = UpvotedUserDrink.objects.filter(profile=profile, drink=drink)
+            upvoted_drink.delete()
+            drink.votes -= 1
+            drink.save()
+            response = {
+                'message': "Removed the upvote",
+                'status': 202
             }
         else:
             new_like = UpvotedUserDrink(profile=profile, drink=drink)
@@ -255,19 +265,29 @@ def dislike_user_drink(request):
         drink = UserDrink.objects.get(id=request.POST['drink_id'])
 
         profile = Profile.objects.get(id=request.user.profile.id)
-
-        # Check to see if drink is disliked then remove
-        liked_drink = UpvotedUserDrink.objects.filter(
-            profile=profile, drink=drink)
-        if liked_drink:
+        if UpvotedUserDrink.objects.filter(profile=profile, drink=drink):
+            # Check to see if drink is disliked then remove
+            liked_drink = UpvotedUserDrink.objects.filter(profile=profile, drink=drink)
             liked_drink.delete()
-            drink.votes -= 1
+            drink.votes -= 2
             drink.save()
-
-        if DownvotedUserDrink.objects.filter(profile=profile, drink=drink):
+            new_dislike = DownvotedUserDrink(profile=profile, drink=drink)
+            new_dislike.save()
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s disliked drinks"
             response = {
-                'message': "Drink " + str(request.POST['drink_id']) + " has already been disliked by " + str(username) + ". No changes to db",
-                'status': 422
+                'message': msg,
+                'status': 201
+            }
+        elif DownvotedUserDrink.objects.filter(profile=profile, drink=drink):
+            downvoted_drink = DownvotedUserDrink.objects.filter(profile=profile, drink=drink)
+            downvoted_drink.delete()
+            drink.votes += 1
+            drink.save()
+            response = {
+                'message': "Removed the downvote",
+                'status': 202
             }
         else:
             new_dislike = DownvotedUserDrink(profile=profile, drink=drink)

@@ -27,7 +27,7 @@ function up_vote() {
                 dataType: "json",
                 success: function (data) {
                     if (data["status"] == 201) {
-                        console.log("Drink liked!");
+                        console.log(data["message"]);
                         var votes = $("#drink" + drink_id + "_votes").text();
                         if (thumbsdown.children('#filled_thumbsdown').is(":visible")) {
                             $("#drink" + drink_id + "_votes").html(Number(votes) + 2);
@@ -35,8 +35,11 @@ function up_vote() {
                             $("#drink" + drink_id + "_votes").html(Number(votes) + 1);
                         }
                         likeDrinkAnimation(thumbsup, thumbsdown);
-                    } else if (data["status"] == 422) {
-                        console.log("Already liked");
+                    } else if (data["status"] == 202) {
+                        console.log(data["message"]);
+                        var votes = $("#drink" + drink_id + "_votes").text();
+                        $("#drink" + drink_id + "_votes").html(Number(votes) - 1);
+                        neglikeDrinkAnimation(thumbsup);;
                     } else {
                         console.log(data["status"]);
                         console.log(data["message"]);
@@ -79,7 +82,7 @@ function down_vote() {
                 dataType: "json",
                 success: function (data) {
                     if (data["status"] == 201) {
-                        console.log("Drink disliked!");
+                        console.log(data["message"]);
                         var votes = $("#drink" + drink_id + "_votes").text();
                         if (thumbsup.children('#filled_thumbsup').is(":visible")) {
                             $("#drink" + drink_id + "_votes").html(Number(votes) - 2);
@@ -87,8 +90,11 @@ function down_vote() {
                             $("#drink" + drink_id + "_votes").html(Number(votes) - 1);
                         }
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
-                    } else if (data["status"] == 422) {
-                        console.log("Already disliked");
+                    } else if (data["status"] == 202) {
+                        console.log(data["message"]);
+                        var votes = $("#drink" + drink_id + "_votes").text();
+                        $("#drink" + drink_id + "_votes").html(Number(votes) + 1);
+                        negdislikeDrinkAnimation(thumbsdown);
                     } else {
                         console.log(data["status"]);
                         console.log(data["message"]);
@@ -111,9 +117,6 @@ function color_thumbs_proposals() {
         method: "GET",
         headers: {
             "X-CSRFToken": csrftoken
-        },
-        data: {
-            csrfmiddlewaretoken: '{{ csrf_token}}'
         },
         dataType: "json",
         success: function (data) {
@@ -152,8 +155,51 @@ function color_thumbs_proposals() {
     });
 }
 
+function neglikeDrinkAnimation(thumbsup){
+    thumbsup.children("#blank_thumbsup").show();
+    thumbsup.children("#filled_thumbsup").hide();
+
+}
+
+function negdislikeDrinkAnimation(thumbsdown){
+    thumbsdown.children("#blank_thumbsdown").show();
+    thumbsdown.children("#filled_thumbsdown").hide();
+}
+
+function switch_sort() {
+    $("#switchsorter").on("click", function () {
+        var url = APPURL;
+        var csrftoken = getCookie("csrftoken");
+        if ($(this).attr("val") == "pop") {
+            $(this).attr("val", "new");
+            url = url + "/timeline/"
+        } else {
+            $(this).attr("val", "pop");
+            url = url + "/timeline_pop/"
+        }
+        $.ajax({
+            url: url,
+            method: "GET",
+            headers: {
+                "X-CSRFToken": csrftoken
+            },
+            dataType: "html",
+            success: function (data) {
+                $("#ProposalContent").replaceWith($(data).find("#ProposalContent"));
+                color_thumbs_proposals();
+                up_vote();
+                down_vote();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(thrownError)
+            }
+        });
+    });
+}
+
 $(document).ready(function () {
     color_thumbs_proposals();
     up_vote();
     down_vote();
+    switch_sort();
 })
