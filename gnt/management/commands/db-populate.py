@@ -41,7 +41,7 @@ class Command(BaseCommand):
         )
         profile = Profile.objects.get(user=user)
         profile.bio = 'B2B Flip Cup Champ'
-        profile.image = 'profile_pics/biggie.jpeg'
+        profile.image = 'profile_pics/6d4.jpeg'
         profile.save()
         print('CREATED ADMIN ACCOUNT USERNAME: Caleb, PASSWORD: password')
 
