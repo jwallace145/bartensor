@@ -1,5 +1,5 @@
 from django.http import JsonResponse
-from gnt.models import Profile, Drink, DrinkName, ProfileToLikedDrink, ProfileToDislikedDrink
+from gnt.models import Profile, Drink, DrinkName, ProfileToLikedDrink, ProfileToDislikedDrink, UpvotedUserDrink, DownvotedUserDrink, UserDrink
 
 
 def like_drink(request):
@@ -164,6 +164,124 @@ def get_liked_disliked_drinks(request):
             'status': 201
         }
         return JsonResponse(resp)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+def get_liked_disliked_user_drinks(request):
+    try:
+        liked_drinks = []
+        disliked_drinks = []
+        user = request.user
+        profile = Profile.objects.get(user=user)
+        # get liked drinks
+        profile_to_liked_drink = UpvotedUserDrink.objects.filter(
+            profile=profile)
+        if profile_to_liked_drink:
+            response = [0 for i in range(len(profile_to_liked_drink))]
+            for i, ptd in enumerate(profile_to_liked_drink):
+                response[i] = ptd.drink.id
+            liked_drinks = response
+        # get disliked drinks
+        profile_to_disliked_drink = DownvotedUserDrink.objects.filter(
+            profile=profile)
+        if profile_to_disliked_drink:
+            response = [0 for i in range(len(profile_to_disliked_drink))]
+            for i, ptd in enumerate(profile_to_disliked_drink):
+                response[i] = ptd.drink.id
+            disliked_drinks = response
+        # return response
+        resp = {
+            'message': [liked_drinks, disliked_drinks],
+            'status': 201
+        }
+        return JsonResponse(resp)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+def like_user_drink(request):
+    try:
+        username = request.POST['user']
+        drink = UserDrink.objects.get(id=request.POST['drink_id'])
+
+        profile = Profile.objects.get(id=request.user.profile.id)
+
+        # Check to see if drink is disliked then remove
+        disliked_drink = DownvotedUserDrink.objects.filter(
+            profile=profile, drink=drink)
+        if disliked_drink:
+            disliked_drink.delete()
+            drink.votes += 1
+            drink.save()
+
+        if UpvotedUserDrink.objects.filter(profile=profile, drink=drink):
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " has already been liked by " + str(username) + ". No changes to db",
+                'status': 422
+            }
+        else:
+            new_like = UpvotedUserDrink(profile=profile, drink=drink)
+            new_like.save()
+            drink.votes += 1
+            drink.save()
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s liked drinks"
+            response = {
+                'message': msg,
+                'status': 201
+            }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+        return JsonResponse(response)
+
+def dislike_user_drink(request):
+    try:
+        username = request.POST['user']
+        drink = UserDrink.objects.get(id=request.POST['drink_id'])
+
+        profile = Profile.objects.get(id=request.user.profile.id)
+
+        # Check to see if drink is disliked then remove
+        liked_drink = UpvotedUserDrink.objects.filter(
+            profile=profile, drink=drink)
+        if liked_drink:
+            liked_drink.delete()
+            drink.votes -= 1
+            drink.save()
+
+        if DownvotedUserDrink.objects.filter(profile=profile, drink=drink):
+            response = {
+                'message': "Drink " + str(request.POST['drink_id']) + " has already been disliked by " + str(username) + ". No changes to db",
+                'status': 422
+            }
+        else:
+            new_dislike = DownvotedUserDrink(profile=profile, drink=drink)
+            new_dislike.save()
+            drink.votes -= 1
+            drink.save()
+            msg = "Drink " + \
+                str(request.POST['drink_id']) + "added to " + \
+                str(username) + "'s disliked drinks"
+            response = {
+                'message': msg,
+                'status': 201
+            }
+        return JsonResponse(response)
     except Exception as e:
         print(str(e))
         response = {
