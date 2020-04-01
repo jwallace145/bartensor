@@ -36,21 +36,21 @@ class IBM(STT):
             return 'Could not understand. Try our most popular drink: White Russian'
 
 
-class Google(STT):
-    def __init__(self):
-        self.client = speech.SpeechClient()
-
-    def transcribe(self, audio):
-        config = speech.types.RecognitionConfig(
-            encoding=speech.enums.RecognitionConfig.AudioEncoding.OGG_OPUS,
-            language_code='en-US',
-            # 8000, 12000, 16000, 24000, and 48000 all fail, the only ones allowed for ogg
-            sample_rate_hertz=8000,
-            # we know its ogg cause printing the blob in the javascript console tells us the mime type is "audio/ogg"
-        )
-        recognition_audio = speech.types.RecognitionAudio(content=audio.read())
-        results = self.client.recognize(config, recognition_audio).results
-        print(results)
-        print(dir(results))
-        print(type(results))
-        return results[0].alternatives[0]
+# class Google(STT):
+#     def __init__(self):
+#         self.client = speech.SpeechClient()
+#
+#     def transcribe(self, audio):
+#         config = speech.types.RecognitionConfig(
+#             encoding=speech.enums.RecognitionConfig.AudioEncoding.OGG_OPUS,
+#             language_code='en-US',
+#             # 8000, 12000, 16000, 24000, and 48000 all fail, the only ones allowed for ogg
+#             sample_rate_hertz=8000,
+#             # we know its ogg cause printing the blob in the javascript console tells us the mime type is "audio/ogg"
+#         )
+#         recognition_audio = speech.types.RecognitionAudio(content=audio.read())
+#         results = self.client.recognize(config, recognition_audio).results
+#         print(results)
+#         print(dir(results))
+#         print(type(results))
+#         return results[0].alternatives[0]

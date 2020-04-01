@@ -208,11 +208,11 @@ def profile_public(request, username):
         elif 'like-drink' in request.POST:
             drink = UserDrink.objects.get(name=request.POST['drink'])
             profile = request.user.profile
-            if LikeUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
-                drink.likes += 1
-                drink.save()
-                like = LikeUserDrink(drink=drink, profile=profile)
-                like.save()
+            # if LikeUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
+            #     drink.likes += 1
+            #     drink.save()
+            #     like = LikeUserDrink(drink=drink, profile=profile)
+            #     like.save()
 
     context = {
         'profile': username,
@@ -309,6 +309,7 @@ def timeline_pop(request):
     }
 
     return render(request, 'gnt/timeline.html', context)
+
 
 def timeline(request):
     """
