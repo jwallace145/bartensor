@@ -301,8 +301,10 @@ def timeline_pop(request):
     """
     Timeline View
     """
-
-    drinks = UserDrink.objects.all().order_by('-votes')
+    offset = 0
+    if request.GET.get('offset', 0):
+        offset = int(request.GET['offset'])
+    drinks = UserDrink.objects.all().order_by('-votes')[offset:offset+50]
 
     context = {
         'drinks': drinks
@@ -314,8 +316,10 @@ def timeline(request):
     """
     Timeline View
     """
-
-    drinks = UserDrink.objects.all().order_by('-timestamp')
+    offset = 0
+    if request.GET.get('offset', 0) != 0:
+        offset = int(request.GET['offset'])
+    drinks = UserDrink.objects.all().order_by('-timestamp')[offset:offset+50]
 
     context = {
         'drinks': drinks

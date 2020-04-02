@@ -122,6 +122,9 @@ class UserDrink(models.Model):
     image = models.ImageField(default='default.jpg',
                               upload_to='user_drink_pics')
 
+    def __str__(self):
+        return str(self.user) + ', ' + str(self.name) + ', ' + str(self.votes) 
+
 
 class Ingredient(models.Model):
     """

@@ -97,7 +97,7 @@ class Command(BaseCommand):
             User.objects.create_user(
                 username=f'User{i}', email=f'user{i}@gmail.com', password='password')
             u = User.objects.get(username=f'User{i}')
-            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password')
+            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end = '\t')
             for img in os.listdir(drink_images_folder[i]):
                 path = drink_images_folder[i] + img
             im = open(path, 'rb')
@@ -105,10 +105,11 @@ class Command(BaseCommand):
             user_d = UserDrink(
                 user=u, name=f'{blns[i]}', description=f'{blns[i]}', image=django_file)
             user_d.save()
-            # try:
-            #     print(f'CREATED USER DRINK: {blns[i]}')
-            # except:
-            #     print(f'CREATED USER DRINK: cannot print the name')
+            try:
+                print(f'CREATED USER DRINK: {blns[i]}')
+            except Exception as e:
+                print()
+                pass
             im.close()
         blns_reader.close()
 
