@@ -2,6 +2,7 @@
 {% load crispy_forms_tags %}
 
 {% block 'content' %}
+
 <div class="container">
   <div class="row" style="display: flex">
     <div class="col-md-9" style="display: inline-block">
@@ -13,19 +14,23 @@
             <p class="text-secondary">{{ profile.email }}</p>
           </div>
         </div>
+
         <p class="text-secondary">{{ profile.profile.bio }}</p>
-        {% if user != profile and not requests and not friends and request.user.is_authenticated %}
+
+        {% if user != profile and not requests and not friends and user.is_authenticated %}
         <form method="POST">
           {% csrf_token %}
           <button class="btn btn-outline-info" type="submit" name="add-friend">Add Friend</button>
         </form>
         {% else %}
+
         {% if user != profile and friends %}
         <form method="POST">
           {% csrf_token %}
           <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
         </form>
         {% endif %}
+
         {% endif %}
       </div>
 
@@ -33,6 +38,8 @@
       {% endblock profile_content %}
 
     </div>
+
+    {% if user.is_authenticated %}
     <div class="col-md-3" style="display: inline-block">
       <div class="content-section">
         <h3>Profile Help</h3>
@@ -50,6 +57,24 @@
         </p>
       </div>
     </div>
+    {% else %}
+    <div class="col-md-3" style="display: inline-block">
+      <div class="content-section">
+        <h3>Profile Help</h3>
+        <p class='text-muted'>Explore profile here!
+          <ul class="list-group">
+            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' username=user%}">Profile</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' %}">Liked Drinks</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' %}">Disliked Drinks</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=user %}">Friends</a></li>
+            <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>
+          </ul>
+        </p>
+      </div>
+    </div>
+    {% endif %}
+
   </div>
 </div>
+
 {% endblock 'content' %}
