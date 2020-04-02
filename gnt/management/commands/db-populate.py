@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.auth.models import User
 import os
 from django.core.files import File
-
+import json
 
 class Command(BaseCommand):
 
@@ -41,7 +41,7 @@ class Command(BaseCommand):
         )
         profile = Profile.objects.get(user=user)
         profile.bio = 'B2B Flip Cup Champ'
-        profile.image = 'profile_pics/6d4.jpeg'
+        profile.image = 'profile_pics/6d4.jpg'
         profile.save()
         print('CREATED ADMIN ACCOUNT USERNAME: Caleb, PASSWORD: password')
 
@@ -88,24 +88,29 @@ class Command(BaseCommand):
         profile.image = 'profile_pics/jcole.jpg'
         profile.save()
         print(f'CREATED ADMIN ACCOUNT USERNAME: Jack, PASSWORD: password')
-
+        blns_reader = open('gnt/static/data/blns.json', encoding='utf-8')
+        blns = json.load(blns_reader)
         drink_images_folder = [
             x[0] + '/' for x in os.walk('gnt/static/data/drink_images/')]
         drink_images_folder = drink_images_folder[2:]
-        for i in range(100):
+        for i in range(len(blns)):
             User.objects.create_user(
                 username=f'User{i}', email=f'user{i}@gmail.com', password='password')
             u = User.objects.get(username=f'User{i}')
-            print(
-                f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end='\t')
+            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password')
             for img in os.listdir(drink_images_folder[i]):
                 path = drink_images_folder[i] + img
             im = open(path, 'rb')
             django_file = File(im)
             user_d = UserDrink(
-                user=u, name=f'drink{i}', description=f'description{i}', image=django_file)
+                user=u, name=f'{blns[i]}', description=f'{blns[i]}', image=django_file)
             user_d.save()
-            print(f'CREATED USER DRINK: drink{i}')
+            # try:
+            #     print(f'CREATED USER DRINK: {blns[i]}')
+            # except:
+            #     print(f'CREATED USER DRINK: cannot print the name')
+            im.close()
+        blns_reader.close()
 
     def handle(self, *args, **options):
         self._create_fake_users()

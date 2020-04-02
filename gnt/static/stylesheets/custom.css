@@ -16,6 +16,10 @@ h6 {
   color: #444444;
 }
 
+.container {
+  max-width: 80% !important;
+}
+
 ul {
   margin: 0;
 }
