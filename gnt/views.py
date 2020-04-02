@@ -8,11 +8,17 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse
+
 from gnt.adapters import drink_adapter
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
-from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, UpvotedUserDrink, DownvotedUserDrink
+
+from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm,
+                    CreateUserDrinkInstructionForm, ProfileUpdateForm,
+                    UserRegisterForm, UserUpdateForm)
+from .models import (DownvotedUserDrink, Drink, Friend, FriendRequest, Profile,
+                     ProfileToDislikedDrink, ProfileToLikedDrink,
+                     UpvotedUserDrink, UserDrink)
 from .stt import IBM
 
 
@@ -254,13 +260,13 @@ def liked_drinks(request, username):
             'drinks': response
         }
 
-        return render(request, 'gnt/liked_drinks.html', context)
+        return render(request, 'gnt/profile_liked_drinks.html', context)
     else:
         context = {
             'profile': username
         }
 
-        return render(request, 'gnt/liked_drinks.html', context)
+        return render(request, 'gnt/profile_liked_drinks.html', context)
 
 
 def about(request):
@@ -297,13 +303,13 @@ def disliked_drinks(request, username):
             'drinks': response
         }
 
-        return render(request, 'gnt/disliked_drinks.html', context)
+        return render(request, 'gnt/profile_disliked_drinks.html', context)
     else:
         context = {
             'profile': username
         }
 
-        return render(request, 'gnt/disliked_drinks.html', context)
+        return render(request, 'gnt/profile_disliked_drinks.html', context)
 
 
 def timeline_pop(request):
@@ -412,4 +418,4 @@ def friends(request, username):
         'friends': friends
     }
 
-    return render(request, 'gnt/friends.html', context)
+    return render(request, 'gnt/profile_friends.html', context)
