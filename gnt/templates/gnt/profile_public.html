@@ -56,7 +56,7 @@
 {% endfor %}
 {% else %}
 <div class="content-section">
-  You haven't created any drinks yet. <a href="{% url 'profile_create_drink' %}">Create a drink</a> to populate your profile!
+  You haven't created any drinks yet. <a href="{% url 'create_drink' username=profile %}">Create a drink</a> to populate your profile!
 </div>
 {% endif %}
 {% else %}

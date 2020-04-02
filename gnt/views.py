@@ -94,7 +94,7 @@ def register(request):
 
 
 @login_required
-def profile_create_drink(request):
+def profile_create_drink(request, username):
     """
     Profile Create Drink View
     """
@@ -137,7 +137,7 @@ def profile_create_drink(request):
         instruction_formset = InstructionFormset(prefix='instruction')
 
     context = {
-        'profile': request.user,
+        'profile': username,
         'create_user_drink_form': create_user_drink_form,
         'ingredient_formset': ingredient_formset,
         'instruction_formset': instruction_formset
