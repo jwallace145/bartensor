@@ -45,8 +45,8 @@
         <h3>Profile Help</h3>
         <p class='text-muted'>View, edit, and create your profile here!
           <ul class="list-group">
-            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' username=user%}">Public View</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' %}">Liked Drinks</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' username=profile %}">Public View</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' username=profile %}">Liked Drinks</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' %}">Disliked Drinks</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_edit' %}">Edit Profile</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_create_drink' %}">Create Drink</a></li>
@@ -63,8 +63,8 @@
         <h3>Profile Help</h3>
         <p class='text-muted'>Explore profile here!
           <ul class="list-group">
-            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' username=user%}">Profile</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' %}">Liked Drinks</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' username=profile %}">Profile</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' username=profile %}">Liked Drinks</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' %}">Disliked Drinks</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=user %}">Friends</a></li>
             <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>

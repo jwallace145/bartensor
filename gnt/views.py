@@ -224,37 +224,64 @@ def profile_public(request, username):
     return render(request, 'gnt/profile_public.html', context)
 
 
-@login_required
-def liked_drinks(request):
+def liked_drinks(request, username):
     """
     Liked Drinks View
     """
 
-    if request.user.is_authenticated:
-        user = request.user
-        profile = Profile.objects.get(user=user)
-        profile_to_drink = ProfileToLikedDrink.objects.filter(
-            profile=profile.id)
-        if profile_to_drink:
-            response = [0 for i in range(len(profile_to_drink))]
-            discovery_adapter = drink_adapter.DiscoveryAdapter()
-            for i, ptd in enumerate(profile_to_drink):
-                drink = Drink.objects.get(id=ptd.drink.id)
-                obj = discovery_adapter.get_drink(drink.drink_hash)
-                response[i] = obj[0]
+    username = User.objects.get(username=username)
+    profile = Profile.objects.get(user=username)
 
-            context = {
-                'profile': user,
-                'drinks': response
-            }
-            return render(request, 'gnt/liked_drinks.html', context)
-        else:
-            context = {
-                'profile': user
-            }
-            return render(request, 'gnt/liked_drinks.html', context)
+    profile_to_drink = ProfileToLikedDrink.objects.filter(profile=profile.id)
+
+    if profile_to_drink:
+        response = [0 for i in range(len(profile_to_drink))]
+
+        discovery_adapter = drink_adapter.DiscoveryAdapter()
+
+        for i, ptd in enumerate(profile_to_drink):
+            drink = Drink.objects.get(id=ptd.drink.id)
+            obj = discovery_adapter.get_drink(drink.drink_hash)
+            response[i] = obj[0]
+
+        context = {
+            'profile': username,
+            'drinks': response
+        }
+
+        return render(request, 'gnt/liked_drinks.html', context)
     else:
-        return HttpResponseRedirect('/home/')
+        context = {
+            'profile': username
+        }
+
+        return render(request, 'gnt/liked_drinks.html', context)
+
+    # if request.user.is_authenticated:
+    #     user = request.user
+    #     profile = Profile.objects.get(user=user)
+    #     profile_to_drink = ProfileToLikedDrink.objects.filter(
+    #         profile=profile.id)
+    #     if profile_to_drink:
+    #         response = [0 for i in range(len(profile_to_drink))]
+    #         discovery_adapter = drink_adapter.DiscoveryAdapter()
+    #         for i, ptd in enumerate(profile_to_drink):
+    #             drink = Drink.objects.get(id=ptd.drink.id)
+    #             obj = discovery_adapter.get_drink(drink.drink_hash)
+    #             response[i] = obj[0]
+    #
+    #         context = {
+    #             'profile': user,
+    #             'drinks': response
+    #         }
+    #         return render(request, 'gnt/liked_drinks.html', context)
+    #     else:
+    #         context = {
+    #             'profile': user
+    #         }
+    #         return render(request, 'gnt/liked_drinks.html', context)
+    # else:
+    #     return HttpResponseRedirect('/home/')
 
 
 def about(request):
