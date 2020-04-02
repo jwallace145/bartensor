@@ -302,7 +302,7 @@ def timeline_pop(request):
     Timeline View
     """
 
-    drinks = UserDrink.objects.all().order_by('-votes')[:100]
+    drinks = UserDrink.objects.all().order_by('-votes')
 
     context = {
         'drinks': drinks
@@ -315,7 +315,7 @@ def timeline(request):
     Timeline View
     """
 
-    drinks = UserDrink.objects.all().order_by('-timestamp')[:100]
+    drinks = UserDrink.objects.all().order_by('-timestamp')
 
     context = {
         'drinks': drinks
