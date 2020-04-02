@@ -1,33 +1,43 @@
 {% extends 'gnt/profile_base.html' %}
 
 {% block profile_content %}
+{% if user == profile %}
 <div class="content-section">
-  {% if user == profile %}
-  {% if drinks %}
-  <div class="content-section">
-    Liked Drinks
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="article-title">
+        <h1>Liked Drinks</h1>
+      </div>
+    </div>
   </div>
+  {% if drinks %}
   {% include 'gnt/liked_drinks_with_remove.html' %}
   {% else %}
-  <article class="content-section">
-    <div>
+  <div class="content-section">
+    <p>
       You haven't liked any drinks! <a href="{% url 'home' %}">Search a drink</a> and vote on any drinks you would like to try! We'll save it here for you later.
-    </div>
-  </article>
-  {% endif %}
-  {% else %}
-  {% if drinks %}
-  <div class="content-section">
-    Liked Drinks
+    </p>
   </div>
-  {% include 'gnt/liked_drinks_with_remove.html' %}
-  {% else %}
-  <article class="content-section">
-    <div>
-      {{ profile }} has not liked any drinks yet!
-    </div>
-  </article>
-  {% endif %}
   {% endif %}
 </div>
+{% else %}
+<div class="content-section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="article-title">
+        <h1>Liked Drinks</h1>
+      </div>
+    </div>
+  </div>
+  {% if drinks %}
+  {% include 'gnt/liked_drinks_with_remove.html' %}
+  {% else %}
+  <div class="content-section">
+    <p>
+      {{ profile }} hasn't liked any drinks yet!
+    </p>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
 {% endblock profile_content %}

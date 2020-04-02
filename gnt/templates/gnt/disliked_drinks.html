@@ -1,34 +1,43 @@
 {% extends 'gnt/profile_base.html' %}
 
 {% block profile_content %}
+{% if user == profile %}
 <div class="content-section">
-  {% if user == profile %}
-  {% if drinks %}
-  <div class="content-section">
-    Disliked Drinks
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="article-title">
+        <h1>Disliked Drinks</h1>
+      </div>
+    </div>
   </div>
+  {% if drinks %}
   {% include 'gnt/disliked_drinks_with_remove.html' %}
   {% else %}
   <div class="content-section">
     <p>
-      You haven't disliked any drinks yet!
-      <a href="{% url 'home' %}">Search a drink</a>
-      and dislike any drink you don't want to try.
-      We'll save those drinks here!
+      You haven't disliked any drinks! <a href="{% url 'home' %}">Search a drink</a> and vote on any drinks you don't like. We'll save them here for later!
     </p>
   </div>
   {% endif %}
-  {% else %}
-  {% if drinks %}
-  <div class="content-section">
-    Disliked Drinks
+</div>
+{% else %}
+<div class="content-section">
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="article-title">
+        <h1>Disliked Drinks</h1>
+      </div>
+    </div>
   </div>
+  {% if drinks %}
   {% include 'gnt/disliked_drinks_with_remove.html' %}
   {% else %}
   <div class="content-section">
-    <p>{{ profile }} has not disliked any drinks yet!</p>
+    <p>
+      {{ profile }} hasn't disliked any drinks yet!
+    </p>
   </div>
   {% endif %}
-  {% endif %}
 </div>
+{% endif %}
 {% endblock profile_content %}
