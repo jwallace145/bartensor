@@ -26,7 +26,7 @@ urlpatterns = [
     path('profile/<username>/create-drink',
          gnt_views.profile_create_drink, name='create_drink'),
     path('profile/<username>/friends/', gnt_views.friends, name='friends'),
-    path('profile-edit/', gnt_views.profile_edit, name='profile_edit'),
+    path('profile/<username>/edit', gnt_views.profile_edit, name='profile_edit'),
     path('profile/<username>/', gnt_views.profile_public, name='profile_public'),
     path('notifications/<username>', gnt_views.notifications, name='notifications'),
     path('profile/<username>/liked-drinks',

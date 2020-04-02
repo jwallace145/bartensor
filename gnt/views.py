@@ -99,6 +99,8 @@ def profile_create_drink(request, username):
     Profile Create Drink View
     """
 
+    username = User.objects.get(username=username)
+
     IngredientFormset = formset_factory(CreateUserDrinkIngredientForm)
     InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
@@ -147,13 +149,16 @@ def profile_create_drink(request, username):
 
 
 @login_required
-def profile_edit(request):
+def profile_edit(request, username):
     """
     Profile Edit View
     """
 
+    username = User.objects.get(username=username)
+    profile = Profile.objects.get(user=username)
+
     if request.method == 'POST':
-        user_update_form = UserUpdateForm(request.POST, instance=request.user)
+        user_update_form = UserUpdateForm(request.POST, instance=username)
         profile_update_form = ProfileUpdateForm(
             request.POST, request.FILES, instance=request.user.profile)
 
@@ -163,11 +168,11 @@ def profile_edit(request):
             messages.success(request, f'Your account has been updated!')
             return redirect('profile_public', username=request.user.username)
     else:
-        user_update_form = UserUpdateForm(instance=request.user)
-        profile_update_form = ProfileUpdateForm(instance=request.user.profile)
+        user_update_form = UserUpdateForm(instance=username)
+        profile_update_form = ProfileUpdateForm(instance=profile)
 
     context = {
-        'profile': request.user,
+        'profile': username,
         'user_update_form': user_update_form,
         'profile_update_form': profile_update_form
     }

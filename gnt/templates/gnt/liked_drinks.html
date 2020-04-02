@@ -16,11 +16,18 @@
   </article>
   {% endif %}
   {% else %}
+  {% if drinks %}
+  <div class="content-section">
+    Liked Drinks
+  </div>
+  {% include 'gnt/liked_drinks_with_remove.html' %}
+  {% else %}
   <article class="content-section">
     <div>
       {{ profile }} has not liked any drinks yet!
     </div>
   </article>
+  {% endif %}
   {% endif %}
 </div>
 {% endblock profile_content %}
