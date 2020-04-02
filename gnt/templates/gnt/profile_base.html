@@ -47,10 +47,10 @@
           <ul class="list-group">
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' username=profile %}">Public View</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' username=profile %}">Liked Drinks</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' %}">Disliked Drinks</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' username=profile %}">Disliked Drinks</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_edit' %}">Edit Profile</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_create_drink' %}">Create Drink</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=user %}">Friends</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=profile %}">Friends</a></li>
             <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>
             <li class="list-group-item list-group-item-light"><a href="#">Edit Flavor Profile</a></li>
           </ul>
@@ -65,8 +65,8 @@
           <ul class="list-group">
             <li class="list-group-item list-group-item-light"><a href="{% url 'profile_public' username=profile %}">Profile</a></li>
             <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' username=profile %}">Liked Drinks</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' %}">Disliked Drinks</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=user %}">Friends</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' username=profile %}">Disliked Drinks</a></li>
+            <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=profile %}">Friends</a></li>
             <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>
           </ul>
         </p>

@@ -19,11 +19,13 @@
       </div>
       <h2><a class="article-title" href="{% url 'profile_public' username=friend.friend1.user %}">{{ friend.friend1.user }}</a></h2>
       <p class="article-content">{{ friend.friend1.bio }}</p>
+      {% if user.is_authenticated %}
       <form method="POST">
         {% csrf_token %}
         <input type="hidden" name="requestor" value="{{ friend.friend1.user }}" />
         <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
       </form>
+      {% endif %}
     </div>
     {% else %}
     <img class="rounded-circle article-img" src="{{ friend.friend2.image.url }}">
@@ -33,11 +35,13 @@
       </div>
       <h2><a class="article-title" href="{% url 'profile_public' username=friend.friend2.user %}">{{ friend.friend2.user }}</a></h2>
       <p class="article-content">{{ friend.friend2.bio }}</p>
+      {% if user.is_authenticated %}
       <form method="POST">
         {% csrf_token %}
         <input type="hidden" name="requestor" value="{{ friend.friend2.user }}" />
         <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
       </form>
+      {% endif %}
     </div>
     {% endif %}
   </article>

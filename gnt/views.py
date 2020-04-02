@@ -257,32 +257,6 @@ def liked_drinks(request, username):
 
         return render(request, 'gnt/liked_drinks.html', context)
 
-    # if request.user.is_authenticated:
-    #     user = request.user
-    #     profile = Profile.objects.get(user=user)
-    #     profile_to_drink = ProfileToLikedDrink.objects.filter(
-    #         profile=profile.id)
-    #     if profile_to_drink:
-    #         response = [0 for i in range(len(profile_to_drink))]
-    #         discovery_adapter = drink_adapter.DiscoveryAdapter()
-    #         for i, ptd in enumerate(profile_to_drink):
-    #             drink = Drink.objects.get(id=ptd.drink.id)
-    #             obj = discovery_adapter.get_drink(drink.drink_hash)
-    #             response[i] = obj[0]
-    #
-    #         context = {
-    #             'profile': user,
-    #             'drinks': response
-    #         }
-    #         return render(request, 'gnt/liked_drinks.html', context)
-    #     else:
-    #         context = {
-    #             'profile': user
-    #         }
-    #         return render(request, 'gnt/liked_drinks.html', context)
-    # else:
-    #     return HttpResponseRedirect('/home/')
-
 
 def about(request):
     """
@@ -292,36 +266,39 @@ def about(request):
     return render(request, 'gnt/about.html')
 
 
-def disliked_drinks(request):
+def disliked_drinks(request, username):
     """
     Disliked Drinks View
     """
 
-    if request.user.is_authenticated:
-        user = request.user
-        profile = Profile.objects.get(user=user)
-        profile_to_drink = ProfileToDislikedDrink.objects.filter(
-            profile=profile.id)
-        if profile_to_drink:
-            response = [0 for i in range(len(profile_to_drink))]
-            discovery_adapter = drink_adapter.DiscoveryAdapter()
-            for i, ptd in enumerate(profile_to_drink):
-                drink = Drink.objects.get(id=ptd.drink.id)
-                obj = discovery_adapter.get_drink(drink.drink_hash)
-                response[i] = obj[0]
-            context = {
-                'profile': request.user,
-                'drinks': response
-            }
-            return render(request, 'gnt/disliked_drinks.html', context)
-        else:
-            context = {
-                'profile': request.user
-            }
+    username = User.objects.get(username=username)
+    profile = Profile.objects.get(user=username)
 
-            return render(request, 'gnt/disliked_drinks.html', context)
+    profile_to_drink = ProfileToDislikedDrink.objects.filter(
+        profile=profile.id)
+
+    if profile_to_drink:
+        response = [0 for i in range(len(profile_to_drink))]
+
+        discovery_adapter = drink_adapter.DiscoveryAdapter()
+
+        for i, ptd in enumerate(profile_to_drink):
+            drink = Drink.objects.get(id=ptd.drink.id)
+            obj = discovery_adapter.get_drink(drink.drink_hash)
+            response[i] = obj[0]
+
+        context = {
+            'profile': username,
+            'drinks': response
+        }
+
+        return render(request, 'gnt/disliked_drinks.html', context)
     else:
-        return HttpResponseRedirect('/home/')
+        context = {
+            'profile': username
+        }
+
+        return render(request, 'gnt/disliked_drinks.html', context)
 
 
 def timeline_pop(request):
@@ -404,11 +381,13 @@ def notifications(request, username):
     return render(request, 'gnt/notifications.html', context)
 
 
-@login_required
 def friends(request, username):
     """
     Friends View
     """
+
+    username = User.objects.get(username=username)
+    profile = Profile.objects.get(user=username)
 
     if request.method == 'POST':
         if 'remove-friend' in request.POST:
@@ -420,11 +399,11 @@ def friends(request, username):
             messages.success(
                 request, f'you have removed friend { requestor.profile.user }')
 
-    friends = Friend.objects.filter(friend1=request.user.profile) | Friend.objects.filter(
-        friend2=request.user.profile)
+    friends = Friend.objects.filter(friend1=profile) | Friend.objects.filter(
+        friend2=profile)
 
     context = {
-        'profile': request.user,
+        'profile': username,
         'friends': friends
     }
 
