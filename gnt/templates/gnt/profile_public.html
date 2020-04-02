@@ -1,7 +1,9 @@
 {% extends 'gnt/profile_base.html' %}
 {% load crispy_forms_tags %}
 {% load static %}
+
 {% block profile_content %}
+
 {% if drinks %}
 {% for drink in drinks %}
 <article class="media content-section">
@@ -38,17 +40,13 @@
       </div>
       <div class="col-lg-1" style="text-align: center;">
         <a class="upvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-          <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up"
-            width="30em" />
-          <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}"
-            alt="thumbs up liked" width="30em" />
+          <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em" />
+          <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}" alt="thumbs up liked" width="30em" />
         </a>
         <div id='drink{{drink.id}}_votes'>{{drink.votes}}</div>
         <a class="downvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-          <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}"
-            alt="thumbs down" width="30em" />
-          <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}"
-            alt="thumbs down disliked" width="30em" />
+          <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em" />
+          <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}" alt="thumbs down disliked" width="30em" />
         </a>
       </div>
     </div>
@@ -56,11 +54,19 @@
 </article>
 {% endfor %}
 {% else %}
+{% if user.is_authenticated %}
 <article class="content-section">
   <div>
     You haven't created any drinks yet. <a href="{% url 'profile_create_drink' %}">Create a drink</a> to populate your profile!
   </div>
 </article>
+{% else %}
+<article class="content-section">
+  <div>
+    {{ profile }} has not liked any drinks yet!
+  </div>
+</article>
+{% endif %}
 {% endif %}
 <script type="text/javascript" src="{% static 'scripts/proposals.js' %}"></script>
 {% endblock profile_content %}
