@@ -24,7 +24,7 @@
         </form>
         {% else %}
 
-        {% if user != profile and friends %}
+        {% if user != profile and friends and user.is_authenticated %}
         <form method="POST">
           {% csrf_token %}
           <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
