@@ -1,6 +1,7 @@
 from django.http import JsonResponse
 from gnt.models import Profile, Drink, DrinkName, ProfileToLikedDrink, ProfileToDislikedDrink, UpvotedUserDrink, DownvotedUserDrink, UserDrink
 
+up_ratio, down_ratio = 0.1, 0.05
 
 def like_drink(request):
     try:
@@ -299,6 +300,16 @@ def dislike_user_drink(request):
                 str(username) + "'s disliked drinks"
             response = {
                 'message': msg,
+                'status': 201
+            }
+
+        down_thresh = 0 - (len(Profile.objects.all()) * down_ratio)
+        print(f'DOWN THRESHOLD: {down_thresh}')
+        if drink.votes < down_thresh:
+            drink.delete()
+            print(f'{drink.name} SUCKS TOO MUCH AND HAS BEEN DELETED')
+            response = {
+                'message': "Drink too hated and deleted",
                 'status': 201
             }
         return JsonResponse(response)

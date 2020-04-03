@@ -103,17 +103,26 @@ class Command(BaseCommand):
             im = open(path, 'rb')
             django_file = File(im)
             user_d = UserDrink(
-                user=u, name=f'{blns[i]}', description=f'{blns[i]}', image=django_file)
-            user_d.save()
+                user=u, name=f'{blns[i]}', votes = -51, description=f'{blns[i]}', image=django_file)
             try:
-                print(f'CREATED USER DRINK: {blns[i]}')
-            except Exception as e:
-                print()
+                user_d.full_clean()
+                user_d.save()
+                try:
+                    print(f'CREATED USER DRINK: {blns[i]}')
+                except:
+                    print()
+                    pass
+            except:
+                print('NOT A VALID DRINK NAME OR DESCRIPTION')
                 pass
+            
             im.close()
         blns_reader.close()
 
     def handle(self, *args, **options):
+        os.system('bash deldb.sh')
+        print('DB DELETED')
+        os.system('python manage.py migrate')
         self._create_fake_users()
         self._create_tags()
         print('TRANSACTION COMPLETE', file=self.stdout)

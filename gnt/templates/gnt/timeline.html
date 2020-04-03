@@ -28,7 +28,7 @@
           </div>
           <div class="row">
             <div class="col-lg-6">
-              <h2><a class="article-title" href="#">{{ drink.name }}</a></h2>
+              <h2 class="article-title">{{ drink.name }}</h2>
               <p class="article-content">{{ drink.description }}</p>
               <p class="article-content">Ingredients</p>
               {% for ingredient in drink.ingredient_set.all %}

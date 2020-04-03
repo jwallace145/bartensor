@@ -131,7 +131,7 @@ class Ingredient(models.Model):
     Ingredient Model Class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
     quantity = models.CharField(max_length=32)
 
@@ -144,7 +144,7 @@ class Instruction(models.Model):
     Instruction Model Class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
     instruction = models.CharField(max_length=100)
 
     def __str__(self):
@@ -156,8 +156,8 @@ class UpvotedUserDrink(models.Model):
     Upvoted User Drink Model class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
-    profile = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id) + ', ' + str(self.drink) + ', ' + str(self.profile)
@@ -168,8 +168,8 @@ class DownvotedUserDrink(models.Model):
     Downvoted User Drink Model class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
-    profile = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id) + ', ' + str(self.drink) + ', ' + str(self.profile)
