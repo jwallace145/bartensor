@@ -115,7 +115,7 @@ class UserDrink(models.Model):
     """
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    name = models.CharField(max_length=32)
+    name = models.CharField(max_length=15)
     description = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     votes = models.IntegerField(default=0)
@@ -148,9 +148,9 @@ class Instruction(models.Model):
         return str(self.id) + ', ' + str(self.drink.name) + ', ' + str(self.instruction)
 
 
-class LikeUserDrink(models.Model):
+class UpvotedUserDrink(models.Model):
     """
-    Like User Drink Model class
+    Upvoted User Drink Model class
     """
 
     drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
@@ -158,3 +158,16 @@ class LikeUserDrink(models.Model):
 
     def __str__(self):
         return str(self.id) + ', ' + str(self.drink) + ', ' + str(self.profile)
+
+
+class DownvotedUserDrink(models.Model):
+    """
+    Downvoted User Drink Model class
+    """
+
+    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
+    profile = models.ForeignKey(Profile, on_delete=models.PROTECT)
+
+    def __str__(self):
+        return str(self.id) + ', ' + str(self.drink) + ', ' + str(self.profile)
+

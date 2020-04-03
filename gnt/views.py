@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse
 from gnt.adapters import drink_adapter
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
-from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, LikeUserDrink
+from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, UpvotedUserDrink, DownvotedUserDrink
 from .stt import IBM
 
 
@@ -53,6 +53,21 @@ def results(request):
         })
     else:
         return HttpResponseRedirect(reverse('home'))
+
+
+def more_results(request):
+    """
+    More results with an offset
+    """
+    text = request.POST['text']
+    offset = request.POST['offset']
+    discovery_adapter = drink_adapter.DiscoveryAdapter()
+    response = discovery_adapter.natural_language_search_offset(
+        text, offset)
+    return render(request, 'gnt/drink_results_with_voting.html', {
+        'query': text,
+        'drinks': response
+    })
 
 
 def register(request):
@@ -281,6 +296,19 @@ def disliked_drinks(request):
     else:
         return HttpResponseRedirect('/home/')
 
+
+def timeline_pop(request):
+    """
+    Timeline View
+    """
+
+    drinks = UserDrink.objects.all().order_by('-votes')
+
+    context = {
+        'drinks': drinks
+    }
+
+    return render(request, 'gnt/timeline.html', context)
 
 def timeline(request):
     """
