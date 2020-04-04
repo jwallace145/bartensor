@@ -232,6 +232,7 @@ a {
 #result_container{
   background-color: rgba(245, 245, 245, 0.541);
   border: 3px solid black;
+  margin-top: 20px;
   padding-bottom: 50px;
   position: relative; top: 5%;
 }
@@ -239,6 +240,7 @@ a {
 .results-header{
   background-color: black;
   color: #f3f3f3;
+  margin-bottom: 20px;
 }
 
 .drink-menu-header{
@@ -399,12 +401,15 @@ a {
 
 /* filters */
 #hide-disliked-drinks {
-  margin-right: 30px;
-  margin-bottom: 20px;
 }
 
+#sub-header{
+  padding-left: 20px;
+  padding-right: 40px;
+}
 .filter-button{
-  margin-bottom: 10px;
+  margin-bottom: 20px;
+  background-color: #bebebe;
 }
 
 /* Switch in proposals */
