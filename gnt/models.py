@@ -7,6 +7,17 @@ from django.db import models
 from django.contrib.auth.models import User
 from PIL import Image
 
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+
+
+def validate_user_drink_name(value):
+    if len(DrinkName.objects.filter(drink_name=value)) != 0:
+        raise ValidationError(
+            _(f'{value} is not a unique name'),
+            params={'value': value},
+        )
+
 
 class Profile(models.Model):
     """
@@ -115,7 +126,7 @@ class UserDrink(models.Model):
     """
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    name = models.CharField(max_length=15)
+    name = models.CharField(max_length=15, validators=[validate_user_drink_name])
     description = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     votes = models.IntegerField(default=0)

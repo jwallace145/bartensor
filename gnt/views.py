@@ -103,13 +103,11 @@ def profile_create_drink(request):
     InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
     if request.method == 'POST':
-        create_user_drink_form = CreateUserDrinkForm(request.POST)
-        print(request.POST)
+        create_user_drink_form = CreateUserDrinkForm(request.POST, request.FILES)
 
         if create_user_drink_form.is_valid():
             drink = create_user_drink_form.save(commit=False)
             drink.user = request.user
-            drink.likes = 0
             drink.save()
 
             ingredient_formset = IngredientFormset(
@@ -131,6 +129,11 @@ def profile_create_drink(request):
                 messages.success(
                     request, f'Your drink { drink.name } has been created!')
                 return redirect('profile_public', username=request.user.username)
+        else:
+            name = request.POST['name']
+            messages.error(
+                request, f'We already have a cocktail named {name}!')
+            return redirect('profile_public', username=request.user.username)
     else:
         create_user_drink_form = CreateUserDrinkForm()
         ingredient_formset = IngredientFormset(prefix='ingredient')

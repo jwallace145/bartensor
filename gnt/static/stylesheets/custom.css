@@ -438,3 +438,9 @@ a {
 .toggle-switchArea { 
   margin: 10px 0 10px 0; 
 }
+
+.alert-error {
+  color: #571515;
+  background-color: #edd4d4;
+  border-color: #e6c3c3;
+}
