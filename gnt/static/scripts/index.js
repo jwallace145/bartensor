@@ -301,6 +301,8 @@ function load_more_drinks() {
     var url = APPURL + '/more_results/';
     var csrftoken = getCookie("csrftoken");
     query = $(".query").text();
+    query = query.split("Query: ").slice(1).pop();
+    console.log(query);
     $.ajax({
         url: url,
         type: 'POST',
@@ -326,5 +328,3 @@ function load_more_drinks() {
         }
     });
 }
-
-
