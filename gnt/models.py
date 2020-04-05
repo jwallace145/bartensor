@@ -126,7 +126,7 @@ class UserDrink(models.Model):
     """
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    name = models.CharField(max_length=15, validators=[validate_user_drink_name])
+    name = models.CharField(max_length=32, validators=[validate_user_drink_name])
     description = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     votes = models.IntegerField(default=0)
