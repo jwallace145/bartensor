@@ -103,13 +103,11 @@ def profile_create_drink(request):
     InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
     if request.method == 'POST':
-        create_user_drink_form = CreateUserDrinkForm(request.POST)
-        print(request.POST)
+        create_user_drink_form = CreateUserDrinkForm(request.POST, request.FILES)
 
         if create_user_drink_form.is_valid():
             drink = create_user_drink_form.save(commit=False)
             drink.user = request.user
-            drink.likes = 0
             drink.save()
 
             ingredient_formset = IngredientFormset(
@@ -131,6 +129,11 @@ def profile_create_drink(request):
                 messages.success(
                     request, f'Your drink { drink.name } has been created!')
                 return redirect('profile_public', username=request.user.username)
+        else:
+            name = request.POST['name']
+            messages.error(
+                request, f'We already have a cocktail named {name}!')
+            return redirect('profile_public', username=request.user.username)
     else:
         create_user_drink_form = CreateUserDrinkForm()
         ingredient_formset = IngredientFormset(prefix='ingredient')
@@ -301,8 +304,10 @@ def timeline_pop(request):
     """
     Timeline View
     """
-
-    drinks = UserDrink.objects.all().order_by('-votes')
+    offset = 0
+    if request.GET.get('offset', 0):
+        offset = int(request.GET['offset'])
+    drinks = UserDrink.objects.all().order_by('-votes')[offset:offset+50]
 
     context = {
         'drinks': drinks
@@ -314,8 +319,10 @@ def timeline(request):
     """
     Timeline View
     """
-
-    drinks = UserDrink.objects.all().order_by('-timestamp')
+    offset = 0
+    if request.GET.get('offset', 0) != 0:
+        offset = int(request.GET['offset'])
+    drinks = UserDrink.objects.all().order_by('-timestamp')[offset:offset+50]
 
     context = {
         'drinks': drinks

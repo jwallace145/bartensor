@@ -8,7 +8,6 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import Profile, UserDrink, Ingredient, Instruction
 
-
 class CreateUserDrinkForm(forms.ModelForm):
     """
     Create User Drink Form
