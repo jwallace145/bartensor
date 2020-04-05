@@ -229,6 +229,29 @@ a {
   cursor: pointer;
 }
 
+#result_container{
+  background-color: rgba(245, 245, 245, 0.541);
+  border: 3px solid black;
+  margin-top: 20px;
+  padding-bottom: 50px;
+  position: relative; top: 5%;
+}
+
+.results-header{
+  background-color: black;
+  color: #f3f3f3;
+  margin-bottom: 20px;
+}
+
+.drink-menu-header{
+  padding-top: 10px;
+}
+.query-header{
+  color: rgba(245, 245, 245, 0.959);
+  margin-left: 10px;
+  padding-bottom: 10px;
+}
+
 /* CSS For expanding search bar */
 .searchbar {
   margin-bottom: auto;
@@ -237,6 +260,15 @@ a {
   background-color: white;
   border-radius: 30px;
   padding: 10px;
+}
+
+.btn-drink-names{
+  background-color: transparent;
+  border: none;
+}
+
+.btn-drink-names:focus{
+  box-shadow: none!important;
 }
 
 #like-drink {
@@ -367,9 +399,13 @@ a {
   padding-left: 15px;
 }
 
-/* filters */
-#hide-disliked-drinks {
-  margin-right: 30px;
+#sub-header{
+  padding-left: 20px;
+  padding-right: 40px;
+}
+.filter-button{
+  margin-bottom: 20px;
+  background-color: #bebebe;
 }
 
 /* Switch in proposals */
