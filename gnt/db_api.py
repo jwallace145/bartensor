@@ -268,7 +268,8 @@ def like_user_drink(request):
             drink.delete()
             x = threading.Thread(target=upload_to_discovery, args=(drink_id, drink_copied_filepath, ))
             x.start()
-            message =  "Drink has been added to discovery"
+            message = f'{drink.name} has reach the upvote threshold of {up_thresh} and has been added to our central database!'
+            status = 203
         response = {
             'message': message,
             'status': status
@@ -305,7 +306,7 @@ def make_drink_json(drink):
 
 
 def upload_to_discovery(drink_id, image_url):
-    print("Hyperthread engaged")
+    print("Epic multithread mode engaged")
     with open(f'./gnt/static/data/accepted_user_drinks/User_drink{drink_id}/User_drink{drink_id}.json') as fileinfo:
         add_doc = discovery.add_document(f'{environment_id}', f'{collection_id}', file=fileinfo).get_result()
     fileinfo.close()
@@ -375,7 +376,7 @@ def dislike_user_drink(request):
             drink.delete()
             print(f'{drink.name} SUCKS TOO MUCH AND HAS BEEN DELETED')
             message = f'{drink.name} has reach the downvote threshold of {down_thresh} and has been deleted!'
-            
+            status = 203
         response = {
             'message': message,
             'status': status

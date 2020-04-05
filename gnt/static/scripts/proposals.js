@@ -39,7 +39,20 @@ function up_vote() {
                         console.log(data["message"]);
                         var votes = $("#drink" + drink_id + "_votes").text();
                         $("#drink" + drink_id + "_votes").html(Number(votes) - 1);
-                        neglikeDrinkAnimation(thumbsup);;
+                        neglikeDrinkAnimation(thumbsup);
+                    } else if (data["status"] == 203) {
+                        console.log(data["message"]);
+                        var votes = $("#drink" + drink_id + "_votes").text();
+                        $("#drink" + drink_id + "_votes").html(Number(votes) + 1);
+                        likeDrinkAnimation(thumbsup, thumbsdown);
+                        thumbsup.unbind();
+                        thumbsdown.unbind();
+                        thumbsup.children('img').each(function(){
+                            $(this).removeClass('voting_buttons')
+                        });
+                        thumbsdown.children('img').each(function(){
+                            $(this).removeClass('voting_buttons')
+                        });
                     } else {
                         console.log(data["status"]);
                         console.log(data["message"]);
@@ -95,6 +108,19 @@ function down_vote() {
                         var votes = $("#drink" + drink_id + "_votes").text();
                         $("#drink" + drink_id + "_votes").html(Number(votes) + 1);
                         negdislikeDrinkAnimation(thumbsdown);
+                    } else if (data["status"] == 203) {
+                        console.log(data["message"]);
+                        var votes = $("#drink" + drink_id + "_votes").text();
+                        $("#drink" + drink_id + "_votes").html(Number(votes) - 1);
+                        dislikeDrinkAnimation(thumbsup, thumbsdown);
+                        thumbsup.unbind();
+                        thumbsdown.unbind();
+                        thumbsup.children('img').each(function(){
+                            $(this).removeClass('voting_buttons')
+                        });
+                        thumbsdown.children('img').each(function(){
+                            $(this).removeClass('voting_buttons')
+                        });
                     } else {
                         console.log(data["status"]);
                         console.log(data["message"]);
