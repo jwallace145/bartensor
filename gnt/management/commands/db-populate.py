@@ -1,12 +1,12 @@
 from django.core.management.base import BaseCommand
-from gnt.models import Drink, DrinkName, UserDrink, Profile
+from gnt.models import Drink, DrinkName, UserDrink, Profile, Ingredient, Instruction
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
 from django.conf import settings
 from django.contrib.auth.models import User
 import os
 from django.core.files import File
-
+import json
 
 class Command(BaseCommand):
 
@@ -41,7 +41,7 @@ class Command(BaseCommand):
         )
         profile = Profile.objects.get(user=user)
         profile.bio = 'B2B Flip Cup Champ'
-        profile.image = 'profile_pics/biggie.jpeg'
+        profile.image = 'profile_pics/6d4.jpg'
         profile.save()
         print('CREATED ADMIN ACCOUNT USERNAME: Caleb, PASSWORD: password')
 
@@ -88,26 +88,70 @@ class Command(BaseCommand):
         profile.image = 'profile_pics/jcole.jpg'
         profile.save()
         print(f'CREATED ADMIN ACCOUNT USERNAME: Jack, PASSWORD: password')
-
+        
         drink_images_folder = [
             x[0] + '/' for x in os.walk('gnt/static/data/drink_images/')]
         drink_images_folder = drink_images_folder[2:]
-        for i in range(100):
+        blns_reader = open('gnt/static/data/blns.json', encoding='utf-8')
+        blns = json.load(blns_reader)
+        for i in range(0, 11):
             User.objects.create_user(
                 username=f'User{i}', email=f'user{i}@gmail.com', password='password')
             u = User.objects.get(username=f'User{i}')
-            print(
-                f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end='\t')
+            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end = '\t')
             for img in os.listdir(drink_images_folder[i]):
                 path = drink_images_folder[i] + img
             im = open(path, 'rb')
             django_file = File(im)
             user_d = UserDrink(
-                user=u, name=f'drink{i}', description=f'description{i}', image=django_file)
-            user_d.save()
-            print(f'CREATED USER DRINK: drink{i}')
+                user=u, name=f'TestDrink{i}', votes=52, description=f'Description{i}')
+            try:
+                user_d.full_clean()
+                user_d.image.save(os.path.basename(path), django_file)
+                user_d.save()
+                print(f'CREATED USER DRINK: TestDrink{i}', end='\t')
+                d = UserDrink.objects.get(name=f'TestDrink{i}')
+                ingr = Ingredient(drink=d, name=f'Ingredient{i}', quantity=f'{i}')
+                ingr.save()
+                print(f'CREATED: Ingredient{i}', end='\t')
+                inst = Instruction(drink=d, instruction=f'Instruction{i}')
+                inst.save()
+                print(f'CREATED: Instruction{i}')
+            except:
+                print('NOT A VALID DRINK NAME OR DESCRIPTION')
+                pass
+            im.close()
+        for i in range(11, len(blns)):
+            User.objects.create_user(
+                username=f'User{i}', email=f'user{i}@gmail.com', password='password')
+            u = User.objects.get(username=f'User{i}')
+            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end = '\t')
+            for img in os.listdir(drink_images_folder[i]):
+                path = drink_images_folder[i] + img
+            im = open(path, 'rb')
+            django_file = File(im)
+            user_d = UserDrink(
+                user=u, name=f'{blns[i]}', description=f'{blns[i]}')
+            try:
+                user_d.full_clean()
+                user_d.image.save(os.path.basename(path), django_file)
+                user_d.save()
+                try:
+                    print(f'CREATED USER DRINK: {blns[i]}')
+                except:
+                    print()
+                    pass
+            except:
+                print('NOT A VALID DRINK NAME OR DESCRIPTION')
+                pass
+            
+            im.close()
+        blns_reader.close()
 
     def handle(self, *args, **options):
-        self._create_fake_users()
+        os.system('bash deldb.sh')
+        print('DB DELETED')
+        os.system('python manage.py migrate')
         self._create_tags()
+        self._create_fake_users()
         print('TRANSACTION COMPLETE', file=self.stdout)

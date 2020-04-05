@@ -2,97 +2,103 @@ function display_duck() {
     $('#index-div').html('<div class="loading_gif_wrapper"><img class="duck_loading" src="../../static/duck.gif" alt="oof where dat duck boi at"/></div>');
 }
 
-$(document).ready(function() {
+$(document).ready(function () {
     // Listen for input when mic is clicked
     $(".assistant_button").click(function listening() {
         if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
             console.log('getUserMedia supported.');
-            navigator.mediaDevices.getUserMedia({audio: true})
-            .then(function(stream) { // success callback
-                const mediaRecorder = new MediaRecorder(stream);
-                var harker = hark(stream, {});
+            navigator.mediaDevices.getUserMedia({
+                    audio: true
+                })
+                .then(function (stream) { // success callback
+                    const mediaRecorder = new MediaRecorder(stream);
+                    var harker = hark(stream, {});
 
-                // start recording when harker detects speech
-                harker.on('speaking', function() {
-                    mediaRecorder.start();
-                    console.log('recording');
-                });
-
-                // stop recording when harker de-detects speech
-                harker.on('stopped_speaking', function() {
-                    mediaRecorder.stop();
-                    harker.stop();
-                    console.log('stopped recording');
-                });
-
-                // after stopped recording, send data
-                mediaRecorder.ondataavailable = function(e) {
-                    var blob = e.data;
-
-                    console.log("start sending binary data...");
-                    var form = new FormData();
-                    form.append('audio', blob);
-                    var url = APPURL + '/results/';
-                    var csrftoken = getCookie("csrftoken");
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        headers: {"X-CSRFToken": csrftoken},
-                        data: form,
-                        processData: false,
-                        contentType: false,
-                        success: function (data) {
-                            var dom = $(data).find("#result_container")
-                            $("#content_here").replaceWith(dom);
-                            hide_disliked_drinks();
-                            color_thumbs();// replace entire page with response
-                            thumbs_up();
-                            thumbs_down();
-                            
-                        },
-                        error: function (xhr, ajaxOptions, thrownError) {
-                            console.log(xhr.status);
-                            console.log(thrownError);
-                        }
+                    // start recording when harker detects speech
+                    harker.on('speaking', function () {
+                        mediaRecorder.start();
+                        console.log('recording');
                     });
-                    display_duck();
-                }
-            })
-            .catch(function(err) { // error callback
-                console.log('The following getUserMedia error occured: ' + err);
-            });
+
+                    // stop recording when harker de-detects speech
+                    harker.on('stopped_speaking', function () {
+                        mediaRecorder.stop();
+                        harker.stop();
+                        console.log('stopped recording');
+                    });
+
+                    // after stopped recording, send data
+                    mediaRecorder.ondataavailable = function (e) {
+                        var blob = e.data;
+
+                        console.log("start sending binary data...");
+                        var form = new FormData();
+                        form.append('audio', blob);
+                        var url = APPURL + '/results/';
+                        var csrftoken = getCookie("csrftoken");
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            headers: {
+                                "X-CSRFToken": csrftoken
+                            },
+                            data: form,
+                            processData: false,
+                            contentType: false,
+                            success: function (data) {
+                                $("#index-div").hide();
+                                $("#content_here").append(data);
+                                hide_disliked_drinks();
+                                color_thumbs();
+                                thumbs_up();
+                                thumbs_down();
+
+                            },
+                            error: function (xhr, ajaxOptions, thrownError) {
+                                console.log(xhr.status);
+                                console.log(thrownError);
+                                $("#index-div").hide();
+                                $("#content_here").append('<h6 class="backend-error">Error searching drinks</h6>');
+                            }
+                        });
+                        display_duck();
+                    }
+                })
+                .catch(function (err) { // error callback
+                    console.log('The following getUserMedia error occured: ' + err);
+                });
         } else {
-           console.log('getUserMedia not supported on your browser!');
+            console.log('getUserMedia not supported on your browser!');
         }
     });
 
     // When search bar is selected, make underline of button match
     $(".search-bar").on({
-        focus: function() {
+        focus: function () {
             //also maybe 7abcf5 or 9bc7ed, I don't know how to find the exact color
             $(".search-button").css("border-bottom", "2px solid #7ac0f5");
         },
-        focusout: function() {
+        focusout: function () {
             $(".search-button").css("border-bottom", "2px solid black");
         }
     });
 
-    $(".search-nav-link").click(function() {
+    $(".search-nav-link").click(function () {
         $(".search-nav-link").removeClass("active"); // make all tabs inactive
         $(this).addClass("active"); // make clicked tab active
         $(this).prev().prop("checked", true); // check corresponding radiobutton
     });
 
     // overwrite form's builtin post request
-    $('#index-search-form').on('submit', function() {
+    $('#index-search-form').on('submit', function () {
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
             dataType: 'html',
             data: $(this).serialize(),
-            success: function(data) {
-                var dom = $(data).find("#result_container")
-                $("#content_here").replaceWith(dom);
+            success: function (data) {
+                $("#index-div").hide();
+                $("#content_here").append(data);
                 color_thumbs();
                 thumbs_up();
                 thumbs_down();
@@ -101,34 +107,32 @@ $(document).ready(function() {
             error: function (xhr, ajaxOptions, thrownError) {
                 console.log(xhr.status);
                 console.log(thrownError);
+                $("#index-div").hide();
+                $("#content_here").append('<h6 class="backend-error">Error searching drinks</h6>');
             }
         });
         display_duck();
     });
 });
 
-<<<<<<< HEAD
-function color_thumbs() {
-    console.log("Marking liked/disliked drinks");
-=======
 function color_thumbs(){
     console.log("Running mark_liked_disliked_drinks");
->>>>>>> 51553c8193bab91c70aa4e1a7a7c57b7e10064ef
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
         url: url,
         method: "GET",
-        headers: { "X-CSRFToken": csrftoken },
-        data: {csrfmiddlewaretoken: '{{ csrf_token}}' },
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             if (data["status"] == 201) {
                 liked_drinks = data["message"][0];
                 disliked_drinks = data["message"][1];
-                $(".thumbsup").each(function(){
+                $(".thumbsup").each(function () {
                     var drink_id = $(this).attr("drinkid");
-                    if(liked_drinks.includes(drink_id)){
+                    if (liked_drinks.includes(drink_id)) {
                         $(this).children("#blank_thumbsup").hide();
                         $(this).children("#filled_thumbsup").show();
                     } else {
@@ -136,9 +140,9 @@ function color_thumbs(){
                         $(this).children("#filled_thumbsup").hide();
                     }
                 });
-                $(".thumbsdown").each(function(){
+                $(".thumbsdown").each(function () {
                     var drink_id = $(this).attr("drinkid");
-                    if(disliked_drinks.includes(drink_id)){
+                    if (disliked_drinks.includes(drink_id)) {
                         $(this).children("#blank_thumbsdown").hide();
                         $(this).children("#filled_thumbsdown").show();
                     } else {
@@ -152,11 +156,12 @@ function color_thumbs(){
 
             }
         },
-        error: function(xhr, ajaxOptions, thrownError) {
+        error: function (xhr, ajaxOptions, thrownError) {
             console.log("ERROR")
         }
     });
 }
+
 function hide_disliked_drinks() {
     const checkbox = $("#hide-disliked-drinks-checkbox");
     var url = APPURL + "/get_liked_disliked_drinks/";
@@ -164,21 +169,25 @@ function hide_disliked_drinks() {
     $.ajax({
         url: url,
         method: "GET",
-        headers: { "X-CSRFToken": csrftoken },
-        data: {csrfmiddlewaretoken: '{{ csrf_token}}' },
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+        data: {
+            csrfmiddlewaretoken: '{{ csrf_token}}'
+        },
         dataType: "json",
-        success: function(data) {
+        success: function (data) {
             if (data["status"] == 201) {
                 liked_drinks = data["message"][0];
                 disliked_drinks = data["message"][1];
-                $(".thumbsdown").each(function(){
+                $(".thumbsdown").each(function () {
                     var drink_id = $(this).attr("drinkid");
                     var checked = checkbox.prop("checked");
-                    if(disliked_drinks.includes(drink_id)){
-                        if(checked){
-                            $("#drink_id_"+drink_id).hide();
-                        }else{
-                            $("#drink_id_"+drink_id).show();
+                    if (disliked_drinks.includes(drink_id)) {
+                        if (checked) {
+                            $("#drink_id_" + drink_id).hide();
+                        } else {
+                            $("#drink_id_" + drink_id).show();
                         }
                     }
                 });
@@ -187,13 +196,18 @@ function hide_disliked_drinks() {
                 console.log("Error in hide disliked drinks checkbox");
             }
         },
-        error: function(xhr, ajaxOptions, thrownError) {
+        error: function (xhr, ajaxOptions, thrownError) {
             console.log("ERROR")
         }
-    });    
+    });
 }
+
 function thumbs_up() {
     var anchor = $(".thumbsup");
+    // Remove listeners if there were any
+    anchor.each(function removeListner() {
+        $(this).unbind();
+    })
     // Add click listener to each thumbs up button
     anchor.each(function likeDrink(index, element) {
         $(this).on("click", function likeDrink() {
@@ -210,10 +224,12 @@ function thumbs_up() {
             $.ajax({
                 url: url,
                 method: "POST",
-                headers: { "X-CSRFToken": csrftoken },
+                headers: {
+                    "X-CSRFToken": csrftoken
+                },
                 data: payload,
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     if (data["status"] == 201) {
                         console.log("Drink liked!");
                         likeDrinkAnimation(thumbsup, thumbsdown);
@@ -224,7 +240,7 @@ function thumbs_up() {
                         console.log(data["message"]);
                     }
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
+                error: function (xhr, ajaxOptions, thrownError) {
                     console.log(xhr);
                 }
             });
@@ -234,6 +250,10 @@ function thumbs_up() {
 
 function thumbs_down() {
     var anchor = $(".thumbsdown");
+    // Remove listeners if there were any
+    anchor.each(function removeListner() {
+        $(this).unbind();
+    })
     // Add click listener to each thumbs up button
     anchor.each(function likeDrink(index, element) {
         $(this).on("click", function likeDrink() {
@@ -250,10 +270,12 @@ function thumbs_down() {
             $.ajax({
                 url: url,
                 method: "POST",
-                headers: { "X-CSRFToken": csrftoken },
+                headers: {
+                    "X-CSRFToken": csrftoken
+                },
                 data: payload,
                 dataType: "json",
-                success: function(data) {
+                success: function (data) {
                     if (data["status"] == 201) {
                         console.log("Drink disliked!");
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
@@ -265,10 +287,45 @@ function thumbs_down() {
                         console.log("Error in disliking drink");
                     }
                 },
-                error: function(xhr, ajaxOptions, thrownError) {
+                error: function (xhr, ajaxOptions, thrownError) {
                     console.log(xhr);
                 }
             });
         });
+    });
+}
+
+var offset = 0;
+
+function load_more_drinks() {
+    offset += 1;
+    var url = APPURL + '/more_results/';
+    var csrftoken = getCookie("csrftoken");
+    query = $(".query").text();
+    query = query.split("Query: ").slice(1).pop();
+    console.log(query);
+    $.ajax({
+        url: url,
+        type: 'POST',
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+        data: {
+            text: query,
+            offset: offset * 10
+        },
+        dataType: "html",
+        success: function (data) {
+            $(".load-more").before(data);
+            color_thumbs();
+            thumbs_up();
+            thumbs_down();
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log(xhr.status);
+            console.log(thrownError);
+            $(".load-more-error").html('');
+            $("#content_here").append('<div class="load-more-error">Cannot load more drinks</div>');
+        }
     });
 }

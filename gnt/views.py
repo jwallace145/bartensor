@@ -11,7 +11,7 @@ from django.urls import reverse
 from gnt.adapters import drink_adapter
 from gnt.adapters.stt_adapter import IBM
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
-from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, LikeUserDrink
+from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, UpvotedUserDrink
 
 def bad_request(request):
     """
@@ -53,6 +53,21 @@ def results(request):
         return HttpResponseRedirect(reverse('home'))
 
 
+def more_results(request):
+    """
+    More results with an offset
+    """
+    text = request.POST['text']
+    offset = request.POST['offset']
+    discovery_adapter = drink_adapter.DiscoveryAdapter()
+    response = discovery_adapter.natural_language_search_offset(
+        text, offset)
+    return render(request, 'gnt/drink_results_with_voting.html', {
+        'query': text,
+        'drinks': response
+    })
+
+
 def register(request):
     """
     Register View
@@ -86,13 +101,11 @@ def profile_create_drink(request):
     InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
     if request.method == 'POST':
-        create_user_drink_form = CreateUserDrinkForm(request.POST)
-        print(request.POST)
+        create_user_drink_form = CreateUserDrinkForm(request.POST, request.FILES)
 
         if create_user_drink_form.is_valid():
             drink = create_user_drink_form.save(commit=False)
             drink.user = request.user
-            drink.likes = 0
             drink.save()
 
             ingredient_formset = IngredientFormset(
@@ -114,6 +127,11 @@ def profile_create_drink(request):
                 messages.success(
                     request, f'Your drink { drink.name } has been created!')
                 return redirect('profile_public', username=request.user.username)
+        else:
+            name = request.POST['name']
+            messages.error(
+                request, f'We already have a cocktail named {name}!')
+            return redirect('profile_public', username=request.user.username)
     else:
         create_user_drink_form = CreateUserDrinkForm()
         ingredient_formset = IngredientFormset(prefix='ingredient')
@@ -191,10 +209,10 @@ def profile_public(request, username):
         elif 'like-drink' in request.POST:
             drink = UserDrink.objects.get(name=request.POST['drink'])
             profile = request.user.profile
-            if LikeUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
+            if UpvotedUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
                 drink.likes += 1
                 drink.save()
-                like = LikeUserDrink(drink=drink, profile=profile)
+                like = UpvotedUserDrink(drink=drink, profile=profile)
                 like.save()
 
     context = {
@@ -280,12 +298,29 @@ def disliked_drinks(request):
         return HttpResponseRedirect('/home/')
 
 
+def timeline_pop(request):
+    """
+    Timeline View
+    """
+    offset = 0
+    if request.GET.get('offset', 0):
+        offset = int(request.GET['offset'])
+    drinks = UserDrink.objects.all().order_by('-votes')[offset:offset+50]
+
+    context = {
+        'drinks': drinks
+    }
+
+    return render(request, 'gnt/timeline.html', context)
+
 def timeline(request):
     """
     Timeline View
     """
-
-    drinks = UserDrink.objects.all().order_by('-timestamp')
+    offset = 0
+    if request.GET.get('offset', 0) != 0:
+        offset = int(request.GET['offset'])
+    drinks = UserDrink.objects.all().order_by('-timestamp')[offset:offset+50]
 
     context = {
         'drinks': drinks
