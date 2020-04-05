@@ -41,6 +41,7 @@ def results(request):
         else:
             text = request.POST['search_bar']
 
+        # (names:"russian" | names:"white")|(ingredients:!"vodka", ingredients:"milk")
         discovery_adapter = drink_adapter.DiscoveryAdapter()
         response = discovery_adapter.natural_language_search(text)
 
