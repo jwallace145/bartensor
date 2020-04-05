@@ -45,7 +45,7 @@ class DiscoveryAdaptee():
             environment_id, collection_id, natural_language_query=text, offset=offset).result['results']
 
     def search(self, query):
-        return discovery.query(environment_id, collection_id, query=text).result['results']
+        return discovery.query(environment_id, collection_id, query=query).result['results']
 
     def get_drink(self, drink_id):
         return discovery.query(
