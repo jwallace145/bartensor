@@ -115,7 +115,8 @@ $(document).ready(function () {
     });
 });
 
-function color_thumbs() {
+function color_thumbs(){
+    console.log("Running mark_liked_disliked_drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
