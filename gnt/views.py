@@ -12,8 +12,11 @@ from nltk.tokenize.treebank import TreebankWordTokenizer
 from gnt.adapters import drink_adapter
 from gnt.adapters.stt_adapter import IBM
 from string import punctuation
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
-from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, UpvotedUserDrink
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, \
+    CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
+from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, \
+    UpvotedUserDrink
+
 
 def bad_request(request):
     """
@@ -31,8 +34,8 @@ def home(request):
     return render(request, 'gnt/index.html')
 
 
-def _text_to_dql(text):
-    '''Converts user input text queries to DQL queries.'''
+def _text_to_dql(text, name_multiplier=1, ingredient_multiplier=1):
+    """Converts user input text queries to DQL queries."""
     positive = ''  # DQL for checking drink names/ingredients might include certain words
     negative = ''  # DQL for ensuring drink ingredients exclude certain words
     # stopwords copied from nltk.corpus.stopwords.words('english')
@@ -77,9 +80,9 @@ def _text_to_dql(text):
             negative += 'ingredients:!"%s"' % token  # ingredients must not include token
         else:
             positive += '|'  # bar means logical OR
-            positive += 'names:"%s"^2' % token  # drink names should include token and are twice as important
+            positive += 'names:"%s"^%d' % (token, name_multiplier)
             positive += '|'
-            positive += 'ingredients:"%s"' % token  # drink ingredients should include token
+            positive += 'ingredients:"%s"^%d' % (token, ingredient_multiplier)
     # ignore the first character of each sub-query because we started building them with either | or ,
     positive = positive[1:]
     negative = negative[1:]
@@ -95,29 +98,18 @@ def _text_to_dql(text):
         query = ''
     return query
 
-def recommend(request):
-    if request.method == 'POST':
-        if 'audio' in request.FILES:
-            audio = request.FILES['audio']
-            text = IBM().transcribe(audio)
-        else:
-            text = request.POST['search_bar']
-        query = _text_to_dql(text)
-        discovery_adapter = drink_adapter.DiscoveryAdapter()
-        response = discovery_adapter.search(query)
 
-        # remove drink if it matches what the user is looking for
-        for i, drink in enumerate(response):
-            if drink['names'][0].lower() in text.lower():
-                response.pop(i)
-                break
+def filter_by_text_presence(drinks, text):
+    """Filter drink response list to exclude first drink with name found in the provided text.
 
-        return render(request, 'gnt/results.html', {
-            'query': text,
-            'drinks': response
-        })
-    else:
-        return HttpResponseRedirect(reverse('home'))
+    This is useful for 'recommending' drinks to users when they provide the name of a drink."""
+    for i, drink in enumerate(drinks):
+        if drink['names'][0].lower() in text.lower():
+            drinks.pop(i)
+            break
+
+    return drinks
+
 
 def results(request):
     """
@@ -129,9 +121,19 @@ def results(request):
             text = IBM().transcribe(audio)
         else:
             text = request.POST['search_bar']
-        query = _text_to_dql(text)
+
+        # Perform slightly different searches based on what kind of question the user is asking
+        if request.POST['question'] == 'what':
+            query = _text_to_dql(text, 1, 2) # make drink ingredients more important
+        else:
+            query = _text_to_dql(text, 2, 1) # make drink names more important
+
         discovery_adapter = drink_adapter.DiscoveryAdapter()
         response = discovery_adapter.search(query)
+
+        if request.POST['question'] == 'like':
+            # if user is looking for similar drinks to a given drink, remove the given drink from the response
+            response = filter_by_text_presence(response, text)
 
         return render(request, 'gnt/results.html', {
             'query': text,
