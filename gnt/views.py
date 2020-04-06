@@ -287,15 +287,14 @@ def profile_public(request, username):
                 like = UpvotedUserDrink(drink=drink, profile=profile)
                 like.save()
 
+    context = {
+        'profile': username,
+        'drinks': drinks,
+        'requests': requests,
+        'friends': friends,
+    }
 
-context = {
-    'profile': username,
-    'drinks': drinks,
-    'requests': requests,
-    'friends': friends,
-}
-
-return render(request, 'gnt/profile_public.html', context)
+    return render(request, 'gnt/profile_public.html', context)
 
 
 def liked_drinks(request, username):
