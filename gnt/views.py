@@ -1,6 +1,9 @@
 """
 Views Module
 """
+
+from string import punctuation
+
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -8,26 +11,18 @@ from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
-<<<<<<< HEAD
 
 from gnt.adapters import drink_adapter
+from gnt.adapters.stt_adapter import IBM
+from nltk.tokenize.treebank import TreebankWordTokenizer
 
 from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm,
                     CreateUserDrinkInstructionForm, ProfileUpdateForm,
                     UserRegisterForm, UserUpdateForm)
-from .models import (DownvotedUserDrink, Drink, Friend, FriendRequest, Profile,
+from .models import (Drink, Friend, FriendRequest, Profile,
                      ProfileToDislikedDrink, ProfileToLikedDrink,
                      UpvotedUserDrink, UserDrink)
-from .stt import IBM
 
-=======
-from nltk.tokenize.treebank import TreebankWordTokenizer
-from gnt.adapters import drink_adapter
-from gnt.adapters.stt_adapter import IBM
-from string import punctuation
-from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
-from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, UpvotedUserDrink
->>>>>>> origin/master
 
 def bad_request(request):
     """
@@ -56,8 +51,8 @@ def results(request):
         else:
             text = request.POST['search_bar']
 
-        positive = '' # DQL for checking drink names/ingredients might include certain words
-        negative = '' # DQL for ensuring drink ingredients exclude certain words
+        positive = ''  # DQL for checking drink names/ingredients might include certain words
+        negative = ''  # DQL for ensuring drink ingredients exclude certain words
         # stopwords copied from nltk.corpus.stopwords.words('english')
         stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll",
                      "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's",
@@ -78,7 +73,7 @@ def results(request):
         # negation stopwords not from any source, we may need to add to this list as we test
         negation_stopwords = ["n't", 'no', 'not', 'nor', 'none', 'never', 'without']
         # split user input into manageable tokens
-        tokens = TreebankWordTokenizer().tokenize(text) # NLTKWordTokenizer supposed to be "improved", but destructive module not found
+        tokens = TreebankWordTokenizer().tokenize(text)  # NLTKWordTokenizer supposed to be "improved", but destructive module not found
         # track if we're in a negation phrase
         negate = False
         for token in tokens:
@@ -93,13 +88,13 @@ def results(request):
                 continue
 
             if negate:
-                negative += ',' # comma means logical AND
-                negative += 'ingredients:!"%s"' % token # ingredients must not include token
+                negative += ','  # comma means logical AND
+                negative += 'ingredients:!"%s"' % token  # ingredients must not include token
             else:
-                positive += '|' # bar means logical OR
-                positive += 'names:"%s"^2' % token # drink names should include token and are twice as important
+                positive += '|'  # bar means logical OR
+                positive += 'names:"%s"^2' % token  # drink names should include token and are twice as important
                 positive += '|'
-                positive += 'ingredients:"%s"' % token # drink ingredients should include token
+                positive += 'ingredients:"%s"' % token  # drink ingredients should include token
         # ignore the first character of each sub-query because we started building them with either | or ,
         positive = positive[1:]
         negative = negative[1:]
@@ -285,28 +280,22 @@ def profile_public(request, username):
         elif 'like-drink' in request.POST:
             drink = UserDrink.objects.get(name=request.POST['drink'])
             profile = request.user.profile
-<<<<<<< HEAD
-            # if LikeUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
-            #     drink.likes += 1
-            #     drink.save()
-            #     like = LikeUserDrink(drink=drink, profile=profile)
-            #     like.save()
-=======
+
             if UpvotedUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
                 drink.likes += 1
                 drink.save()
                 like = UpvotedUserDrink(drink=drink, profile=profile)
                 like.save()
->>>>>>> origin/master
 
-    context = {
-        'profile': username,
-        'drinks': drinks,
-        'requests': requests,
-        'friends': friends,
-    }
 
-    return render(request, 'gnt/profile_public.html', context)
+context = {
+    'profile': username,
+    'drinks': drinks,
+    'requests': requests,
+    'friends': friends,
+}
+
+return render(request, 'gnt/profile_public.html', context)
 
 
 def liked_drinks(request, username):
@@ -393,7 +382,7 @@ def timeline_pop(request):
     offset = 0
     if request.GET.get('offset', 0):
         offset = int(request.GET['offset'])
-    drinks = UserDrink.objects.all().order_by('-votes')[offset:offset+50]
+    drinks = UserDrink.objects.all().order_by('-votes')[offset:offset + 50]
 
     context = {
         'drinks': drinks
@@ -409,7 +398,7 @@ def timeline(request):
     offset = 0
     if request.GET.get('offset', 0) != 0:
         offset = int(request.GET['offset'])
-    drinks = UserDrink.objects.all().order_by('-timestamp')[offset:offset+50]
+    drinks = UserDrink.objects.all().order_by('-timestamp')[offset:offset + 50]
 
     context = {
         'drinks': drinks
