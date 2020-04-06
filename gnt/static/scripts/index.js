@@ -321,6 +321,7 @@ function load_more_drinks() {
             color_thumbs();
             thumbs_up();
             thumbs_down();
+            hide_disliked_drinks();
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
