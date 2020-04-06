@@ -331,9 +331,10 @@ a {
   padding-top: 10%;
 }
 
-.load-more button {
+.load-more {
   margin: 5% auto;
   display: block;
+  text-align: center;
 }
 
 /* font awesome styling */
