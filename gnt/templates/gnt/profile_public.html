@@ -1,138 +1,42 @@
 {% extends 'gnt/profile_base.html' %}
+
 {% load crispy_forms_tags %}
 {% load static %}
 
 {% block profile_content %}
 
-{% if user == profile %}
 <div class="content-section">
   <div class="row">
     <div class="col-lg-12">
       <legend class="border-bottom mb-4">Timeline</legend>
     </div>
   </div>
-  {% if drinks %}
+  {% if user == profile and drinks %}
   {% for drink in drinks %}
-  <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ profile.profile.image.url }}">
-    <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="{% url 'timeline' username=profile %}">{{ profile }}</a>
-        <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
-      </div>
-      <div class="row">
-        <div class="col-lg-6">
-          <h2><a class="article-title" href="{% url 'timeline' username=profile %}">{{ drink.name }}</a></h2>
-          <p class="article-content">{{ drink.description }}</p>
-          <p class="article-content">Ingredients</p>
-          {% for ingredient in drink.ingredient_set.all %}
-          <ul>
-            <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
-          </ul>
-          {% endfor %}
-          <p class="article-content">Instructions</p>
-          {% for instruction in drink.instruction_set.all %}
-          <ul>
-            <li>{{ instruction.instruction }}</li>
-          </ul>
-          {% endfor %}
-          <button class="btn btn-outline-info" type="button" id="list-comments" style="display: inline-block;">Show Comments</button>
-          <button class="btn btn-outline-info" type="button" id="create-comment" style="display: inline-bloc;k">Leave a Comment</button>
-        </div>
-        <div class="col-lg-5" style="text-align: right;">
-          <img src="{{ drink.image.url }}" width="60%" style="margin-left: auto;" />
-        </div>
-        <div class="col-lg-1" style="text-align: center;">
-          <a class="upvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-            <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em" />
-            <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}" alt="thumbs up liked" width="30em" />
-          </a>
-          <div id='drink{{drink.id}}_votes'>{{drink.votes}}</div>
-          <a class="downvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-            <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em" />
-            <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}" alt="thumbs down disliked" width="30em" />
-          </a>
-        </div>
-      </div>
-    </div>
-  </article>
+  {% include 'gnt/user_created_drink.html' %}
   {% endfor %}
-  {% else %}
+  {% endif %}
+
+  {% if user == profile and not drinks %}
   <div class="content-section">
     <p>
       You haven't created any drinks yet. <a href="{% url 'create_drink' username=profile %}">Create a drink</a> to populate your profile!
     </p>
   </div>
   {% endif %}
-</div>
 
-{% else %}
-<div class="content-section">
-  <div class="row">
-    <div class="col-lg-12">
-      <legend class="border-bottom mb-4">Timeline</legend>
-    </div>
-  </div>
-  {% if drinks %}
+  {% if user != profile and drinks %}
   {% for drink in drinks %}
-  <article class="media content-section">
-    <img class="rounded-circle article-img" src="{{ profile.profile.image.url }}">
-    <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="{% url 'timeline' username=profile %}">{{ profile }}</a>
-        <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
-      </div>
-      <div class="row">
-        <div class="col-lg-6">
-          <h2><a class="article-title" href="{% url 'timeline' username=profile %}">{{ drink.name }}</a></h2>
-          <p class="article-content">{{ drink.description }}</p>
-          <p class="article-content">Ingredients</p>
-          {% for ingredient in drink.ingredient_set.all %}
-          <ul>
-            <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
-          </ul>
-          {% endfor %}
-          <p class="article-content">Instructions</p>
-          {% for instruction in drink.instruction_set.all %}
-          <ul>
-            <li>{{ instruction.instruction }}</li>
-          </ul>
-          {% endfor %}
-          <button class="btn btn-outline-info" type="button" id="list-comments" style="display: inline-block;">Show Comments</button>
-          <button class="btn btn-outline-info" type="button" id="create-comment" style="display: inline-block;">Leave a Comment</button>
-        </div>
-        <div class="col-lg-5" style="text-align: right;">
-          <img src="{{ drink.image.url }}" width="60%" style="margin-left: auto;" />
-        </div>
-        <div class="col-lg-1" style="text-align: center;">
-          <a class="upvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-            <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em" />
-            <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}" alt="thumbs up liked" width="30em" />
-          </a>
-          <div id='drink{{drink.id}}_votes'>{{drink.votes}}</div>
-          <a class="downvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-            <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em" />
-            <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}" alt="thumbs down disliked" width="30em" />
-          </a>
-        </div>
-      </div>
-    </div>
-  </article>
+  {% include 'gnt/user_created_drink.html' %}
   {% endfor %}
-  {% else %}
+  {% endif %}
+
+  {% if user != profile and not drinks%}
   <div class="content-section">
     <p>{{ profile }} has not created any drinks yet!</p>
   </div>
   {% endif %}
 </div>
-{% endif %}
 <script type="text/javascript" src="{% static 'scripts/proposals.js' %}"></script>
-<script>
-  $("#create-comment").click(function() {
-    console.log("create comment button clicked...")
-  });
-  $("#list-comments").click(function() {
-    console.log("list comments button clicked...")
-  })
-</script>
+
 {% endblock profile_content %}

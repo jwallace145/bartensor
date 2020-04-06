@@ -26,7 +26,7 @@ SECRET_KEY = 'fhsu029mf+3w+r-e-oquk3!cv(t@rd1u5ocj=sd^vn#bj)s$@y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['bartensor-env.eba-rvg8fb2e.us-east-2.elasticbeanstalk.com']
+ALLOWED_HOSTS = ['localhost', 'bartensor-env.eba-rvg8fb2e.us-east-2.elasticbeanstalk.com']
 
 
 # Application definition
