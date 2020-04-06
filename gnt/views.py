@@ -64,7 +64,8 @@ def _text_to_dql(text, name_multiplier=1, ingredient_multiplier=1):
     # additional stopwords that help specific searches
     stopwords += ['drinks', 'recommend']
     # negation stopwords not from any source, we may need to add to this list as we test
-    negation_stopwords = ["n't", 'no', 'not', 'nor', 'none', 'never', 'without']
+    negation_stopwords = ["n't", 'no', 'not',
+                          'nor', 'none', 'never', 'without']
     # split user input into manageable tokens
     tokens = TreebankWordTokenizer().tokenize(
         text)  # NLTKWordTokenizer supposed to be "improved", but destructive module not found
@@ -117,7 +118,8 @@ def query_discovery(text, question, offset=0):
     if question == 'how':
         query = _text_to_dql(text, 2, 1)  # make drink names more important
     else:
-        query = _text_to_dql(text, 1, 2)  # make drink ingredients more important
+        # make drink ingredients more important
+        query = _text_to_dql(text, 1, 2)
 
     discovery_adapter = drink_adapter.DiscoveryAdapter()
     response = discovery_adapter.search(query, offset=offset)
@@ -163,9 +165,11 @@ def results(request):
                      "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won',
                      "won't", 'wouldn', "wouldn't"]
         # negation stopwords not from any source, we may need to add to this list as we test
-        negation_stopwords = ["n't", 'no', 'not', 'nor', 'none', 'never', 'without']
+        negation_stopwords = ["n't", 'no', 'not',
+                              'nor', 'none', 'never', 'without']
         # split user input into manageable tokens
-        tokens = TreebankWordTokenizer().tokenize(text)  # NLTKWordTokenizer supposed to be "improved", but destructive module not found
+        # NLTKWordTokenizer supposed to be "improved", but destructive module not found
+        tokens = TreebankWordTokenizer().tokenize(text)
         # track if we're in a negation phrase
         negate = False
         for token in tokens:
@@ -184,9 +188,11 @@ def results(request):
                 negative += 'ingredients:!"%s"' % token  # ingredients must not include token
             else:
                 positive += '|'  # bar means logical OR
-                positive += 'names:"%s"^2' % token  # drink names should include token and are twice as important
+                # drink names should include token and are twice as important
+                positive += 'names:"%s"^2' % token
                 positive += '|'
-                positive += 'ingredients:"%s"' % token  # drink ingredients should include token
+                # drink ingredients should include token
+                positive += 'ingredients:"%s"' % token
         # ignore the first character of each sub-query because we started building them with either | or ,
         positive = positive[1:]
         negative = negative[1:]
@@ -216,7 +222,8 @@ def more_results(request):
     """
     More results with an offset
     """
-    response = query_discovery(request.POST['text'], request.POST['question'], request.POST['offset'])
+    response = query_discovery(
+        request.POST['text'], request.POST['question'], request.POST['offset'])
 
     return render(request, 'gnt/drink_results_with_voting.html', {
         'query': request.POST['text'],
@@ -259,7 +266,8 @@ def profile_create_drink(request, username):
     InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
     if request.method == 'POST':
-        create_user_drink_form = CreateUserDrinkForm(request.POST, request.FILES)
+        create_user_drink_form = CreateUserDrinkForm(
+            request.POST, request.FILES)
 
         if create_user_drink_form.is_valid():
             drink = create_user_drink_form.save(commit=False)
