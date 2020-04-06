@@ -194,7 +194,7 @@ def profile_create_drink(request, username):
 
                 messages.success(
                     request, f'Your drink { drink.name } has been created!')
-                return redirect('profile_public', username=request.user.username)
+                return redirect('timeline', username=request.user.username)
         else:
             name = request.POST['name']
             messages.error(
