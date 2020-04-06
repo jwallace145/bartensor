@@ -15,9 +15,9 @@
 
 ## About The Project
 
-Bartensor is a community platform that features an intelligent, knowledge-based, virtual bartender that can cater to your alcoholic requests. Users can sign up or browse anonymously and explore an enormous repository of drinks as well as user created drinks and view
-their recipes. Bartensor can also recommend drinks to you based on your flavor profile, connect you with like-minded friends, and allow
-you to explore more drinks than ever before.
+Bartensor is a community driven platform that features an intelligent, knowledge-based, virtual bartender that can cater to all your alcoholic needs. Users can sign up or browse anonymously and explore an enormous repository of drinks as well as community created
+drinks and view their recipes. Bartensor can also recommend drinks based on flavor profiles, connect like-minded drinkers, and allow the
+comminuty to expand its alcholic pallete together!
 
 Bartensor Features:
 
