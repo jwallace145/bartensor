@@ -115,7 +115,8 @@ $(document).ready(function () {
     });
 });
 
-function color_thumbs() {
+function color_thumbs(){
+    console.log("Running mark_liked_disliked_drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
@@ -301,6 +302,8 @@ function load_more_drinks() {
     var url = APPURL + '/more_results/';
     var csrftoken = getCookie("csrftoken");
     query = $(".query").text();
+    query = query.split("Query: ").slice(1).pop();
+    console.log(query);
     $.ajax({
         url: url,
         type: 'POST',
@@ -326,5 +329,3 @@ function load_more_drinks() {
         }
     });
 }
-
-

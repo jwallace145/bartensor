@@ -31,13 +31,13 @@ urlpatterns = [
     path('register/', gnt_views.register, name='register'),
 
     # profile url patterns
-    path('profile/<username>/', gnt_views.profile_public, name='profile_public'),
     path('profile/<username>/create-drink', gnt_views.profile_create_drink, name='create_drink'),
     path('profile/<username>/disliked-drinks/', gnt_views.disliked_drinks, name='disliked_drinks'),
     path('profile/<username>/edit', gnt_views.profile_edit, name='profile_edit'),
     path('profile/<username>/friends/', gnt_views.friends, name='friends'),
     path('profile/<username>/liked-drinks', gnt_views.liked_drinks, name='liked_drinks'),
     path('profile/<username>/notifications', gnt_views.notifications, name='notifications'),
+    path('profile/<username>/timeline', gnt_views.profile_public, name='timeline'),
 
     # db api url patterns
     path('dislike_drink/', gnt_db_api.dislike_drink, name='dislike_drink'),

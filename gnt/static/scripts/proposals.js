@@ -39,7 +39,20 @@ function up_vote() {
                         console.log(data["message"]);
                         var votes = $("#drink" + drink_id + "_votes").text();
                         $("#drink" + drink_id + "_votes").html(Number(votes) - 1);
-                        neglikeDrinkAnimation(thumbsup);;
+                        neglikeDrinkAnimation(thumbsup);
+                    } else if (data["status"] == 203) {
+                        console.log(data["message"]);
+                        var votes = $("#drink" + drink_id + "_votes").text();
+                        $("#drink" + drink_id + "_votes").html(Number(votes) + 1);
+                        likeDrinkAnimation(thumbsup, thumbsdown);
+                        thumbsup.unbind();
+                        thumbsdown.unbind();
+                        thumbsup.children('img').each(function(){
+                            $(this).removeClass('voting_buttons')
+                        });
+                        thumbsdown.children('img').each(function(){
+                            $(this).removeClass('voting_buttons')
+                        });
                     } else {
                         console.log(data["status"]);
                         console.log(data["message"]);
@@ -95,6 +108,19 @@ function down_vote() {
                         var votes = $("#drink" + drink_id + "_votes").text();
                         $("#drink" + drink_id + "_votes").html(Number(votes) + 1);
                         negdislikeDrinkAnimation(thumbsdown);
+                    } else if (data["status"] == 203) {
+                        console.log(data["message"]);
+                        var votes = $("#drink" + drink_id + "_votes").text();
+                        $("#drink" + drink_id + "_votes").html(Number(votes) - 1);
+                        dislikeDrinkAnimation(thumbsup, thumbsdown);
+                        thumbsup.unbind();
+                        thumbsdown.unbind();
+                        thumbsup.children('img').each(function(){
+                            $(this).removeClass('voting_buttons')
+                        });
+                        thumbsdown.children('img').each(function(){
+                            $(this).removeClass('voting_buttons')
+                        });
                     } else {
                         console.log(data["status"]);
                         console.log(data["message"]);
@@ -186,6 +212,7 @@ function switch_sort() {
             dataType: "html",
             success: function (data) {
                 $("#ProposalContent").replaceWith($(data).find("#ProposalContent"));
+                offset = 0
                 color_thumbs_proposals();
                 up_vote();
                 down_vote();
@@ -197,9 +224,48 @@ function switch_sort() {
     });
 }
 
+var offset = 0;
+
+function load_more_drinks_proposals() {
+    $('#load_more').on('click', function() {
+        offset += 50;
+        var url = APPURL;
+        if ($("#switchsorter").attr("val") == "pop") {
+            url = url + '/timeline_pop/';
+        } else {
+            url = url + '/timeline/';
+        }
+        var csrftoken = getCookie("csrftoken");
+        $.ajax({
+            url: url,
+            type: 'GET',
+            headers: {
+                "X-CSRFToken": csrftoken
+            },
+            data: {
+                offset: offset
+            },
+            dataType: "html",
+            success: function (data) {
+                $("#ProposalContent").append($(data).find("#ProposalContent").children());
+                color_thumbs_proposals();
+                up_vote();
+                down_vote();
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.status);
+                console.log(thrownError);
+                $(".load-more-error").html('');
+            }
+        });
+    });
+}
+
+
 $(document).ready(function () {
     color_thumbs_proposals();
     up_vote();
     down_vote();
     switch_sort();
+    load_more_drinks_proposals();
 })

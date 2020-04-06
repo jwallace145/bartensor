@@ -1,8 +1,6 @@
 """
 Views Module
 """
-
-# import necessary modules
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -10,6 +8,7 @@ from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
+<<<<<<< HEAD
 
 from gnt.adapters import drink_adapter
 
@@ -21,6 +20,14 @@ from .models import (DownvotedUserDrink, Drink, Friend, FriendRequest, Profile,
                      UpvotedUserDrink, UserDrink)
 from .stt import IBM
 
+=======
+from nltk.tokenize.treebank import TreebankWordTokenizer
+from gnt.adapters import drink_adapter
+from gnt.adapters.stt_adapter import IBM
+from string import punctuation
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm, CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm
+from .models import Profile, Drink, ProfileToLikedDrink, ProfileToDislikedDrink, Friend, FriendRequest, UserDrink, UpvotedUserDrink
+>>>>>>> origin/master
 
 def bad_request(request):
     """
@@ -42,7 +49,6 @@ def results(request):
     """
     Results View
     """
-
     if request.method == 'POST':
         if 'audio' in request.FILES:
             audio = request.FILES['audio']
@@ -50,8 +56,65 @@ def results(request):
         else:
             text = request.POST['search_bar']
 
+        positive = '' # DQL for checking drink names/ingredients might include certain words
+        negative = '' # DQL for ensuring drink ingredients exclude certain words
+        # stopwords copied from nltk.corpus.stopwords.words('english')
+        stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll",
+                     "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's",
+                     'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs',
+                     'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am',
+                     'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does',
+                     'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while',
+                     'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during',
+                     'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over',
+                     'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all',
+                     'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only',
+                     'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', "don't",
+                     'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't",
+                     'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't",
+                     'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn', "mustn't", 'needn',
+                     "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won',
+                     "won't", 'wouldn', "wouldn't"]
+        # negation stopwords not from any source, we may need to add to this list as we test
+        negation_stopwords = ["n't", 'no', 'not', 'nor', 'none', 'never', 'without']
+        # split user input into manageable tokens
+        tokens = TreebankWordTokenizer().tokenize(text) # NLTKWordTokenizer supposed to be "improved", but destructive module not found
+        # track if we're in a negation phrase
+        negate = False
+        for token in tokens:
+            if token in negation_stopwords:
+                # start negating every word if we hit a negation stopword
+                negate = True
+            elif token in punctuation:
+                # stop negating every word if we hit a punctuation mark
+                negate = False
+            elif token in stopwords:
+                # ignore any standard stopwords
+                continue
+
+            if negate:
+                negative += ',' # comma means logical AND
+                negative += 'ingredients:!"%s"' % token # ingredients must not include token
+            else:
+                positive += '|' # bar means logical OR
+                positive += 'names:"%s"^2' % token # drink names should include token and are twice as important
+                positive += '|'
+                positive += 'ingredients:"%s"' % token # drink ingredients should include token
+        # ignore the first character of each sub-query because we started building them with either | or ,
+        positive = positive[1:]
+        negative = negative[1:]
+        # only include parts of the query that actually exist
+        if len(positive) > 0:
+            if len(negative) > 0:
+                query = '(%s),(%s)' % (positive, negative)
+            else:
+                query = positive
+        elif len(negative) > 0:
+            query = negative
+        else:
+            query = ''
         discovery_adapter = drink_adapter.DiscoveryAdapter()
-        response = discovery_adapter.natural_language_search(text)
+        response = discovery_adapter.search(query)
 
         return render(request, 'gnt/results.html', {
             'query': text,
@@ -111,13 +174,11 @@ def profile_create_drink(request, username):
     InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
 
     if request.method == 'POST':
-        create_user_drink_form = CreateUserDrinkForm(request.POST)
-        print(request.POST)
+        create_user_drink_form = CreateUserDrinkForm(request.POST, request.FILES)
 
         if create_user_drink_form.is_valid():
             drink = create_user_drink_form.save(commit=False)
             drink.user = request.user
-            drink.likes = 0
             drink.save()
 
             ingredient_formset = IngredientFormset(
@@ -139,6 +200,11 @@ def profile_create_drink(request, username):
                 messages.success(
                     request, f'Your drink { drink.name } has been created!')
                 return redirect('profile_public', username=request.user.username)
+        else:
+            name = request.POST['name']
+            messages.error(
+                request, f'We already have a cocktail named {name}!')
+            return redirect('profile_public', username=request.user.username)
     else:
         create_user_drink_form = CreateUserDrinkForm()
         ingredient_formset = IngredientFormset(prefix='ingredient')
@@ -219,11 +285,19 @@ def profile_public(request, username):
         elif 'like-drink' in request.POST:
             drink = UserDrink.objects.get(name=request.POST['drink'])
             profile = request.user.profile
+<<<<<<< HEAD
             # if LikeUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
             #     drink.likes += 1
             #     drink.save()
             #     like = LikeUserDrink(drink=drink, profile=profile)
             #     like.save()
+=======
+            if UpvotedUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
+                drink.likes += 1
+                drink.save()
+                like = UpvotedUserDrink(drink=drink, profile=profile)
+                like.save()
+>>>>>>> origin/master
 
     context = {
         'profile': username,
@@ -316,8 +390,10 @@ def timeline_pop(request):
     """
     Timeline View
     """
-
-    drinks = UserDrink.objects.all().order_by('-votes')
+    offset = 0
+    if request.GET.get('offset', 0):
+        offset = int(request.GET['offset'])
+    drinks = UserDrink.objects.all().order_by('-votes')[offset:offset+50]
 
     context = {
         'drinks': drinks
@@ -330,8 +406,10 @@ def timeline(request):
     """
     Timeline View
     """
-
-    drinks = UserDrink.objects.all().order_by('-timestamp')
+    offset = 0
+    if request.GET.get('offset', 0) != 0:
+        offset = int(request.GET['offset'])
+    drinks = UserDrink.objects.all().order_by('-timestamp')[offset:offset+50]
 
     context = {
         'drinks': drinks

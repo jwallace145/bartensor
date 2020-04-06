@@ -14,7 +14,7 @@
       <article class="media content-section">
         <img class="rounded-circle article-img" src="{{ profile.profile.image.url }}">
         <div class="media-body">
-          <h2><a class="article-title" href="{% url 'profile_public' username=profile%}">{{ profile }}</a></h2>
+          <h2><a class="article-title" href="{% url 'timeline' username=profile%}">{{ profile }}</a></h2>
           <p class="article-content">{{ profile.profile.bio}}</p>
         </div>
       </article>

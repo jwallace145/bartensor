@@ -60,7 +60,7 @@
               <img class="rounded-circle account-header-img" src="{{ user.profile.image.url }}" />
             </a>
 
-            <a class="nav-item nav-link" href="{% url 'profile_public' username=user %}">{{ user.username }}</a>
+            <a class="nav-item nav-link" href="{% url 'timeline' username=user %}">{{ user.username }}</a>
 
             <a class="nav-item nav-link" href="#">
               <i class="fas fa-comment-dots fa-lg"></i>
