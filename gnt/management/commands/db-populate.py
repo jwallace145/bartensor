@@ -1,12 +1,16 @@
-from django.core.management.base import BaseCommand
-from gnt.models import Drink, DrinkName, UserDrink, Profile, Ingredient, Instruction
-from ibm_watson import DiscoveryV1
-from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+import json
+import os
+
 from django.conf import settings
 from django.contrib.auth.models import User
-import os
 from django.core.files import File
-import json
+from django.core.management.base import BaseCommand
+
+from gnt.models import (Drink, DrinkName, Ingredient, Instruction, Profile,
+                        UserDrink)
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson import DiscoveryV1
+
 
 class Command(BaseCommand):
 
@@ -88,7 +92,7 @@ class Command(BaseCommand):
         profile.image = 'profile_pics/jcole.jpg'
         profile.save()
         print(f'CREATED ADMIN ACCOUNT USERNAME: Jack, PASSWORD: password')
-        
+
         drink_images_folder = [
             x[0] + '/' for x in os.walk('gnt/static/data/drink_images/')]
         drink_images_folder = drink_images_folder[2:]
@@ -98,7 +102,7 @@ class Command(BaseCommand):
             User.objects.create_user(
                 username=f'User{i}', email=f'user{i}@gmail.com', password='password')
             u = User.objects.get(username=f'User{i}')
-            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end = '\t')
+            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end='\t')
             for img in os.listdir(drink_images_folder[i]):
                 path = drink_images_folder[i] + img
             im = open(path, 'rb')
@@ -125,7 +129,7 @@ class Command(BaseCommand):
             User.objects.create_user(
                 username=f'User{i}', email=f'user{i}@gmail.com', password='password')
             u = User.objects.get(username=f'User{i}')
-            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end = '\t')
+            print(f'CREATED ACCOUNT USERNAME: User{i}, PASSWORD: password', end='\t')
             for img in os.listdir(drink_images_folder[i]):
                 path = drink_images_folder[i] + img
             im = open(path, 'rb')
@@ -144,7 +148,7 @@ class Command(BaseCommand):
             except:
                 print('NOT A VALID DRINK NAME OR DESCRIPTION')
                 pass
-            
+
             im.close()
         blns_reader.close()
 

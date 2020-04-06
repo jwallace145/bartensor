@@ -14,7 +14,6 @@ from gnt.models import Drink
 from gnt.models import DrinkName
 from gnt.models import Ingredient
 from gnt.models import Instruction
-from gnt.models import LikeUserDrink
 from gnt.models import Profile
 from gnt.models import ProfileToDislikedDrink
 from gnt.models import ProfileToLikedDrink
@@ -195,14 +194,14 @@ class UserDrinkModelTest(TestCase):
                 username=self.TEST_USERNAME, email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
 
             drink = UserDrink.objects.create(
-                user=user, name=self.TEST_NAME, description=self.TEST_DESCRIPTION, likes=self.TEST_LIKES, image=self.TEST_IMAGE)
+                user=user, name=self.TEST_NAME, description=self.TEST_DESCRIPTION, votes=self.TEST_LIKES, image=self.TEST_IMAGE)
 
             self.assertTrue(isinstance(drink, UserDrink))
             self.assertEquals(user, drink.user)
             self.assertEquals(self.TEST_NAME, drink.name)
             self.assertEquals(self.TEST_DESCRIPTION, drink.description)
             self.assertEquals(self.TEST_TIMESTAMP, drink.timestamp)
-            self.assertEquals(self.TEST_LIKES, drink.likes)
+            self.assertEquals(self.TEST_LIKES, drink.votes)
             self.assertEquals(self.TEST_IMAGE, drink.image)
 
 
@@ -235,7 +234,7 @@ class IngredientModelTest(TestCase):
                 username=self.TEST_USERNAME, email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
 
             drink = UserDrink.objects.create(
-                user=user, name=self.TEST_DRINK_NAME, description=self.TEST_DRINK_DESCRIPTION, likes=self.TEST_DRINK_LIKES, image=self.TEST_DRINK_IMAGE)
+                user=user, name=self.TEST_DRINK_NAME, description=self.TEST_DRINK_DESCRIPTION, votes=self.TEST_DRINK_LIKES, image=self.TEST_DRINK_IMAGE)
 
             ingredient = Ingredient.objects.create(
                 drink=drink, name=self.TEST_INGREDIENT_NAME, quantity=self.TEST_INGREDIENT_QUANTITY)
@@ -278,7 +277,7 @@ class InstructionModelTest(TestCase):
                 username=self.TEST_USERNAME, email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
 
             drink = UserDrink.objects.create(
-                user=user, name=self.TEST_DRINK_NAME, description=self.TEST_DRINK_DESCRIPTION, likes=self.TEST_DRINK_LIKES, image=self.TEST_DRINK_IMAGE)
+                user=user, name=self.TEST_DRINK_NAME, description=self.TEST_DRINK_DESCRIPTION, votes=self.TEST_DRINK_LIKES, image=self.TEST_DRINK_IMAGE)
 
             instruction = Instruction.objects.create(
                 drink=drink, instruction=self.TEST_INSTRUCTION)
@@ -289,49 +288,3 @@ class InstructionModelTest(TestCase):
             self.assertEquals(user, instruction.drink.user)
             self.assertEquals(drink, instruction.drink)
             self.assertEquals(self.TEST_INSTRUCTION, instruction.instruction)
-
-
-class LikeUserDrinkTest(TestCase):
-    """
-    Like User Drink Model Test
-    """
-
-    # constants
-    TEST_USERNAME = 'test_username'
-    TEST_EMAIL = 'test_email'
-    TEST_PASSWORD = 'test_password'
-    TEST_PROFILE_BIO = 'test_bio'
-    TEST_PROFILE_IMAGE = 'default.jpg'
-    TEST_DRINK_NAME = 'test_name'
-    TEST_DRINK_DESCRIPTION = 'test_description'
-    TEST_DRINK_TIMESTAMP = datetime.datetime(
-        2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
-    TEST_DRINK_LIKES = 0
-    TEST_DRINK_IMAGE = 'default.jpg'
-
-    def test_create_and_save_like_user_drink(self):
-        """
-        Test Create and Save Like User Drink Model
-        """
-
-        mocked = datetime.datetime(2020, 1, 1, 0, 0, 0, tzinfo=pytz.utc)
-        with mock.patch('django.utils.timezone.now', mock.Mock(return_value=mocked)):
-            user = User.objects.create(
-                username=self.TEST_USERNAME, email=self.TEST_EMAIL, password=self.TEST_PASSWORD)
-
-            profile = Profile.objects.get(user=user)
-            profile.bio = self.TEST_PROFILE_BIO
-            profile.image = self.TEST_PROFILE_IMAGE
-            profile.save()
-
-            drink = UserDrink.objects.create(
-                user=user, name=self.TEST_DRINK_NAME, description=self.TEST_DRINK_DESCRIPTION, likes=self.TEST_DRINK_LIKES, image=self.TEST_DRINK_IMAGE)
-
-            like_drink = LikeUserDrink.objects.create(
-                drink=drink, profile=profile)
-
-            self.assertTrue(isinstance(like_drink, LikeUserDrink))
-            self.assertTrue(isinstance(like_drink.drink, UserDrink))
-            self.assertTrue(isinstance(like_drink.profile, Profile))
-            self.assertEquals(drink, like_drink.drink)
-            self.assertEquals(profile, like_drink.profile)

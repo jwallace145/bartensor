@@ -184,4 +184,3 @@ class DownvotedUserDrink(models.Model):
 
     def __str__(self):
         return str(self.id) + ', ' + str(self.drink) + ', ' + str(self.profile)
-
