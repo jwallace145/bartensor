@@ -1,36 +1,107 @@
-# Gin-and-Tensor
+<!-- PROJECT SHIELDS -->
 
-We gon' make some drinks bruh.
+<!-- TABLE OF CONTENTS -->
 
-Run development server with `python manage.py runserver`
+## Table of Contents
 
-When new drinks are added run `python manage.py get_images`
-Only drinks where their static image folder is nonexistent will be searched for or downloaded.
+-   [About the Project](#about-the-project)
+    -   [Built With](#built-with)
+-   [Getting Started](#getting-started)
+    -   [Prerequisites](#prerequisites)
+    -   [Installation](#installation)
+-   [Contact](#contact)
 
-For any drinks where the image field in discovery is equal to "images/placeholder.jpg":
-    The bot will search google for the name of the respective drink and download the first page of results into
-    the folder at '.../static/data/drink_images/00000000from_google'
-    within a folder named the drink's discovery ID.
-    Enter this folder and delete all but the desired image. Remove the \_\_# from the end of that image's name.
-    Move the folder into the drink_images folder when done.
+<!-- ABOUT THE PROJECT -->
 
-All other drinks where an img src address is specified in the discovery result will be directly downloaded into a folder
-named their discovery ID and saved within the drink_images folder.
+## About The Project
 
-run `python manage.py db-populate` to insert discovery generated ids and drink names
+Bartensor is a community platform that features an intelligent, knowledge-based, virtual bartender that can cater to your alcoholic requests. Users can sign up or browse anonymously and explore an enormous repository of drinks as well as user created drinks and view
+their recipes. Bartensor can also recommend drinks to you based on your flavor profile, connect you with like-minded friends, and allow
+you to explore more drinks than ever before.
 
-## Testing
+Bartensor Features:
 
-To run tests enter in the following command
+-   Ask Bartensor to recommend a drink
+-   Search Bartensor for drink recipes
+-   Search for your friends and add them as friends
+-   Vote and comment on user created drinks
+-   Create your custom flavor profile
 
-    python manage.py test
+### Built With
 
-To run tests with test coverage enabled, enter in the following command
+Bartensor is built primarily with python3.8 and Django3.0. Bartensor also leverages Bootstrap, JQuery, Ajax, and Selenium.
 
-    coverage run manage.py test
+-   [Bootstrap](https://getbootstrap.com)
+-   [JQuery](https://jquery.com)
+-   [Laravel](https://laravel.com)
 
-To generate the coverage html report, enter in the following command after the tests have been run with coverage
+<!-- GETTING STARTED -->
 
-    coverage html
+## Getting Started
 
-The generated coverage reports are located in the coverage_reports directory. To view the coverage report, open the index.html file with a web browser or html parser
+To get started, clone this repository to chosen directory.
+
+### Prerequisites
+
+This is an example of how to list things you need to use the software and how to install them.
+
+-   npm
+
+```sh
+npm install npm@latest -g
+```
+
+### Installation
+
+1.  Get a free API Key at <https://example.com>
+2.  Clone the repo
+
+```sh
+git clone https://github.com/your_username_/Project-Name.git
+```
+
+3.  Install NPM packages
+
+```sh
+npm install
+```
+
+4.  Enter your API in `config.js`
+
+```JS
+const API_KEY = 'ENTER YOUR API';
+```
+
+<!-- USAGE EXAMPLES -->
+
+## Usage
+
+Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+
+_For more examples, please refer to the [Documentation](https://example.com)_
+
+<!-- CONTRIBUTING -->
+
+## Contributing
+
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+
+1.  Fork the Project
+2.  Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3.  Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4.  Push to the Branch (`git push origin feature/AmazingFeature`)
+5.  Open a Pull Request
+
+<!-- LICENSE -->
+
+## License
+
+Distributed under the MIT License. See `LICENSE` for more information.
+
+<!-- CONTACT -->
+
+## Contact
+
+Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+
+Project Link: <https://github.com/your_username/repo_name>

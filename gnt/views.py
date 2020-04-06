@@ -251,8 +251,10 @@ def profile_public(request, username):
     """
     Profile View
     """
+
     username = User.objects.get(username=username)
     drinks = UserDrink.objects.filter(user=username).order_by('-timestamp')
+
     if request.user.is_authenticated:
         requests = (FriendRequest.objects.filter(requestee=request.user.profile) | FriendRequest.objects.filter(requestor=request.user.profile)) & (
             FriendRequest.objects.filter(requestee=username.profile) | FriendRequest.objects.filter(requestor=username.profile))

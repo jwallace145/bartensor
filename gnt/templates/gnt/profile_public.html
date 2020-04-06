@@ -36,11 +36,8 @@
             <li>{{ instruction.instruction }}</li>
           </ul>
           {% endfor %}
-          <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="drink" value="{{ drink.name }}" />
-            <button class="btn btn-outline-info" type="submit" name="comment-drink">Comment</button>
-          </form>
+          <button class="btn btn-outline-info" type="button" id="list-comments" style="display: inline-block;">Show Comments</button>
+          <button class="btn btn-outline-info" type="button" id="create-comment" style="display: inline-bloc;k">Leave a Comment</button>
         </div>
         <div class="col-lg-5" style="text-align: right;">
           <img src="{{ drink.image.url }}" width="60%" style="margin-left: auto;" />
@@ -101,11 +98,8 @@
             <li>{{ instruction.instruction }}</li>
           </ul>
           {% endfor %}
-          <form method="POST">
-            {% csrf_token %}
-            <input type="hidden" name="drink" value="{{ drink.name }}" />
-            <button class="btn btn-outline-info" type="submit" name="comment-drink">Comment</button>
-          </form>
+          <button class="btn btn-outline-info" type="button" id="list-comments" style="display: inline-block;">Show Comments</button>
+          <button class="btn btn-outline-info" type="button" id="create-comment" style="display: inline-block;">Leave a Comment</button>
         </div>
         <div class="col-lg-5" style="text-align: right;">
           <img src="{{ drink.image.url }}" width="60%" style="margin-left: auto;" />
@@ -133,4 +127,12 @@
 </div>
 {% endif %}
 <script type="text/javascript" src="{% static 'scripts/proposals.js' %}"></script>
+<script>
+  $("#create-comment").click(function() {
+    console.log("create comment button clicked...")
+  });
+  $("#list-comments").click(function() {
+    console.log("list comments button clicked...")
+  })
+</script>
 {% endblock profile_content %}
