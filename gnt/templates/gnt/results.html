@@ -11,6 +11,7 @@
     <div class="container results accordion" id="results">
         {% include 'gnt/drink_results_with_voting.html' %}
         <div class="load-more">
+            <span id="question-span" style="display:none">{{ question }}</span>
             <button class="btn btn-outline-info" type="button" onclick="load_more_drinks()">Load more</button>
         </div>
     </div>
@@ -35,7 +36,6 @@
             </div>
         </div>
         </div>
->>>>>>> 64bb83d8325ed8a03ac1c5e33ee83b7bbe381d83
     </div>
     {% else %}
     <div class=" row no-results">

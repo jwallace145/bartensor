@@ -301,9 +301,9 @@ function load_more_drinks() {
     offset += 1;
     var url = APPURL + '/more_results/';
     var csrftoken = getCookie("csrftoken");
-    query = $(".query").text();
+    query = $(".query-header").text();
     query = query.split("Query: ").slice(1).pop();
-    console.log(query);
+    question = $("#question-span").text();
     $.ajax({
         url: url,
         type: 'POST',
@@ -312,7 +312,8 @@ function load_more_drinks() {
         },
         data: {
             text: query,
-            offset: offset * 10
+            offset: offset * 10,
+            question: question
         },
         dataType: "html",
         success: function (data) {

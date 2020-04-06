@@ -40,6 +40,98 @@ def home(request):
     return render(request, 'gnt/index.html')
 
 
+def _text_to_dql(text, name_multiplier=1, ingredient_multiplier=1):
+    """Converts user input text queries to DQL queries."""
+    positive = ''  # DQL for checking drink names/ingredients might include certain words
+    negative = ''  # DQL for ensuring drink ingredients exclude certain words
+    # stopwords copied from nltk.corpus.stopwords.words('english')
+    stopwords = ['i', 'me', 'my', 'myself', 'we', 'our', 'ours', 'ourselves', 'you', "you're", "you've", "you'll",
+                 "you'd", 'your', 'yours', 'yourself', 'yourselves', 'he', 'him', 'his', 'himself', 'she', "she's",
+                 'her', 'hers', 'herself', 'it', "it's", 'its', 'itself', 'they', 'them', 'their', 'theirs',
+                 'themselves', 'what', 'which', 'who', 'whom', 'this', 'that', "that'll", 'these', 'those', 'am',
+                 'is', 'are', 'was', 'were', 'be', 'been', 'being', 'have', 'has', 'had', 'having', 'do', 'does',
+                 'did', 'doing', 'a', 'an', 'the', 'and', 'but', 'if', 'or', 'because', 'as', 'until', 'while',
+                 'of', 'at', 'by', 'for', 'with', 'about', 'against', 'between', 'into', 'through', 'during',
+                 'before', 'after', 'above', 'below', 'to', 'from', 'up', 'down', 'in', 'out', 'on', 'off', 'over',
+                 'under', 'again', 'further', 'then', 'once', 'here', 'there', 'when', 'where', 'why', 'how', 'all',
+                 'any', 'both', 'each', 'few', 'more', 'most', 'other', 'some', 'such', 'no', 'nor', 'not', 'only',
+                 'own', 'same', 'so', 'than', 'too', 'very', 's', 't', 'can', 'will', 'just', 'don', "don't",
+                 'should', "should've", 'now', 'd', 'll', 'm', 'o', 're', 've', 'y', 'ain', 'aren', "aren't",
+                 'couldn', "couldn't", 'didn', "didn't", 'doesn', "doesn't", 'hadn', "hadn't", 'hasn', "hasn't",
+                 'haven', "haven't", 'isn', "isn't", 'ma', 'mightn', "mightn't", 'mustn', "mustn't", 'needn',
+                 "needn't", 'shan', "shan't", 'shouldn', "shouldn't", 'wasn', "wasn't", 'weren', "weren't", 'won',
+                 "won't", 'wouldn', "wouldn't"]
+    # additional stopwords that help specific searches
+    stopwords += ['drinks', 'recommend']
+    # negation stopwords not from any source, we may need to add to this list as we test
+    negation_stopwords = ["n't", 'no', 'not', 'nor', 'none', 'never', 'without']
+    # split user input into manageable tokens
+    tokens = TreebankWordTokenizer().tokenize(
+        text)  # NLTKWordTokenizer supposed to be "improved", but destructive module not found
+    # track if we're in a negation phrase
+    negate = False
+    for token in tokens:
+        if token in negation_stopwords:
+            # start negating every word if we hit a negation stopword
+            negate = True
+        elif token in punctuation:
+            # stop negating every word if we hit a punctuation mark
+            negate = False
+        elif token in stopwords:
+            # ignore any standard stopwords
+            continue
+
+        if negate:
+            negative += ','  # comma means logical AND
+            negative += 'ingredients:!"%s"' % token  # ingredients must not include token
+        else:
+            positive += '|'  # bar means logical OR
+            positive += 'names:"%s"^%d' % (token, name_multiplier)
+            positive += '|'
+            positive += 'ingredients:"%s"^%d' % (token, ingredient_multiplier)
+    # ignore the first character of each sub-query because we started building them with either | or ,
+    positive = positive[1:]
+    negative = negative[1:]
+    # only include parts of the query that actually exist
+    if len(positive) > 0:
+        if len(negative) > 0:
+            query = '(%s),(%s)' % (positive, negative)
+        else:
+            query = positive
+    elif len(negative) > 0:
+        query = negative
+    else:
+        query = ''
+    return query
+
+
+def query_discovery(text, question, offset=0):
+    """Creates a DQL query based on text and question, then queries discovery.
+
+    :param text:
+    :param question:
+    :param offset:
+    :return:
+    """
+    # Perform slightly different searches based on what kind of question the user is asking
+    if question == 'how':
+        query = _text_to_dql(text, 2, 1)  # make drink names more important
+    else:
+        query = _text_to_dql(text, 1, 2)  # make drink ingredients more important
+
+    discovery_adapter = drink_adapter.DiscoveryAdapter()
+    response = discovery_adapter.search(query, offset=offset)
+
+    if question == 'like':
+        # if user is looking for similar drinks to a given drink, remove the given drink from the response
+        for i, drink in enumerate(response):
+            if drink['names'][0].lower() in text.lower():
+                response.pop(i)
+                break
+
+    return response
+
+
 def results(request):
     """
     Results View
@@ -113,7 +205,8 @@ def results(request):
 
         return render(request, 'gnt/results.html', {
             'query': text,
-            'drinks': response
+            'drinks': response,
+            'question': request.POST['question']
         })
     else:
         return HttpResponseRedirect(reverse('home'))
@@ -123,13 +216,10 @@ def more_results(request):
     """
     More results with an offset
     """
-    text = request.POST['text']
-    offset = request.POST['offset']
-    discovery_adapter = drink_adapter.DiscoveryAdapter()
-    response = discovery_adapter.natural_language_search_offset(
-        text, offset)
+    response = query_discovery(request.POST['text'], request.POST['question'], request.POST['offset'])
+
     return render(request, 'gnt/drink_results_with_voting.html', {
-        'query': text,
+        'query': request.POST['text'],
         'drinks': response
     })
 
