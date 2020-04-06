@@ -207,7 +207,7 @@ def results(request):
         else:
             query = ''
         discovery_adapter = drink_adapter.DiscoveryAdapter()
-        response = discovery_adapter.search(query)
+        response = query_discovery(text, request.POST['question'])
 
         return render(request, 'gnt/results.html', {
             'query': text,

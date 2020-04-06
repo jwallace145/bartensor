@@ -51,7 +51,7 @@
                 <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em" />
                 <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}" alt="thumbs up liked" width="30em" />
               </a>
-              <div id="drink{{drink.id}}_votes">{{drink.votes}} pts</div>
+              <div id="drink{{drink.id}}_votes">{{drink.votes}}</div>
               <a class="downvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
                 <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em" />
                 <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}" alt="thumbs down disliked" width="30em" />
