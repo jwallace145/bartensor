@@ -99,16 +99,31 @@ def _text_to_dql(text, name_multiplier=1, ingredient_multiplier=1):
     return query
 
 
-def filter_by_text_presence(drinks, text):
-    """Filter drink response list to exclude first drink with name found in the provided text.
+def query_discovery(text, question, offset=0):
+    """Creates a DQL query based on text and question, then queries discovery.
 
-    This is useful for 'recommending' drinks to users when they provide the name of a drink."""
-    for i, drink in enumerate(drinks):
-        if drink['names'][0].lower() in text.lower():
-            drinks.pop(i)
-            break
+    :param text:
+    :param question:
+    :param offset:
+    :return:
+    """
+    # Perform slightly different searches based on what kind of question the user is asking
+    if question == 'how':
+        query = _text_to_dql(text, 2, 1)  # make drink names more important
+    else:
+        query = _text_to_dql(text, 1, 2)  # make drink ingredients more important
 
-    return drinks
+    discovery_adapter = drink_adapter.DiscoveryAdapter()
+    response = discovery_adapter.search(query, offset=offset)
+
+    if question == 'like':
+        # if user is looking for similar drinks to a given drink, remove the given drink from the response
+        for i, drink in enumerate(response):
+            if drink['names'][0].lower() in text.lower():
+                response.pop(i)
+                break
+
+    return response
 
 
 def results(request):
@@ -122,22 +137,12 @@ def results(request):
         else:
             text = request.POST['search_bar']
 
-        # Perform slightly different searches based on what kind of question the user is asking
-        if request.POST['question'] == 'what':
-            query = _text_to_dql(text, 1, 2) # make drink ingredients more important
-        else:
-            query = _text_to_dql(text, 2, 1) # make drink names more important
-
-        discovery_adapter = drink_adapter.DiscoveryAdapter()
-        response = discovery_adapter.search(query)
-
-        if request.POST['question'] == 'like':
-            # if user is looking for similar drinks to a given drink, remove the given drink from the response
-            response = filter_by_text_presence(response, text)
+        response = query_discovery(text, request.POST['question'])
 
         return render(request, 'gnt/results.html', {
             'query': text,
-            'drinks': response
+            'drinks': response,
+            'question': request.POST['question']
         })
     else:
         return HttpResponseRedirect(reverse('home'))
@@ -147,12 +152,10 @@ def more_results(request):
     """
     More results with an offset
     """
-    text = request.POST['text']
-    offset = request.POST['offset']
-    discovery_adapter = drink_adapter.DiscoveryAdapter()
-    response = discovery_adapter.natural_language_search(text, offset)
+    response = query_discovery(request.POST['text'], request.POST['question'], request.POST['offset'])
+
     return render(request, 'gnt/drink_results_with_voting.html', {
-        'query': text,
+        'query': request.POST['text'],
         'drinks': response
     })
 
