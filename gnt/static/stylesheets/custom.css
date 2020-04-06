@@ -331,9 +331,10 @@ a {
   padding-top: 10%;
 }
 
-.load-more button {
+.load-more {
   margin: 5% auto;
   display: block;
+  text-align: center;
 }
 
 /* font awesome styling */
@@ -356,14 +357,19 @@ a {
   color: #838a8e;
 }
 
-.btn.btn-outline-info {
-  color: black;
+.btn.btn-outline-info{
+  box-shadow: none!important;
+  background-color: white;
   border-color: black;
+  color: black;
 }
 
-.btn.btn-outline-info:hover {
+.btn.btn-outline-info:hover,
+.btn.btn-outline-info:active:focus:not(:disabled):not(.disabled) {
+  box-shadow: none!important;
   background-color: black;
   border-color: black;
+  color: white;
 }
 
 #like-drink {

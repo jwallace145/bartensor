@@ -116,7 +116,6 @@ $(document).ready(function () {
 });
 
 function color_thumbs(){
-    console.log("Running mark_liked_disliked_drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
@@ -317,11 +316,17 @@ function load_more_drinks() {
         },
         dataType: "html",
         success: function (data) {
-            $(".load-more").before(data);
-            color_thumbs();
-            thumbs_up();
-            thumbs_down();
-            hide_disliked_drinks();
+            // There are no more drinks to load
+            if (data.length == 1){
+                console.log("done");
+                $(".load-more").html("<h5>All drinks loaded</h5>");
+            } else {
+                $(".load-more").before(data);
+                color_thumbs();
+                thumbs_up();
+                thumbs_down();
+                hide_disliked_drinks();
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
