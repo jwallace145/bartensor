@@ -16,10 +16,11 @@ from gnt.adapters import drink_adapter
 from gnt.adapters.stt_adapter import IBM
 from nltk.tokenize.treebank import TreebankWordTokenizer
 
-from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm,
+from .forms import (CreateCommentForm, CreateUserDrinkForm,
+                    CreateUserDrinkIngredientForm,
                     CreateUserDrinkInstructionForm, ProfileUpdateForm,
                     UserRegisterForm, UserUpdateForm)
-from .models import (Drink, Friend, FriendRequest, Profile,
+from .models import (Comment, Drink, Friend, FriendRequest, Profile,
                      ProfileToDislikedDrink, ProfileToLikedDrink,
                      UpvotedUserDrink, UserDrink)
 
@@ -250,16 +251,30 @@ def profile_edit(request, username):
 def profile_public(request, username):
     """
     Profile View
+
+    Users, unathenticated and authenticated, can view other users' profiles with
+    this view function. The profile view will render a list of drinks created by
+    the user of the profile.
+
+    Args:
+        username (string): the username of the given profile
+
+    Return:
+        profile_public (html): profile view of given username
     """
 
-    username = User.objects.get(username=username)
-    drinks = UserDrink.objects.filter(user=username).order_by('-timestamp')
+    # get user
+    user = User.objects.get(username=username)
 
+    # get drinks ordered by new
+    drinks = UserDrink.objects.filter(user=user).order_by('-timestamp')
+
+    # if the user is logged in, check friendship status
     if request.user.is_authenticated:
-        requests = (FriendRequest.objects.filter(requestee=request.user.profile) | FriendRequest.objects.filter(requestor=request.user.profile)) & (
-            FriendRequest.objects.filter(requestee=username.profile) | FriendRequest.objects.filter(requestor=username.profile))
-        friends = (Friend.objects.filter(friend1=username.profile) & Friend.objects.filter(friend2=request.user.profile)) | (
-            Friend.objects.filter(friend1=request.user.profile) & Friend.objects.filter(friend2=username.profile))
+        requests = FriendRequest.objects.filter(
+            requestee=user.profile) | FriendRequest.objects.filter(requestor=user.profile)
+        friends = (Friend.objects.filter(friend1=user.profile) & Friend.objects.filter(friend2=request.user.profile)) | (
+            Friend.objects.filter(friend1=request.user.profile) & Friend.objects.filter(friend2=user.profile))
     else:
         requests = []
         friends = []
@@ -267,14 +282,14 @@ def profile_public(request, username):
     if request.method == 'POST':
         if 'add-friend' in request.POST:
             friend_request = FriendRequest()
-            friend_request.requestee = username.profile
+            friend_request.requestee = user.profile
             friend_request.requestor = request.user.profile
             friend_request.save()
 
             messages.success(request, f'Friend request sent to { username }!')
         elif 'remove-friend' in request.POST:
-            friend = Friend.objects.filter(friend1=request.user.profile, friend2=username.profile) | Friend.objects.filter(
-                friend1=username.profile, friend2=request.user.profile)
+            friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | Friend.objects.filter(
+                friend1=user.profile, friend2=request.user.profile)
             friend.delete()
 
             messages.info(request, f'Removed friend { username }!')
@@ -290,7 +305,7 @@ def profile_public(request, username):
                 like.save()
 
     context = {
-        'profile': username,
+        'profile': user,
         'drinks': drinks,
         'requests': requests,
         'friends': friends,

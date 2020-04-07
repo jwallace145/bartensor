@@ -1,16 +1,22 @@
+<!-- EXTENDS PROFILE BASE TEMPLATE -->
 {% extends 'gnt/profile_base.html' %}
 
+<!-- LOAD STATIC -->
 {% load crispy_forms_tags %}
 {% load static %}
 
+<!-- PROFILE CONTENT -->
 {% block profile_content %}
 
 <div class="content-section">
+
+  <!-- TIMELINE -->
   <div class="row">
     <div class="col-lg-12">
       <legend class="border-bottom mb-4">Timeline</legend>
     </div>
   </div>
+
   {% if user == profile and drinks %}
   {% for drink in drinks %}
   {% include 'gnt/user_created_drink.html' %}
@@ -36,7 +42,9 @@
     <p>{{ profile }} has not created any drinks yet!</p>
   </div>
   {% endif %}
+
 </div>
+
 <script type="text/javascript" src="{% static 'scripts/proposals.js' %}"></script>
 
 {% endblock profile_content %}

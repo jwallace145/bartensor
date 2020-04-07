@@ -144,7 +144,6 @@ class Comment(models.Model):
     Comment Model Class
     """
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
     drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
     timestamp = models.DateTimeField(auto_now_add=True)
     comment = models.CharField(max_length=250)
