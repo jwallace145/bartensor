@@ -116,7 +116,6 @@ $(document).ready(function () {
 });
 
 function color_thumbs(){
-    console.log("Running mark_liked_disliked_drinks");
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
@@ -301,9 +300,9 @@ function load_more_drinks() {
     offset += 1;
     var url = APPURL + '/more_results/';
     var csrftoken = getCookie("csrftoken");
-    query = $(".query").text();
+    query = $(".query-header").text();
     query = query.split("Query: ").slice(1).pop();
-    console.log(query);
+    question = $("#question-span").text();
     $.ajax({
         url: url,
         type: 'POST',
@@ -312,14 +311,22 @@ function load_more_drinks() {
         },
         data: {
             text: query,
-            offset: offset * 10
+            offset: offset * 10,
+            question: question
         },
         dataType: "html",
         success: function (data) {
-            $(".load-more").before(data);
-            color_thumbs();
-            thumbs_up();
-            thumbs_down();
+            // There are no more drinks to load
+            if (data.length == 1){
+                console.log("done");
+                $(".load-more").html("<h5>All drinks loaded</h5>");
+            } else {
+                $(".load-more").before(data);
+                color_thumbs();
+                thumbs_up();
+                thumbs_down();
+                hide_disliked_drinks();
+            }
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);

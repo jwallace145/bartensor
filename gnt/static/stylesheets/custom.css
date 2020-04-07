@@ -129,6 +129,7 @@ a.article-title:hover {
 #search-bar {
   border: none;
   border-bottom: 2px solid #000000;
+  border-left: 1px solid #dee2e6;
   -webkit-box-shadow: none;
   box-shadow: none;
   border-radius: 0;
@@ -138,12 +139,14 @@ a.article-title:hover {
   -webkit-box-shadow: none;
   border: none;
   border-bottom: 2px solid #000000;
+  border-left: 1px solid #dee2e6;
   box-shadow: none;
 }
 
 #main-search-button {
   background: white;
-  border: none;
+  border-top: none;
+  border-right: 1px solid #dee2e6;
   border-bottom: 2px solid #000000;
   border-left: none;
   border-radius: 1px;
@@ -151,7 +154,8 @@ a.article-title:hover {
 
 #main-search-button:hover {
   background: #dee2e6;
-  border: none;
+  border-top: none;
+  border-right: 1px solid #dee2e6;
   border-bottom: 2px solid #000000;
   border-left: none;
   border-radius: 1px;
@@ -161,7 +165,8 @@ a.article-title:hover {
   height: 20px;
 }
 
-#search-nav-link {
+.search-nav-link {
+  color: #667777;
   cursor: pointer;
   /* using important here to override bootstrap's specificity */
   border: 1px solid #dee2e6 !important;
@@ -326,9 +331,10 @@ a {
   padding-top: 10%;
 }
 
-.load-more button {
+.load-more {
   margin: 5% auto;
   display: block;
+  text-align: center;
 }
 
 /* font awesome styling */
@@ -351,14 +357,19 @@ a {
   color: #838a8e;
 }
 
-.btn.btn-outline-info {
-  color: black;
+.btn.btn-outline-info{
+  box-shadow: none!important;
+  background-color: white;
   border-color: black;
+  color: black;
 }
 
-.btn.btn-outline-info:hover {
+.btn.btn-outline-info:hover,
+.btn.btn-outline-info:active:focus:not(:disabled):not(.disabled) {
+  box-shadow: none!important;
   background-color: black;
   border-color: black;
+  color: white;
 }
 
 #like-drink {
