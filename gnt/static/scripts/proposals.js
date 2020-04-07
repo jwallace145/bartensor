@@ -45,6 +45,7 @@ function up_vote() {
                         var votes = $("#drink" + drink_id + "_votes").text();
                         $("#drink" + drink_id + "_votes").html(Number(votes) + 1);
                         likeDrinkAnimation(thumbsup, thumbsdown);
+                        result_modal(data["message"]);
                         thumbsup.unbind();
                         thumbsdown.unbind();
                         thumbsup.children('img').each(function(){
@@ -113,6 +114,7 @@ function down_vote() {
                         var votes = $("#drink" + drink_id + "_votes").text();
                         $("#drink" + drink_id + "_votes").html(Number(votes) - 1);
                         dislikeDrinkAnimation(thumbsup, thumbsdown);
+                        result_modal(data["message"]);
                         thumbsup.unbind();
                         thumbsdown.unbind();
                         thumbsup.children('img').each(function(){
@@ -260,6 +262,15 @@ function load_more_drinks_proposals() {
         });
     });
 }
+
+function result_modal(message) {
+    $('#modalMessage').html(message);
+    $("#drinkDeletedModal").modal("show");
+    $("#modalAcknowledge").click(function () {
+        $("#drinkDeletedModal").modal("hide");
+    })
+}
+
 
 
 $(document).ready(function () {

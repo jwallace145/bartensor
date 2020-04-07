@@ -68,5 +68,21 @@
     <button id="load_more" class="btn btn-outline-info" type="button">Load more</button>
   </div>
 </div>
+<div id="drinkDeletedModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body" id="modalMessage">
+        
+      </div>
+      <div class="modal-footer d-flex justify-content-around">
+        
+        <div class="col">
+          <input id="modalAcknowledge" type="submit" value="Awesome!" class="btn btn-outline-success btn-block">
+        </div>
+        
+      </div>
+    </div>
+  </div>
+</div>
 <script type="text/javascript" src="{% static 'scripts/proposals.js' %}"></script>
 {% endblock 'content' %}
