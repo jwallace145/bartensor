@@ -32,7 +32,7 @@
         <p class="text-secondary">{{ profile.profile.bio }}</p>
 
         <!-- ADD/REMOVE FRIEND FORMS -->
-        {% if user != profile and not friends and user.is_authenticated %}
+        {% if user != profile and not requests and not friends and user.is_authenticated %}
         <form method="POST">
           {% csrf_token %}
           <button class="btn btn-outline-info" type="submit" name="add-friend">Add Friend</button>

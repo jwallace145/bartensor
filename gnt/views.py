@@ -307,10 +307,10 @@ def profile_public(request, username):
 
     # if the user is logged in, check friendship status
     if request.user.is_authenticated:
-        requests = FriendRequest.objects.filter(
-            requestee=user.profile) | FriendRequest.objects.filter(requestor=user.profile)
-        friends = (Friend.objects.filter(friend1=user.profile) & Friend.objects.filter(friend2=request.user.profile)) | (
-            Friend.objects.filter(friend1=request.user.profile) & Friend.objects.filter(friend2=user.profile))
+        requests = (FriendRequest.objects.filter(requestee=user.profile) |
+                    FriendRequest.objects.filter(requestor=user.profile))
+        friends = (Friend.objects.filter(friend1=user.profile) |
+                   Friend.objects.filter(friend2=user.profile))
     else:
         requests = []
         friends = []
