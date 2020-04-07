@@ -80,6 +80,7 @@
             </div>
           </div>
           {% endfor %}
+          {% if user.is_authenticated %}
           <a href="{% url 'timeline' username=user %}"><img class="rounded-circle" src="{{ user.profile.image.url }}" style="height: 50px; width: 50px;"></a>
           <div class="comments-bar">
             <form method="POST">
@@ -88,6 +89,7 @@
               <input type="text" name="create-comment" class="create-comment" placeholder="Leave a Comment...">
             </form>
           </div>
+          {% endif %}
       </div>
     </div>
   </div>
