@@ -16,8 +16,7 @@ from gnt.adapters import drink_adapter
 from gnt.adapters.stt_adapter import IBM
 from nltk.tokenize.treebank import TreebankWordTokenizer
 
-from .forms import (CreateCommentForm, CreateUserDrinkForm,
-                    CreateUserDrinkIngredientForm,
+from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm,
                     CreateUserDrinkInstructionForm, ProfileUpdateForm,
                     UserRegisterForm, UserUpdateForm)
 from .models import (Comment, Drink, Friend, FriendRequest, Profile,
@@ -252,38 +251,6 @@ def profile_create_drink(request, username):
     return render(request, 'gnt/profile_create_drink.html', context)
 
 
-@login_required
-def profile_edit(request, username):
-    """
-    Profile Edit View
-    """
-
-    username = User.objects.get(username=username)
-    profile = Profile.objects.get(user=username)
-
-    if request.method == 'POST':
-        user_update_form = UserUpdateForm(request.POST, instance=username)
-        profile_update_form = ProfileUpdateForm(
-            request.POST, request.FILES, instance=request.user.profile)
-
-        if user_update_form.is_valid() and profile_update_form.is_valid():
-            user_update_form.save()
-            profile_update_form.save()
-            messages.success(request, f'Your account has been updated!')
-            return redirect('profile_public', username=request.user.username)
-    else:
-        user_update_form = UserUpdateForm(instance=username)
-        profile_update_form = ProfileUpdateForm(instance=profile)
-
-    context = {
-        'profile': username,
-        'user_update_form': user_update_form,
-        'profile_update_form': profile_update_form
-    }
-
-    return render(request, 'gnt/profile_edit.html', context)
-
-
 def profile_public(request, username):
     """
     Profile View
@@ -357,6 +324,38 @@ def profile_public(request, username):
     }
 
     return render(request, 'gnt/profile_public.html', context)
+
+
+@login_required
+def profile_edit(request, username):
+    """
+    Profile Edit View
+    """
+
+    username = User.objects.get(username=username)
+    profile = Profile.objects.get(user=username)
+
+    if request.method == 'POST':
+        user_update_form = UserUpdateForm(request.POST, instance=username)
+        profile_update_form = ProfileUpdateForm(
+            request.POST, request.FILES, instance=request.user.profile)
+
+        if user_update_form.is_valid() and profile_update_form.is_valid():
+            user_update_form.save()
+            profile_update_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('timeline', username=request.user.username)
+    else:
+        user_update_form = UserUpdateForm(instance=username)
+        profile_update_form = ProfileUpdateForm(instance=profile)
+
+    context = {
+        'profile': username,
+        'user_update_form': user_update_form,
+        'profile_update_form': profile_update_form
+    }
+
+    return render(request, 'gnt/profile_edit.html', context)
 
 
 def liked_drinks(request, username):
