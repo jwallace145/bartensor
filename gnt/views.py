@@ -235,7 +235,7 @@ def profile_create_drink(request, username):
             name = request.POST['name']
             messages.error(
                 request, f'We already have a cocktail named {name}!')
-            return redirect('profile_public', username=request.user.username)
+            return redirect('timeline', username=request.user.username)
     else:
         create_user_drink_form = CreateUserDrinkForm()
         ingredient_formset = IngredientFormset(prefix='ingredient')

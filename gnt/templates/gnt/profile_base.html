@@ -7,7 +7,7 @@
 <!-- CONTENT -->
 {% block 'content' %}
 
-<div class="container">
+<div class="content-section">
   <div class="row" style="display: flex">
     <div class="col-md-9" style="display: inline-block">
 
@@ -42,6 +42,7 @@
         {% if user != profile and friends and user.is_authenticated %}
         <form method="POST">
           {% csrf_token %}
+          <input type="hidden" name="requestor" value="{{ profile }}">
           <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
         </form>
         {% endif %}
