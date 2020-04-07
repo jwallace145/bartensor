@@ -307,6 +307,7 @@ def profile_public(request, username):
         elif 'create-comment' in request.POST:
             drink = UserDrink.objects.get(id=request.POST['drink'])
             comment = Comment()
+            comment.author = request.user
             comment.comment = request.POST['create-comment']
             comment.drink = drink
             comment.save()

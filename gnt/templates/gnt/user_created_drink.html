@@ -61,9 +61,11 @@
     <div class="row">
       <div class="col-lg-12">
         <hr>
-        {% for comment in comments %}
-        <a href="{% url 'timeline' username=comment.drink.user %}"><img class="rounded-circle" src="{{ comment.drink.user.profile.image.url }}" style="height: 50px; width: 50px;"></a>
-        <p>{{ comment.comment }}</p>
+        {% for comment in drink.comment_set.all %}
+        <div class="content-section">
+          <a href="{% url 'timeline' username=comment.author %}"><img class="rounded-circle" src="{{ comment.author.profile.image.url }}" style="height: 50px; width: 50px;"></a>
+          <p style="">{{ comment.comment }}</p>
+        </div>
         {% endfor %}
         <a href="{% url 'timeline' username=user %}"><img class="rounded-circle" src="{{ user.profile.image.url }}" style="height: 50px; width: 50px;"></a>
         <div style="border-radius: 30px; height: 50px; border-style: solid; display: inline-block; width: 75%; border-color: #444444; border-width: thin;">
