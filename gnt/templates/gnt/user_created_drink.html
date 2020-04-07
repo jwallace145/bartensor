@@ -80,11 +80,11 @@
         </div>
         {% endfor %}
         <a href="{% url 'timeline' username=user %}"><img class="rounded-circle" src="{{ user.profile.image.url }}" style="height: 50px; width: 50px;"></a>
-        <div style="border-radius: 30px; height: 50px; border-style: solid; display: inline-block; width: 75%; border-color: #444444; border-width: thin;">
+        <div class="comments-bar">
           <form method="POST">
             {% csrf_token %}
             <input type="hidden" name="drink" value="{{ drink.id }}">
-            <input type="text" name="create-comment" style="border: 0; outline: 0; margin-top: 10px; margin-left: 10px; margin-right: 10px; width: 90%;" placeholder="Leave a Comment...">
+            <input type="text" name="create-comment" class="create-comment" placeholder="Leave a Comment...">
           </form>
         </div>
       </div>

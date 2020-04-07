@@ -17,12 +17,14 @@
     </div>
   </div>
 
-  {% if user == profile and drinks %}
-  {% for drink in drinks %}
-  {% include 'gnt/user_created_drink.html' %}
-  {% endfor %}
+  <!-- USER VIEWS OTHER USER'S PROFILE WITH NO USER CREATED DRINKS -->
+  {% if user != profile and not drinks%}
+  <div class="content-section">
+    <p>{{ profile }} has not created any drinks yet!</p>
+  </div>
   {% endif %}
 
+  <!-- USER VIEWS HIS/HER PROFILE WITH NO USER CREATED DRINKS -->
   {% if user == profile and not drinks %}
   <div class="content-section">
     <p>
@@ -31,16 +33,18 @@
   </div>
   {% endif %}
 
+  <!-- USER VIEWS OTHER USER'S PROFILE WITH USER CREATED DRINKS -->
   {% if user != profile and drinks %}
   {% for drink in drinks %}
   {% include 'gnt/user_created_drink.html' %}
   {% endfor %}
   {% endif %}
 
-  {% if user != profile and not drinks%}
-  <div class="content-section">
-    <p>{{ profile }} has not created any drinks yet!</p>
-  </div>
+  <!-- USER VIEWS HIS/HER PROFILE WITH USER CREATED DRINKS -->
+  {% if user == profile and drinks %}
+  {% for drink in drinks %}
+  {% include 'gnt/user_created_drink.html' %}
+  {% endfor %}
   {% endif %}
 
 </div>

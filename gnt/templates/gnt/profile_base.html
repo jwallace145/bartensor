@@ -18,11 +18,17 @@
             <img class="rounded-circle account-img" src="{{ profile.profile.image.url }}">
           </a>
           <div class="media-body">
+
+            <!-- PROFILE USERNAME -->
             <h2 class="account-heading">{{ profile.username }}</h2>
+
+            <!-- PROFILE EMAIL -->
             <p class="text-secondary">{{ profile.email }}</p>
+
           </div>
         </div>
 
+        <!-- PROFILE BIO -->
         <p class="text-secondary">{{ profile.profile.bio }}</p>
 
         <!-- ADD/REMOVE FRIEND FORMS -->
