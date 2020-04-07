@@ -11,6 +11,7 @@
     <div class="container results accordion" id="results">
         {% include 'gnt/drink_results_with_voting.html' %}
         <div class="load-more">
+            <span id="question-span" style="display:none">{{ question }}</span>
             <button class="btn btn-outline-info" type="button" onclick="load_more_drinks()">Load more</button>
         </div>
     </div>

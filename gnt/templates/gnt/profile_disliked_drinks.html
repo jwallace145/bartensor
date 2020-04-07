@@ -1,0 +1,39 @@
+{% extends 'gnt/profile_base.html' %}
+
+{% block profile_content %}
+{% if user == profile %}
+<div class="content-section">
+  <div class="row">
+    <div class="col-lg-12">
+      <legend class="border-bottom mb-4">Disliked Drinks</legend>
+    </div>
+  </div>
+  {% if drinks %}
+  {% include 'gnt/disliked_drinks_with_remove.html' %}
+  {% else %}
+  <div class="content-section">
+    <p>
+      You haven't disliked any drinks! <a href="{% url 'home' %}">Search a drink</a> and vote on any drinks you don't like. We'll save them here for later!
+    </p>
+  </div>
+  {% endif %}
+</div>
+{% else %}
+<div class="content-section">
+  <div class="row">
+    <div class="col-lg-12">
+      <legend class="border-bottom mb-4">Disliked Drinks</legend>
+    </div>
+  </div>
+  {% if drinks %}
+  {% include 'gnt/disliked_drinks_with_remove.html' %}
+  {% else %}
+  <div class="content-section">
+    <p>
+      {{ profile }} hasn't disliked any drinks yet!
+    </p>
+  </div>
+  {% endif %}
+</div>
+{% endif %}
+{% endblock profile_content %}

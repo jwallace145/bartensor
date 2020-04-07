@@ -129,9 +129,9 @@ a.article-title:hover {
  * Search bar
  */
 #search-bar {
-  border-top: none;
-  border-right: none;
+  border: none;
   border-bottom: 2px solid #000000;
+  border-left: 1px solid #dee2e6;
   -webkit-box-shadow: none;
   box-shadow: none;
   border-radius: 0;
@@ -139,7 +139,8 @@ a.article-title:hover {
 
 #search-bar:focus {
   -webkit-box-shadow: none;
-  border-right: none;
+  border: none;
+  border-bottom: 2px solid #000000;
   border-left: 1px solid #dee2e6;
   box-shadow: none;
 }
@@ -166,7 +167,8 @@ a.article-title:hover {
   height: 20px;
 }
 
-#search-nav-link {
+.search-nav-link {
+  color: #667777;
   cursor: pointer;
   /* using important here to override bootstrap's specificity */
   border: 1px solid #dee2e6 !important;
@@ -189,8 +191,6 @@ a.article-title:hover {
 .assistant_button:active {
   transform: scale(1.1);
 }
-
-
 
 .mic_icon {
   margin-top: 12px;
@@ -244,16 +244,16 @@ a {
   margin-bottom: 20px;
 }
 
-.drink-menu-header{
+.drink-menu-header {
   padding-top: 10px;
 }
-.query-header{
+
+.query-header {
   color: rgba(245, 245, 245, 0.959);
   margin-left: 10px;
   padding-bottom: 10px;
 }
 
-/* CSS For expanding search bar */
 .searchbar {
   margin-bottom: auto;
   margin-top: auto;
@@ -263,13 +263,13 @@ a {
   padding: 10px;
 }
 
-.btn-drink-names{
+.btn-drink-names {
   background-color: transparent;
   border: none;
 }
 
-.btn-drink-names:focus{
-  box-shadow: none!important;
+.btn-drink-names:focus {
+  box-shadow: none !important;
 }
 
 #like-drink {
@@ -331,9 +331,10 @@ a {
   padding-top: 10%;
 }
 
-.load-more button {
+.load-more {
   margin: 5% auto;
   display: block;
+  text-align: center;
 }
 
 /* font awesome styling */
@@ -356,14 +357,20 @@ a {
   color: #838a8e;
 }
 
-.btn.btn-outline-info {
-  color: #252729;
+
+.btn.btn-outline-info{
+  box-shadow: none!important;
+  background-color: white;
   border-color: #252729;
+  color: #252729;
 }
 
-.btn.btn-outline-info:hover {
+.btn.btn-outline-info:hover,
+.btn.btn-outline-info:active:focus:not(:disabled):not(.disabled) {
+  box-shadow: none!important;
   background-color: #252729;
   border-color: #252729;
+  color: white;
 }
 
 #like-drink {
@@ -400,78 +407,113 @@ a {
   padding-left: 15px;
 }
 
-#sub-header{
+#sub-header {
   padding-left: 20px;
   padding-right: 40px;
 }
-.filter-button{
+
+.filter-button {
   margin-bottom: 20px;
   background-color: #bebebe;
 }
 
 /* Switch in proposals */
-.switchToggle input[type=checkbox]{
-  height: 0; 
-  width: 0; 
-  visibility: hidden; 
-  position: absolute; 
+.switchToggle input[type=checkbox] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  position: absolute;
 }
+
 .switchToggle label {
-  cursor: pointer; 
-  text-indent: -9999px; 
-  width: 150px; 
-  max-width: 200px; 
-  height: 30px; 
-  background: #d1d1d1; 
-  display: block; 
-  border-radius: 100px; 
-  position: relative; 
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 150px;
+  max-width: 200px;
+  height: 30px;
+  background: #d1d1d1;
+  display: block;
+  border-radius: 100px;
+  position: relative;
 }
+
 .switchToggle label:after {
-  content: ''; 
-  position: absolute; 
-  top: 2px; 
-  left: 2px; 
-  width: 26px; 
-  height: 26px; 
-  background: #fff; 
-  border-radius: 90px; 
-  transition: 0.3s; 
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
 }
-.switchToggle input:checked + label, .switchToggle input:checked + input + label  {
-  background: #3e98d3; 
+
+.switchToggle input:checked+label, .switchToggle input:checked+input+label {
+  background: #3e98d3;
 }
-.switchToggle input + label:before, .switchToggle input + input + label:before {
-  content: 'Most Popular'; 
-  position: absolute; 
-  top: 5px; 
-  left: 35px; 
-  width: auto; 
-  height: 26px; 
-  border-radius: 90px; 
-  transition: 0.3s; 
-  text-indent: 0; 
-  color: #fff; 
+
+.switchToggle input+label:before, .switchToggle input+input+label:before {
+  content: 'Most Popular';
+  position: absolute;
+  top: 5px;
+  left: 35px;
+  width: auto;
+  height: 26px;
+  border-radius: 90px;
+  transition: 0.3s;
+  text-indent: 0;
+  color: #fff;
 }
-.switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {
-  content: 'New'; 
-  position: absolute; 
-  top: 5px; 
-  left: 10px; 
-  width: auto; 
-  height: 26px; 
-  border-radius: 90px; 
-  transition: 0.3s; 
-  text-indent: 0; 
-  color: #fff; 
+
+.switchToggle input:checked+label:before, .switchToggle input:checked+input+label:before {
+  content: 'New';
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: auto;
+  height: 26px;
+  border-radius: 90px;
+  transition: 0.3s;
+  text-indent: 0;
+  color: #fff;
 }
-.switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {
-  left: calc(100% - 2px); 
-  transform: translateX(-100%); 
+
+.switchToggle input:checked+label:after, .switchToggle input:checked+input+label:after {
+  left: calc(100% - 2px);
+  transform: translateX(-100%);
 }
+
 .switchToggle label:active:after {
-  width: 60px; 
-} 
-.toggle-switchArea { 
-  margin: 10px 0 10px 0; 
+  width: 60px;
+}
+
+.toggle-switchArea {
+  margin: 10px 0 10px 0;
+}
+
+.alert-error {
+  color: #571515;
+  background-color: #edd4d4;
+  border-color: #e6c3c3;
+}
+
+/* COMMENTS */
+.comments-bar {
+  border-radius: 30px;
+  height: 50px;
+  border-style: solid;
+  display: inline-block;
+  width: 75%;
+  border-color: #444444;
+  border-width: thin;
+}
+
+.create-comment {
+  border: 0;
+  outline: 0;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 90%;
 }

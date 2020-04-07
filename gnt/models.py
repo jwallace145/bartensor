@@ -2,10 +2,24 @@
 Models Module
 """
 
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
 # import necessary modules
 from django.db import models
-from django.contrib.auth.models import User
+from django.utils.translation import gettext_lazy as _
 from PIL import Image
+
+
+def validate_user_drink_name(value):
+    """
+    Validate User Drink Name
+    """
+
+    if len(DrinkName.objects.filter(drink_name=value)) != 0:
+        raise ValidationError(
+            _(f'{value} is not a unique name'),
+            params={'value': value},
+        )
 
 
 class Profile(models.Model):
@@ -115,12 +129,25 @@ class UserDrink(models.Model):
     """
 
     user = models.ForeignKey(User, on_delete=models.PROTECT)
-    name = models.CharField(max_length=15)
+    name = models.CharField(max_length=32, validators=[validate_user_drink_name])
     description = models.CharField(max_length=100)
     timestamp = models.DateTimeField(auto_now_add=True)
     votes = models.IntegerField(default=0)
-    image = models.ImageField(default='default.jpg',
-                              upload_to='user_drink_pics')
+    image = models.ImageField(default='default.jpg', upload_to='user_drink_pics')
+
+    def __str__(self):
+        return str(self.user) + ', ' + str(self.name) + ', ' + str(self.votes)
+
+
+class Comment(models.Model):
+    """
+    Comment Model Class
+    """
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    comment = models.CharField(max_length=250)
 
 
 class Ingredient(models.Model):
@@ -128,7 +155,7 @@ class Ingredient(models.Model):
     Ingredient Model Class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
     name = models.CharField(max_length=32)
     quantity = models.CharField(max_length=32)
 
@@ -141,7 +168,7 @@ class Instruction(models.Model):
     Instruction Model Class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
     instruction = models.CharField(max_length=100)
 
     def __str__(self):
@@ -153,8 +180,8 @@ class UpvotedUserDrink(models.Model):
     Upvoted User Drink Model class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
-    profile = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id) + ', ' + str(self.drink) + ', ' + str(self.profile)
@@ -165,9 +192,8 @@ class DownvotedUserDrink(models.Model):
     Downvoted User Drink Model class
     """
 
-    drink = models.ForeignKey(UserDrink, on_delete=models.PROTECT)
-    profile = models.ForeignKey(Profile, on_delete=models.PROTECT)
+    drink = models.ForeignKey(UserDrink, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
 
     def __str__(self):
         return str(self.id) + ', ' + str(self.drink) + ', ' + str(self.profile)
-

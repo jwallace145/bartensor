@@ -18,16 +18,14 @@ class DrinkInterface():
     method: ['...', '...']}
     """
 
-    def natural_language_search(self, text):
+    def natural_language_search(self, text, offset):
         raise NotImplementedError()
 
-    def natural_language_search_offset(self, text, offset):
+    def search(self, query, offset):
         raise NotImplementedError()
 
     def get_drink(self, drink_id):
         raise NotImplementedError()
-
-# Adaptee
 
 
 class DiscoveryAdaptee():
@@ -35,20 +33,16 @@ class DiscoveryAdaptee():
     Response from Discovery which is incompatible with client code
     """
 
-    def natural_language_search(self, text):
-        return discovery.query(
-            environment_id, collection_id, natural_language_query=text).result['results']
-
-    def natural_language_search_offset(self, text, offset):
+    def natural_language_search(self, text, offset=0):
         return discovery.query(
             environment_id, collection_id, natural_language_query=text, offset=offset).result['results']
+
+    def search(self, query, offset=0):
+        return discovery.query(environment_id, collection_id, query=query, offset=offset).result['results']
 
     def get_drink(self, drink_id):
         return discovery.query(
             environment_id, collection_id, query=f'id::"{drink_id}"').result['results']
-
-# Adapter
-
 
 class DiscoveryAdapter(DrinkInterface):
     """
@@ -58,11 +52,11 @@ class DiscoveryAdapter(DrinkInterface):
     def __init__(self):
         self.adaptee = DiscoveryAdaptee()
 
-    def natural_language_search(self, text):
-        return self.adaptee.natural_language_search(text)
+    def natural_language_search(self, text, offset=0):
+        return self.adaptee.natural_language_search(text, offset)
 
-    def natural_language_search_offset(self, text, offset):
-        return self.adaptee.natural_language_search_offset(text, offset)
+    def search(self, query, offset=0):
+        return self.adaptee.search(query, offset)
 
     def get_drink(self, drink_id):
         return self.adaptee.get_drink(drink_id)

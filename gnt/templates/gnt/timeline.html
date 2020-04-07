@@ -19,17 +19,16 @@
   <div class="row" id="ProposalContent">
     <div class="col-lg-12">
       {% for drink in drinks %}
-
       <article class="media content-section" id="drink{{drink.id}}">
         <img class="rounded-circle article-img" src="{{ drink.user.profile.image.url }}">
         <div class="media-body">
           <div class="article-metadata">
-            <a class="mr-2" href="{% url 'profile_public' username=drink.user %}">{{ drink.user }}</a>
+            <a class="mr-2" href="{% url 'timeline' username=drink.user %}">{{ drink.user }}</a>
             <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
           </div>
           <div class="row">
             <div class="col-lg-6">
-              <h2><a class="article-title" href="#">{{ drink.name }}</a></h2>
+              <h2 class="article-title">{{ drink.name }}</h2>
               <p class="article-content">{{ drink.description }}</p>
               <p class="article-content">Ingredients</p>
               {% for ingredient in drink.ingredient_set.all %}
@@ -49,17 +48,13 @@
             </div>
             <div class="col-lg-1" style="text-align: center;">
               <a class="upvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-                <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up"
-                  width="30em" />
-                <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}"
-                  alt="thumbs up liked" width="30em" />
+                <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em" />
+                <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}" alt="thumbs up liked" width="30em" />
               </a>
               <div id="drink{{drink.id}}_votes">{{drink.votes}}</div>
               <a class="downvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-                <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}"
-                  alt="thumbs down" width="30em" />
-                <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}"
-                  alt="thumbs down disliked" width="30em" />
+                <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em" />
+                <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}" alt="thumbs down disliked" width="30em" />
               </a>
             </div>
           </div>
@@ -67,6 +62,25 @@
       </article>
 
       {% endfor %}
+    </div>
+  </div>
+  <div class="load-more">
+    <button id="load_more" class="btn btn-outline-info" type="button">Load more</button>
+  </div>
+</div>
+<div id="drinkDeletedModal" class="modal fade" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-body" id="modalMessage">
+        
+      </div>
+      <div class="modal-footer d-flex justify-content-around">
+        
+        <div class="col">
+          <input id="modalAcknowledge" type="submit" value="Awesome!" class="btn btn-outline-success btn-block">
+        </div>
+        
+      </div>
     </div>
   </div>
 </div>
