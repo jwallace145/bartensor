@@ -70,7 +70,7 @@
           <form method="POST">
             {% csrf_token %}
             <input type="hidden" name="drink" value="{{ drink.id }}">
-            <input type="text" style="border: 0; outline: 0; margin-top: 10px; margin-left: 10px; margin-right: 10px; width: 90%;" placeholder="Leave a Comment...">
+            <input type="text" name="create-comment" style="border: 0; outline: 0; margin-top: 10px; margin-left: 10px; margin-right: 10px; width: 90%;" placeholder="Leave a Comment...">
           </form>
         </div>
       </div>

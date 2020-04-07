@@ -304,6 +304,13 @@ def profile_public(request, username):
                 like = UpvotedUserDrink(drink=drink, profile=profile)
                 like.save()
 
+        elif 'create-comment' in request.POST:
+            drink = UserDrink.objects.get(id=request.POST['drink'])
+            comment = Comment()
+            comment.comment = request.POST['create-comment']
+            comment.drink = drink
+            comment.save()
+
     context = {
         'profile': user,
         'drinks': drinks,
