@@ -231,14 +231,15 @@ a {
   cursor: pointer;
 }
 
-#result_container{
+#result_container {
   border: 3px solid #252729;
   padding-bottom: 50px;
   margin-top: 3%;
-  position: relative; top: 5%;
+  position: relative;
+  top: 5%;
 }
 
-.results-header{
+.results-header {
   background-color: #252729;
   color: #f3f3f3;
   margin-bottom: 20px;
@@ -261,6 +262,11 @@ a {
   background-color: white;
   border-radius: 30px;
   padding: 10px;
+}
+
+.col-1.drink-image {
+  padding-left: 0px;
+  padding-right: 0px;
 }
 
 .btn-drink-names {
@@ -358,8 +364,8 @@ a {
 }
 
 
-.btn.btn-outline-info{
-  box-shadow: none!important;
+.btn.btn-outline-info {
+  box-shadow: none !important;
   background-color: white;
   border-color: #252729;
   color: #252729;
@@ -367,7 +373,7 @@ a {
 
 .btn.btn-outline-info:hover,
 .btn.btn-outline-info:active:focus:not(:disabled):not(.disabled) {
-  box-shadow: none!important;
+  box-shadow: none !important;
   background-color: #252729;
   border-color: #252729;
   color: white;
@@ -449,11 +455,13 @@ a {
   transition: 0.3s;
 }
 
-.switchToggle input:checked+label, .switchToggle input:checked+input+label {
+.switchToggle input:checked+label,
+.switchToggle input:checked+input+label {
   background: #3e98d3;
 }
 
-.switchToggle input+label:before, .switchToggle input+input+label:before {
+.switchToggle input+label:before,
+.switchToggle input+input+label:before {
   content: 'Most Popular';
   position: absolute;
   top: 5px;
@@ -466,7 +474,8 @@ a {
   color: #fff;
 }
 
-.switchToggle input:checked+label:before, .switchToggle input:checked+input+label:before {
+.switchToggle input:checked+label:before,
+.switchToggle input:checked+input+label:before {
   content: 'New';
   position: absolute;
   top: 5px;
@@ -479,7 +488,8 @@ a {
   color: #fff;
 }
 
-.switchToggle input:checked+label:after, .switchToggle input:checked+input+label:after {
+.switchToggle input:checked+label:after,
+.switchToggle input:checked+input+label:after {
   left: calc(100% - 2px);
   transform: translateX(-100%);
 }
