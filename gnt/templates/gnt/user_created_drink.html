@@ -63,8 +63,20 @@
         <hr>
         {% for comment in drink.comment_set.all %}
         <div class="content-section">
-          <a href="{% url 'timeline' username=comment.author %}"><img class="rounded-circle" src="{{ comment.author.profile.image.url }}" style="height: 50px; width: 50px;"></a>
-          <p style="">{{ comment.comment }}</p>
+          <a href="{% url 'timeline' username=comment.author %}" class="mr-2">
+            <img class="rounded-circle" src="{{ comment.author.profile.image.url }}" style="height: 50px; width: 50px;">
+          </a>
+          <div class="media-body">
+            <div class="article-metadata">
+              <a class="mr-2" href="{% url 'timeline' username=comment.author %}">{{ comment.author }}</a>
+              <small class="text-muted">{{ comment.timestamp | date:"F d, Y g:i" }}</small>
+            </div>
+            <div class="row">
+              <div class="col-lg-12">
+                <p>{{ comment.comment }}</p>
+              </div>
+            </div>
+          </div>
         </div>
         {% endfor %}
         <a href="{% url 'timeline' username=user %}"><img class="rounded-circle" src="{{ user.profile.image.url }}" style="height: 50px; width: 50px;"></a>
