@@ -2,11 +2,13 @@
 Forms Module
 """
 
+from django import forms
 # import necessary modules
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from django import forms
-from .models import Profile, UserDrink, Ingredient, Instruction
+
+from .models import Comment, Ingredient, Instruction, Profile, UserDrink
+
 
 class CreateUserDrinkForm(forms.ModelForm):
     """

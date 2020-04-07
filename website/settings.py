@@ -13,7 +13,6 @@ https://docs.djangoproject.com/en/3.0/ref/settings/
 # import necessary modules
 import os
 
-
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -27,7 +26,7 @@ SECRET_KEY = 'fhsu029mf+3w+r-e-oquk3!cv(t@rd1u5ocj=sd^vn#bj)s$@y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', 'bartensor-env.eba-rvg8fb2e.us-east-2.elasticbeanstalk.com']
 
 
 # Application definition

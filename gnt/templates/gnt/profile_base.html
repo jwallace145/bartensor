@@ -1,77 +1,64 @@
+<!-- EXTENDS BASE TEMPLATE -->
 {% extends 'gnt/base.html' %}
+
+<!-- LOAD STATIC -->
 {% load crispy_forms_tags %}
 
+<!-- CONTENT -->
 {% block 'content' %}
 
-<div class="container">
+<div class="content-section">
   <div class="row" style="display: flex">
     <div class="col-md-9" style="display: inline-block">
+
+      <!-- PROFILE HEADER -->
       <div class="content-section">
         <div class="media">
-          <img class="rounded-circle account-img" src="{{ profile.profile.image.url }}">
+          <a href="{% url 'timeline' username=profile %}">
+            <img class="rounded-circle account-img" src="{{ profile.profile.image.url }}">
+          </a>
           <div class="media-body">
+
+            <!-- PROFILE USERNAME -->
             <h2 class="account-heading">{{ profile.username }}</h2>
+
+            <!-- PROFILE EMAIL -->
             <p class="text-secondary">{{ profile.email }}</p>
+
           </div>
         </div>
 
+        <!-- PROFILE BIO -->
         <p class="text-secondary">{{ profile.profile.bio }}</p>
 
+        <!-- ADD/REMOVE FRIEND FORMS -->
         {% if user != profile and not requests and not friends and user.is_authenticated %}
         <form method="POST">
           {% csrf_token %}
           <button class="btn btn-outline-info" type="submit" name="add-friend">Add Friend</button>
         </form>
-        {% else %}
+        {% endif %}
 
         {% if user != profile and friends and user.is_authenticated %}
         <form method="POST">
           {% csrf_token %}
+          <input type="hidden" name="requestor" value="{{ profile }}">
           <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
         </form>
         {% endif %}
-
-        {% endif %}
       </div>
 
+      <!-- PROFILE CONTENT -->
       {% block profile_content %}
       {% endblock profile_content %}
 
     </div>
 
+    <!-- SIDEBAR -->
     {% if user == profile %}
-    <div class="col-md-3" style="display: inline-block">
-      <div class="content-section">
-        <h3>Profile Help</h3>
-        <p class='text-muted'>View, edit, and create your profile here!
-          <ul class="list-group">
-            <li class="list-group-item list-group-item-light"><a href="{% url 'timeline' username=profile %}">Public View</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' username=profile %}">Liked Drinks</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' username=profile %}">Disliked Drinks</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'profile_edit' username=profile %}">Edit Profile</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'create_drink' username=profile %}">Create Drink</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=profile %}">Friends</a></li>
-            <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>
-            <li class="list-group-item list-group-item-light"><a href="#">Edit Flavor Profile</a></li>
-          </ul>
-        </p>
-      </div>
-    </div>
+    {% include 'gnt/edit_profile_sidebar.html' %}
     {% else %}
-    <div class="col-md-3" style="display: inline-block">
-      <div class="content-section">
-        <h3>Profile Help</h3>
-        <p class='text-muted'>Explore {{ profile }}'s profile here!
-          <ul class="list-group">
-            <li class="list-group-item list-group-item-light"><a href="{% url 'timeline' username=profile %}">Timeline</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' username=profile %}">Liked Drinks</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' username=profile %}">Disliked Drinks</a></li>
-            <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=profile %}">Friends</a></li>
-            <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>
-          </ul>
-        </p>
-      </div>
-    </div>
+    {% include 'gnt/view_profile_sidebar.html' %}
     {% endif %}
 
   </div>

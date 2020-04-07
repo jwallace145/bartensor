@@ -19,7 +19,7 @@ from nltk.tokenize.treebank import TreebankWordTokenizer
 from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm,
                     CreateUserDrinkInstructionForm, ProfileUpdateForm,
                     UserRegisterForm, UserUpdateForm)
-from .models import (Drink, Friend, FriendRequest, Profile,
+from .models import (Comment, Drink, Friend, FriendRequest, Profile,
                      ProfileToDislikedDrink, ProfileToLikedDrink,
                      UpvotedUserDrink, UserDrink)
 
@@ -235,7 +235,7 @@ def profile_create_drink(request, username):
             name = request.POST['name']
             messages.error(
                 request, f'We already have a cocktail named {name}!')
-            return redirect('profile_public', username=request.user.username)
+            return redirect('timeline', username=request.user.username)
     else:
         create_user_drink_form = CreateUserDrinkForm()
         ingredient_formset = IngredientFormset(prefix='ingredient')
@@ -249,6 +249,81 @@ def profile_create_drink(request, username):
     }
 
     return render(request, 'gnt/profile_create_drink.html', context)
+
+
+def profile_public(request, username):
+    """
+    Profile View
+
+    Users, unathenticated and authenticated, can view other users' profiles with
+    this view function. The profile view will render a list of drinks created by
+    the user of the profile.
+
+    Args:
+        username (string): the user of the profile
+
+    Return:
+        profile_public (html): profile view of given username
+    """
+
+    # get user
+    user = User.objects.get(username=username)
+
+    # get drinks created by user ordered by new
+    drinks = UserDrink.objects.filter(user=user).order_by('-timestamp')
+
+    # if the user is logged in, check friendship status
+    if request.user.is_authenticated:
+        requests = (FriendRequest.objects.filter(requestee=user.profile) |
+                    FriendRequest.objects.filter(requestor=user.profile))
+        friends = (Friend.objects.filter(friend1=user.profile) |
+                   Friend.objects.filter(friend2=user.profile))
+    else:
+        requests = []
+        friends = []
+
+    # if post request
+    if request.method == 'POST':
+
+        # if add friend post request
+        if 'add-friend' in request.POST:
+            friend_request = FriendRequest()
+            friend_request.requestee = user.profile
+            friend_request.requestor = request.user.profile
+            friend_request.save()
+
+            messages.success(request, f'Friend request sent to { username }!')
+
+        # else if remove friend post request
+        elif 'remove-friend' in request.POST:
+            friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | Friend.objects.filter(
+                friend1=user.profile, friend2=request.user.profile)
+            friend.delete()
+
+            messages.success(request, f'Removed friend { username }!')
+
+        # else if create comment post request
+        elif 'create-comment' in request.POST:
+            drink = UserDrink.objects.get(id=request.POST['drink'])
+
+            comment = Comment(
+                author=request.user,
+                drink=drink,
+                comment=request.POST['create-comment']
+            )
+
+            comment.save()
+
+            messages.success(request, f'You left a comment on { username }\'s drink!')
+
+    context = {
+        'profile': user,
+        'drinks': drinks,
+        'requests': requests,
+        'friends': friends,
+    }
+
+    return render(request, 'gnt/profile_public.html', context)
 
 
 @login_required
@@ -269,7 +344,7 @@ def profile_edit(request, username):
             user_update_form.save()
             profile_update_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('profile_public', username=request.user.username)
+            return redirect('timeline', username=request.user.username)
     else:
         user_update_form = UserUpdateForm(instance=username)
         profile_update_form = ProfileUpdateForm(instance=profile)
@@ -281,56 +356,6 @@ def profile_edit(request, username):
     }
 
     return render(request, 'gnt/profile_edit.html', context)
-
-
-def profile_public(request, username):
-    """
-    Profile View
-    """
-    username = User.objects.get(username=username)
-    drinks = UserDrink.objects.filter(user=username).order_by('-timestamp')
-    if request.user.is_authenticated:
-        requests = (FriendRequest.objects.filter(requestee=request.user.profile) | FriendRequest.objects.filter(requestor=request.user.profile)) & (
-            FriendRequest.objects.filter(requestee=username.profile) | FriendRequest.objects.filter(requestor=username.profile))
-        friends = (Friend.objects.filter(friend1=username.profile) & Friend.objects.filter(friend2=request.user.profile)) | (
-            Friend.objects.filter(friend1=request.user.profile) & Friend.objects.filter(friend2=username.profile))
-    else:
-        requests = []
-        friends = []
-
-    if request.method == 'POST':
-        if 'add-friend' in request.POST:
-            friend_request = FriendRequest()
-            friend_request.requestee = username.profile
-            friend_request.requestor = request.user.profile
-            friend_request.save()
-
-            messages.success(request, f'Friend request sent to { username }!')
-        elif 'remove-friend' in request.POST:
-            friend = Friend.objects.filter(friend1=request.user.profile, friend2=username.profile) | Friend.objects.filter(
-                friend1=username.profile, friend2=request.user.profile)
-            friend.delete()
-
-            messages.info(request, f'Removed friend { username }!')
-
-        elif 'like-drink' in request.POST:
-            drink = UserDrink.objects.get(name=request.POST['drink'])
-            profile = request.user.profile
-
-            if UpvotedUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
-                drink.likes += 1
-                drink.save()
-                like = UpvotedUserDrink(drink=drink, profile=profile)
-                like.save()
-
-    context = {
-        'profile': username,
-        'drinks': drinks,
-        'requests': requests,
-        'friends': friends,
-    }
-
-    return render(request, 'gnt/profile_public.html', context)
 
 
 def liked_drinks(request, username):

@@ -142,3 +142,9 @@ google-stt-secrets.json
 
 # Node Modules
 node_modules
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+.jsbeautifyrc

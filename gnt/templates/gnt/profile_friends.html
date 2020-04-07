@@ -2,14 +2,29 @@
 {% block profile_content %}
 
 <div class="content-section">
+
+  <!-- FRIENDS -->
   <div class="row">
     <div class="col-lg-12">
       <legend class="border-bottom mb-4">Friends</legend>
     </div>
   </div>
+
+  <!-- PROFILE HAS NO FRIENDS -->
+  {% if not friends %}
+  <div class="content-section">
+    <div>
+      {{ profile }} doesn't have any friends yet!
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- PROFILE HAS FRIENDS -->
   {% if friends %}
   {% for friend in friends %}
   <article class="media content-section">
+
+    <!-- FRIEND 1 IS NOT THE CURRENT PROFILE -->
     {% if friend.friend1 != profile.profile %}
     <img class="rounded-circle article-img" src="{{ friend.friend1.image.url }}">
     <div class="media-body">
@@ -26,7 +41,10 @@
       </form>
       {% endif %}
     </div>
-    {% else %}
+    {% endif %}
+
+    <!-- FRIEND 2 IS NOT THE CURRENT PROFILE -->
+    {% if friend.friend2 != profile.profile %}
     <img class="rounded-circle article-img" src="{{ friend.friend2.image.url }}">
     <div class="media-body">
       <div class="article-metadata">
@@ -38,19 +56,14 @@
       <form method="POST">
         {% csrf_token %}
         <input type="hidden" name="requestor" value="{{ friend.friend2.user }}" />
-        <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
+        <button class="btn btn-outline-info" type="submit" name="remove-friend" value="weenies">Remove Friend</button>
       </form>
       {% endif %}
     </div>
     {% endif %}
   </article>
   {% endfor %}
-  {% else %}
-  <article class="content-section">
-    <div>
-      {{ profile }} doesn't have any friends yet!
-    </div>
-  </article>
   {% endif %}
+
 </div>
 {% endblock profile_content %}

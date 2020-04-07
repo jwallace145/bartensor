@@ -190,8 +190,6 @@ a.article-title:hover {
   transform: scale(1.1);
 }
 
-
-
 .mic_icon {
   margin-top: 12px;
   width: 60px;
@@ -231,24 +229,26 @@ a {
   cursor: pointer;
 }
 
-#result_container{
+#result_container {
   background-color: rgba(245, 245, 245, 0.541);
   border: 3px solid black;
   margin-top: 20px;
   padding-bottom: 50px;
-  position: relative; top: 5%;
+  position: relative;
+  top: 5%;
 }
 
-.results-header{
+.results-header {
   background-color: black;
   color: #f3f3f3;
   margin-bottom: 20px;
 }
 
-.drink-menu-header{
+.drink-menu-header {
   padding-top: 10px;
 }
-.query-header{
+
+.query-header {
   color: rgba(245, 245, 245, 0.959);
   margin-left: 10px;
   padding-bottom: 10px;
@@ -263,13 +263,13 @@ a {
   padding: 10px;
 }
 
-.btn-drink-names{
+.btn-drink-names {
   background-color: transparent;
   border: none;
 }
 
-.btn-drink-names:focus{
-  box-shadow: none!important;
+.btn-drink-names:focus {
+  box-shadow: none !important;
 }
 
 #like-drink {
@@ -406,84 +406,113 @@ a {
   padding-left: 15px;
 }
 
-#sub-header{
+#sub-header {
   padding-left: 20px;
   padding-right: 40px;
 }
-.filter-button{
+
+.filter-button {
   margin-bottom: 20px;
   background-color: #bebebe;
 }
 
 /* Switch in proposals */
-.switchToggle input[type=checkbox]{
-  height: 0; 
-  width: 0; 
-  visibility: hidden; 
-  position: absolute; 
+.switchToggle input[type=checkbox] {
+  height: 0;
+  width: 0;
+  visibility: hidden;
+  position: absolute;
 }
+
 .switchToggle label {
-  cursor: pointer; 
-  text-indent: -9999px; 
-  width: 150px; 
-  max-width: 200px; 
-  height: 30px; 
-  background: #d1d1d1; 
-  display: block; 
-  border-radius: 100px; 
-  position: relative; 
+  cursor: pointer;
+  text-indent: -9999px;
+  width: 150px;
+  max-width: 200px;
+  height: 30px;
+  background: #d1d1d1;
+  display: block;
+  border-radius: 100px;
+  position: relative;
 }
+
 .switchToggle label:after {
-  content: ''; 
-  position: absolute; 
-  top: 2px; 
-  left: 2px; 
-  width: 26px; 
-  height: 26px; 
-  background: #fff; 
-  border-radius: 90px; 
-  transition: 0.3s; 
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 26px;
+  height: 26px;
+  background: #fff;
+  border-radius: 90px;
+  transition: 0.3s;
 }
-.switchToggle input:checked + label, .switchToggle input:checked + input + label  {
-  background: #3e98d3; 
+
+.switchToggle input:checked+label, .switchToggle input:checked+input+label {
+  background: #3e98d3;
 }
-.switchToggle input + label:before, .switchToggle input + input + label:before {
-  content: 'Most Popular'; 
-  position: absolute; 
-  top: 5px; 
-  left: 35px; 
-  width: auto; 
-  height: 26px; 
-  border-radius: 90px; 
-  transition: 0.3s; 
-  text-indent: 0; 
-  color: #fff; 
+
+.switchToggle input+label:before, .switchToggle input+input+label:before {
+  content: 'Most Popular';
+  position: absolute;
+  top: 5px;
+  left: 35px;
+  width: auto;
+  height: 26px;
+  border-radius: 90px;
+  transition: 0.3s;
+  text-indent: 0;
+  color: #fff;
 }
-.switchToggle input:checked + label:before, .switchToggle input:checked + input + label:before {
-  content: 'New'; 
-  position: absolute; 
-  top: 5px; 
-  left: 10px; 
-  width: auto; 
-  height: 26px; 
-  border-radius: 90px; 
-  transition: 0.3s; 
-  text-indent: 0; 
-  color: #fff; 
+
+.switchToggle input:checked+label:before, .switchToggle input:checked+input+label:before {
+  content: 'New';
+  position: absolute;
+  top: 5px;
+  left: 10px;
+  width: auto;
+  height: 26px;
+  border-radius: 90px;
+  transition: 0.3s;
+  text-indent: 0;
+  color: #fff;
 }
-.switchToggle input:checked + label:after, .switchToggle input:checked + input + label:after {
-  left: calc(100% - 2px); 
-  transform: translateX(-100%); 
+
+.switchToggle input:checked+label:after, .switchToggle input:checked+input+label:after {
+  left: calc(100% - 2px);
+  transform: translateX(-100%);
 }
+
 .switchToggle label:active:after {
-  width: 60px; 
-} 
-.toggle-switchArea { 
-  margin: 10px 0 10px 0; 
+  width: 60px;
+}
+
+.toggle-switchArea {
+  margin: 10px 0 10px 0;
 }
 
 .alert-error {
   color: #571515;
   background-color: #edd4d4;
   border-color: #e6c3c3;
+}
+
+/* COMMENTS */
+.comments-bar {
+  border-radius: 30px;
+  height: 50px;
+  border-style: solid;
+  display: inline-block;
+  width: 75%;
+  border-color: #444444;
+  border-width: thin;
+}
+
+.create-comment {
+  border: 0;
+  outline: 0;
+  margin-top: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
+  width: 90%;
 }
