@@ -257,7 +257,7 @@ def profile_public(request, username):
     the user of the profile.
 
     Args:
-        username (string): the username of the given profile
+        username (string): the user of the profile
 
     Return:
         profile_public (html): profile view of given username
@@ -266,7 +266,7 @@ def profile_public(request, username):
     # get user
     user = User.objects.get(username=username)
 
-    # get drinks ordered by new
+    # get drinks created by user ordered by new
     drinks = UserDrink.objects.filter(user=user).order_by('-timestamp')
 
     # if the user is logged in, check friendship status
@@ -279,7 +279,10 @@ def profile_public(request, username):
         requests = []
         friends = []
 
+    # if post request
     if request.method == 'POST':
+
+        # if add friend post request
         if 'add-friend' in request.POST:
             friend_request = FriendRequest()
             friend_request.requestee = user.profile
@@ -287,30 +290,28 @@ def profile_public(request, username):
             friend_request.save()
 
             messages.success(request, f'Friend request sent to { username }!')
+
+        # else if remove friend post request
         elif 'remove-friend' in request.POST:
             friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | Friend.objects.filter(
                 friend1=user.profile, friend2=request.user.profile)
             friend.delete()
 
-            messages.info(request, f'Removed friend { username }!')
+            messages.success(request, f'Removed friend { username }!')
 
-        elif 'like-drink' in request.POST:
-            drink = UserDrink.objects.get(name=request.POST['drink'])
-            profile = request.user.profile
-
-            if UpvotedUserDrink.objects.filter(drink=drink, profile=profile).count() == 0:
-                drink.likes += 1
-                drink.save()
-                like = UpvotedUserDrink(drink=drink, profile=profile)
-                like.save()
-
+        # else if create comment post request
         elif 'create-comment' in request.POST:
             drink = UserDrink.objects.get(id=request.POST['drink'])
-            comment = Comment()
-            comment.author = request.user
-            comment.comment = request.POST['create-comment']
-            comment.drink = drink
+
+            comment = Comment(
+                author=request.user,
+                drink=drink,
+                comment=request.POST['create-comment']
+            )
+
             comment.save()
+
+            messages.success(request, f'You left a comment on { username }\'s drink!')
 
     context = {
         'profile': user,
