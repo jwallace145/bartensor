@@ -357,13 +357,13 @@ a {
 }
 
 .btn.btn-outline-info {
-  color: black;
-  border-color: black;
+  color: #252729;
+  border-color: #252729;
 }
 
 .btn.btn-outline-info:hover {
-  background-color: black;
-  border-color: black;
+  background-color: #252729;
+  border-color: #252729;
 }
 
 #like-drink {
