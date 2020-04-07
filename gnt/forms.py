@@ -10,18 +10,6 @@ from django.contrib.auth.models import User
 from .models import Comment, Ingredient, Instruction, Profile, UserDrink
 
 
-class CreateCommentForm(forms.ModelForm):
-    """
-    Create Comment Form
-    """
-
-    class Meta:
-        model = Comment
-        fields = [
-            'comment',
-        ]
-
-
 class CreateUserDrinkForm(forms.ModelForm):
     """
     Create User Drink Form
