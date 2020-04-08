@@ -2,7 +2,9 @@
 
 pipeline {
 
-  agent any
+  agent {
+    dockerfile true
+  }
 
   environment {
     BARTENSOR_EMAIL_USERNAME = 'bartensor@gmail.com'
