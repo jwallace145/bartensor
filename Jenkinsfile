@@ -2,11 +2,11 @@
 
 node {
 
-    def installed = fileExists 'env/bin/activate'
+    def installed = fileExists 'bin/activate'
 
     if (!installed) {
-        stage("Install Python Virtual Enviroment") {
-            sh 'virtualenv env'
+        stage("Install Python Virtual Environment") {
+            sh 'virtualenv .'
             }
     }
 
@@ -16,7 +16,7 @@ node {
 
     stage ("Install Application Dependencies") {
         sh '''
-            source env/bin/activate
+            source bin/activate
             pip install -r requirements.txt
             deactivate
            '''
