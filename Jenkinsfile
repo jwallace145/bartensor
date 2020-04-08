@@ -17,7 +17,7 @@ pipeline {
         checkout scm
       }
     }
-    
+
     stage('Create Python Virtual Environment') {
       steps {
         sh 'python3 -m virtualenv env'
@@ -26,11 +26,7 @@ pipeline {
 
     stage('Install Python Application Dependencies') {
       steps {
-        sh '''
-          source env/bin/activate
-          pip install -r requirements.txt
-          deactivate
-        '''
+        sh 'source env/bin/activate'
       }
     }
   }
