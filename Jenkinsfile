@@ -2,12 +2,12 @@
 
 node {
 
-    def installed = fileExists 'bin/activate'
+    def installed = fileExists 'env/bin/activate'
 
     if (!installed) {
         stage("Install Python Virtual Enviroment") {
-            sh 'virtualenv --no-site-packages .'
-        }
+            sh 'virtualenv env'
+            }
     }
 
     stage ("Get Latest Code") {
@@ -16,8 +16,8 @@ node {
 
     stage ("Install Application Dependencies") {
         sh '''
-            source bin/activate
-            pip install -r <relative path to requirements file>
+            source env/bin/activate
+            pip install -r requirements.txt
             deactivate
            '''
     }
@@ -25,26 +25,12 @@ node {
     stage ("Collect Static files") {
         sh '''
             source bin/activate
-            python <relative path to manage.py> collectstatic --noinput
+            python manage.py collectstatic
             deactivate
            '''
     }
 
     stage ("Run Unit/Integration Tests") {
-        def testsError = null
-        try {
-            echo 'unit testing...'
-        }
-        catch(err) {
-            testsError = err
-            currentBuild.result = 'FAILURE'
-        }
-        finally {
-            junit 'reports/junit.xml'
-
-            if (testsError) {
-                throw testsError
-            }
-        }
+        echo 'testing'
     }
 }
