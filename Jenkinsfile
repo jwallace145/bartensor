@@ -22,26 +22,6 @@ pipeline {
           if (params.RUN_STATIC_CODE_ANALYSIS) {
             sh 'echo "Static Code Analysis"'
 
-            // creates flake8 and pep8 reports
-            sh 'python manage.py jenkins'
-
-            // creates pylint reports
-            withEnv(['PYLINTHOME=.']) {
-              sh 'pylint --output-format=parseable --exit-zero --rcfile=pylint.cfg --reports=no users/ > ./reports/pylint.log'
-              sh 'pylint --output-format=parseable --exit-zero --rcfile=pylint.cfg --reports=no gnt/ >> ./reports/pylint.log'
-            }
-
-            // scans and publishes flake8 report
-            def flake8 = scanForIssues tool: flake8(pattern: '**/reports/flake8.report')
-            publishIssues issues:[flake8]
-
-            // scans and publishes pep8 report
-            def pep8 = scanForIssues tool: pep8(pattern: '**/reports/pep8.report')
-            publishIssues issues:[pep8]
-
-            // scans and publishes pylint report
-            def pylint = scanForIssues tool: pyLint(pattern: '**/reports/pylint.log')
-            publishIssues issues:[pylint]
           } else {
             sh 'echo "Skipped Static Code Analysis"'
           }
@@ -54,8 +34,7 @@ pipeline {
       steps {
         script {
           if (params.RUN_SONARQUBE_ANALYSIS) {
-            withSonarQubeEnv('sonarqube') {
-            }
+            sh 'echo SonarQube Analysis'
           }
         }
       }
@@ -68,11 +47,6 @@ pipeline {
           if (params.RUN_TESTS) {
             sh 'echo "Tests"'
 
-            // creates junit test report
-            sh 'python manage.py test'
-
-            // publishes junit test report
-            junit '**/reports/junit.xml'
           } else {
             sh 'echo "Skipped Tests"'
           }
