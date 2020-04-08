@@ -17,22 +17,32 @@ h6 {
   color: #444444;
 }
 
-/* Smallest size fonts */
-@media (max-width:700px) and (min-width:0px) {
+
+/* Bootstrap xs */
+@media (max-width:575) {}
+
+/* Bootstrap small */
+@media (max-width:767px) and (min-width:576px) {
   span {
     font-size: 10px;
   }
 
-  button {
+  button.btn.btn-drink-names {
+    font-size: 10px;
+  }
+}
+
+/* Bootstrap medium */
+@media (max-width:991px) and (min-width:768px) {
+  button.btn.btn-drink-names {
     font-size: 12px;
   }
 }
 
-@media (max-width:850px) and (min-width:701px) {
-  button {
-    font-size: 4px;
-  }
-}
+/* Bootstrap Large */
+@media (max-width:992px) and (min-width:1199px) {}
+
+@media (min-width:1200px) {}
 
 .container {
   max-width: 80% !important;
