@@ -26,7 +26,7 @@ pipeline {
 
     stage('Install Python Application Dependencies') {
       steps {
-        sh 'source env/bin/activate'
+        sh 'sudo source env/bin/activate'
       }
     }
   }
