@@ -1,6 +1,6 @@
 {% load static %}
 {% for drink in drinks %}
-<div class="row" id="drink_id_{{drink.id}}">
+<div class="row drink-result-row" id="drink_id_{{drink.id}}">
   {% if request.path == '/results/' or request.path == '/more_results/'%}
   <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5 drink-image">
     {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
@@ -22,7 +22,7 @@
                 {{ drink.names | first }}
               </button>
             </div>
-            <div class="col-lg-1 col-md-2 col-3">
+            <div class="col-lg-1 col-md-2 col-3 like-dislike">
               <!-- Like dislike buttons. no gutters removes padding -->
               <div class="row no-gutters">
                 {% block 'like-dislike' %}{% endblock 'like-dislike' %}
