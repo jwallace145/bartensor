@@ -2,11 +2,27 @@
 
 node {
 
-  def virtual_environment = fileExists 'env/bin/activate'
+  stage("Install Python Virtual Environment") {
+    sh 'virtualenv env --python=python3'
+  }
 
-  if (!virtual_environment) {
-    stage("Install Python Virtual Environment") {
-      sh 'virtualenv env'
-    }
+  stage("Checkout Latest Code") {
+    checkout scm
+  }
+
+  stage("Install Application Dependencies") {
+    sh '''
+      source env/bin/activate
+      pip install -r requirements.txt
+      deactivate
+      '''
+  }
+
+  stage("Make Migrations") {
+
+  }
+
+  stage("Migrate") {
+
   }
 }
