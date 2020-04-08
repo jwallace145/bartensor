@@ -7,6 +7,6 @@ node {
   }
 
   stage("Install Application Dependencies") {
-    sh 'pip3 install -r requirements.txt'
+    sh 'sudo pip3 install -r requirements.txt'
   }
 }
