@@ -20,7 +20,7 @@ pipeline {
 
     stage('Create Python Virtual Environment') {
       steps {
-        sh 'python3 -m virtualenv env'
+        sh 'python3 -m virtualenv --no-site-packages env'
       }
     }
 
