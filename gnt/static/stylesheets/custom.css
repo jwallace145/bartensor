@@ -19,7 +19,16 @@ h6 {
 
 
 /* Bootstrap xs */
-@media (max-width:575) {}
+@media (max-width:575px) {
+  span {
+    font-size: 10px;
+  }
+
+  button.btn.btn-drink-names {
+    font-size: 8px;
+    white-space: normal;
+  }
+}
 
 /* Bootstrap small */
 @media (max-width:767px) and (min-width:576px) {
@@ -29,6 +38,7 @@ h6 {
 
   button.btn.btn-drink-names {
     font-size: 10px;
+    white-space: normal;
   }
 }
 
@@ -36,6 +46,7 @@ h6 {
 @media (max-width:991px) and (min-width:768px) {
   button.btn.btn-drink-names {
     font-size: 12px;
+    white-space: normal;
   }
 }
 
@@ -214,7 +225,7 @@ a.article-title:hover {
 
 .search-tabs {
   margin-bottom: 0px;
-  min-height: 80%
+  min-height: 80%;
 }
 
 .search_input {
