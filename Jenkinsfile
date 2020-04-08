@@ -11,10 +11,10 @@ node {
   }
 
   stage("Make Migrations") {
-
+    sh 'python3 manage.py makemigrations'
   }
 
   stage("Migrate") {
-
+    sh 'python3 manage.py migrate'
   }
 }
