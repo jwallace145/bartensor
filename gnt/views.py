@@ -106,7 +106,7 @@ def _text_to_dql(text, name_multiplier=1, ingredient_multiplier=1):
     return query
 
 
-def query_discovery(text, question, offset=0):
+def _query_discovery(text, question, offset=0):
     """Creates a DQL query based on text and question, then queries discovery.
 
     :param text:
@@ -142,15 +142,20 @@ def results(request):
         if 'audio' in request.FILES:
             audio = request.FILES['audio']
             text = IBM().transcribe(audio)
+            if 'recommend' in text:
+                question = 'like'
+            else:
+                question = 'what'
         else:
             text = request.POST['search_bar']
+            question = request.POST['question']
 
-        response = query_discovery(text, request.POST['question'])
+        response = _query_discovery(text, question)
 
         return render(request, 'gnt/results.html', {
             'query': text,
             'drinks': response,
-            'question': request.POST['question']
+            'question': question
         })
     else:
         return HttpResponseRedirect(reverse('home'))
@@ -160,7 +165,7 @@ def more_results(request):
     """
     More results with an offset
     """
-    response = query_discovery(
+    response = _query_discovery(
         request.POST['text'], request.POST['question'], request.POST['offset'])
 
     return render(request, 'gnt/drink_results_with_voting.html', {
