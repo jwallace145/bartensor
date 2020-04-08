@@ -1,12 +1,22 @@
 #!/usr/bin/env groovy
 
-node {
+pipeline {
 
-  stage("Checkout Latest Code") {
-    checkout scm
+  agent any
+
+  environment {
+    BARTENSOR_EMAIL_USERNAME = 'bartensor@gmail.com'
+    BARTENSOR_EMAIL_PASSWORD = 'iupeqdduwlekqjrj'
+    WATSON_DISCOVERY_API_KEY = 'Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2'
+    WATSON_SPEECH_TO_TEXT_API_KEY = 'GUyb9Y0-25JUO7_fZtyLvlDipUAMzROb2vxadUiWJEMX'
   }
 
-  stage("Install Application Dependencies") {
-    sh 'sudo pip3 install -r requirements.txt'
+  stages {
+    stage('Create Python Virtual Environment') {
+      steps {
+        sh 'python3 -m virtualenv env'
+      }
+    }
   }
+
 }
