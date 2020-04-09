@@ -1,6 +1,7 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
 from gnt import models
+from gnt.models import Profile, Drink
 
 
 class TestLikes(TestCase):
@@ -14,6 +15,6 @@ class TestLikes(TestCase):
             user=self.test_user, bio='test')
 
     def new_user_1_like(self):
-        drink = Drinks.objects.get(
+        drink = Drink.objects.get(
             drink_hash='1b588790-9610-478c-8899-e700d33f6eb5')
         profile = Profile.objects.get(user=self.test_user)
