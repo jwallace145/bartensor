@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  web:
+    environment:
+      BARTENSOR_EMAIL_USERNAME: bartensor@gmail.com
+      BARTENSOR_EMAIL_PASSWORD: iupeqdduwlekqjrj
+      WATSON_DISCOVERY_API_KEY: Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2
+      WATSON_SPEECH_TO_TEXT_API_KEY: GUyb9Y0-25JUO7_fZtyLvlDipUAMzROb2vxadUiWJEMX
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
