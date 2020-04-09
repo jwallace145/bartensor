@@ -23,6 +23,8 @@ from .models import (Comment, Drink, Friend, FriendRequest, Profile,
                      ProfileToDislikedDrink, ProfileToLikedDrink,
                      UpvotedUserDrink, UserDrink)
 
+up_ratio, down_ratio = 0.1, 0.05
+
 
 def bad_request(request):
     """
@@ -443,9 +445,12 @@ def timeline_pop(request):
     if request.GET.get('offset', 0):
         offset = int(request.GET['offset'])
     drinks = UserDrink.objects.all().order_by('-votes')[offset:offset + 50]
-
+    up_thresh = len(Profile.objects.all()) * up_ratio
+    down_thresh = 0 - len(Profile.objects.all()) * down_ratio
     context = {
-        'drinks': drinks
+        'drinks': drinks,
+        'up_thresh': up_thresh,
+        'down_thresh': down_thresh
     }
 
     return render(request, 'gnt/timeline.html', context)
@@ -459,9 +464,12 @@ def timeline(request):
     if request.GET.get('offset', 0) != 0:
         offset = int(request.GET['offset'])
     drinks = UserDrink.objects.all().order_by('-timestamp')[offset:offset + 50]
-
+    up_thresh = len(Profile.objects.all()) * up_ratio
+    down_thresh = 0 - len(Profile.objects.all()) * down_ratio
     context = {
-        'drinks': drinks
+        'drinks': drinks,
+        'up_thresh': up_thresh,
+        'down_thresh': down_thresh
     }
 
     return render(request, 'gnt/timeline.html', context)
