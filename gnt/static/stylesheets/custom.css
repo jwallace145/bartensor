@@ -27,6 +27,14 @@ h6 {
   button.btn.btn-drink-names {
     font-size: 12px;
   }
+
+  .searchbar:hover>.search_input {
+    padding: 0 10px;
+    width: 200px;
+    caret-color: black;
+    transition: width 0.4s linear;
+  }
+
 }
 
 /* Bootstrap small */
@@ -38,6 +46,14 @@ h6 {
   button.btn.btn-drink-names {
     font-size: 14px;
   }
+
+  .searchbar:hover>.search_input {
+    padding: 0 10px;
+    width: 300px;
+    caret-color: black;
+    transition: width 0.4s linear;
+  }
+
 }
 
 /* Bootstrap medium */
@@ -45,6 +61,14 @@ h6 {
   button.btn.btn-drink-names {
     font-size: 20px;
   }
+
+  .searchbar:hover>.search_input {
+    padding: 0 10px;
+    width: 400px;
+    caret-color: black;
+    transition: width 0.4s linear;
+  }
+
 }
 
 /* Bootstrap Large */
@@ -52,11 +76,26 @@ h6 {
   button.btn.btn-drink-names {
     font-size: 24px;
   }
+
+  .searchbar:hover>.search_input {
+    padding: 0 10px;
+    width: 250px;
+    caret-color: black;
+    transition: width 0.4s linear;
+  }
+
 }
 
 @media (min-width:1200px) {
   button.btn.btn-drink-names {
     font-size: 28px;
+  }
+
+  .searchbar:hover>.search_input {
+    padding: 0 10px;
+    width: 450px;
+    caret-color: black;
+    transition: width 0.4s linear;
   }
 }
 
@@ -140,7 +179,6 @@ a.article-title:hover {
 .account-header-img {
   height: 40px;
   width: 40px;
-  margin-right: 20px;
 }
 
 .account-img {
@@ -237,13 +275,6 @@ a.article-title:hover {
   width: 0;
   caret-color: transparent;
   line-height: 40px;
-  transition: width 0.4s linear;
-}
-
-.searchbar:hover>.search_input {
-  padding: 0 10px;
-  width: 400px;
-  caret-color: black;
   transition: width 0.4s linear;
 }
 
