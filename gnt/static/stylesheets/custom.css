@@ -36,21 +36,29 @@ h6 {
   }
 
   button.btn.btn-drink-names {
-    font-size: 12px;
+    font-size: 14px;
   }
 }
 
 /* Bootstrap medium */
 @media (max-width:991px) and (min-width:768px) {
   button.btn.btn-drink-names {
-    font-size: 12px;
+    font-size: 20px;
   }
 }
 
 /* Bootstrap Large */
-@media (max-width:992px) and (min-width:1199px) {}
+@media (max-width:1199px) and (min-width:992px) {
+  button.btn.btn-drink-names {
+    font-size: 24px;
+  }
+}
 
-@media (min-width:1200px) {}
+@media (min-width:1200px) {
+  button.btn.btn-drink-names {
+    font-size: 28px;
+  }
+}
 
 ul {
   margin: 0;
@@ -256,6 +264,10 @@ a.article-title:hover {
   text-decoration: none;
 }
 
+#question-span {
+  display: none;
+}
+
 /*
  * Assitant Button
  */
@@ -281,6 +293,10 @@ a.article-title:hover {
 
 .mic_icon:active {
   transform: scale(1.1);
+}
+
+#wave {
+  display: none;
 }
 
 /*
