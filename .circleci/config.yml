@@ -17,5 +17,6 @@ workflows:
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
-          family: bartensor-runserver-service
+          family: bartensor-runserver
+          service-name: bartensor-runserver-service
           cluster-name: ecs-cluster
