@@ -101,8 +101,6 @@ $(document).ready(function () {
             dataType: 'html',
             data: $(this).serialize(),
             success: function (data) {
-                console.log("ajax success");
-                console.log(data);
                 $("#index-div").hide();
                 $("#content_here").append(data);
                 color_thumbs();
@@ -111,9 +109,7 @@ $(document).ready(function () {
                 hide_disliked_drinks();
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log("ajax fail");
                 console.log(xhr.statusCode);
-                console.log(xhr.status);
                 console.log(xhr.statusText);
                 console.log(thrownError);
                 $("#index-div").hide();
@@ -345,7 +341,3 @@ function load_more_drinks() {
         }
     });
 }
-
-$(document).ready(function () {
-    console.log("ready");
-})
