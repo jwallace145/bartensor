@@ -23,7 +23,7 @@ jobs:
   #     - run:
   #         name: Build Image
   #         command: |
-  #           sudo docker build -t 650503560686.dkr.ecr.us-east-2.amazonaws.com/bartensor-repo:latest .
+  #           docker build -t 650503560686.dkr.ecr.us-east-2.amazonaws.com/bartensor-repo:latest .
   #     - run:
   #         name: Save Image
   #         command: |
@@ -34,7 +34,13 @@ jobs:
     docker:
       - image: circleci/python:3.8
     steps:
-      - run: echo 'PENIS'
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build Image
+          command: |
+            docker build -t 650503560686.dkr.ecr.us-east-2.amazonaws.com/bartensor-repo:latest .
+
   deploy-dev:
     docker:
       - image: circleci/python:3.8
