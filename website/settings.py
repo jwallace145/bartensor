@@ -26,7 +26,7 @@ SECRET_KEY = 'fhsu029mf+3w+r-e-oquk3!cv(t@rd1u5ocj=sd^vn#bj)s$@y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '3.21.35.29', 'ec2-3-21-35-29.us-east-2.compute.amazonaws.com']
+ALLOWED_HOSTS = ['localhost', '18.222.147.47', 'ec2-18-222-147-47.us-east-2.compute.amazonaws.com', 'bartensor.biz']
 
 
 # Application definition
