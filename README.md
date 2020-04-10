@@ -2,17 +2,9 @@
 
 Bartensor is community-driven, intelligent platform that connects alcohol consumers around the world. This Django web application allows people to easily search for their favorite drink's recipe or discover new similar drinks from our SQLite database and much more. Bartensor allows registered users to create custom drinks and add their recipes to our database and vote on other drink recipes. Bartensor aims to connect communities through alcohol so registered users can friend and comment with other users and their custom created drinks.
 
-## Project Structure
-
-Project Structure
-
--   Bartensor
-    -   .circleci - cicd pipeline software
-        -   congig.yml - circleci config file
-
 ## Getting Started
 
-This set of instructions...
+This set of instructions will help you locally install the required python dependencies and run the Bartensor Django server for development purposes.
 
 ### Python Application Dependencies
 
@@ -144,6 +136,20 @@ After the python dependencies have been installed and the database migrations ha
 
 ## Testing
 
+To run tests enter in the following command
+
+    python manage.py test
+
+To run tests with test coverage enabled, enter in the following command
+
+    coverage run manage.py test
+
+To generate the coverage html report, enter in the following command after the tests have been run with coverage
+
+    coverage html
+
+The generated coverage reports are located in the coverage_reports directory. To view the coverage report, open the index.html file with a web browser or html parser
+
 Run development server with `python manage.py runserver`
 
 When new drinks are added run `python manage.py get_images`
@@ -162,19 +168,3 @@ named their discovery ID and saved within the drink_images folder.
 run `python manage.py db-populate` to insert discovery generated ids and drink names
 
 ## Project Structure
-
-## Testing
-
-To run tests enter in the following command
-
-    python manage.py test
-
-To run tests with test coverage enabled, enter in the following command
-
-    coverage run manage.py test
-
-To generate the coverage html report, enter in the following command after the tests have been run with coverage
-
-    coverage html
-
-The generated coverage reports are located in the coverage_reports directory. To view the coverage report, open the index.html file with a web browser or html parser
