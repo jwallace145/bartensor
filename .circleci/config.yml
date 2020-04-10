@@ -16,4 +16,4 @@ workflows:
           requires:
             - aws-ecr/build-and-push-image
           family: bartensor-runserver
-          clustername: ecs-cluster
+          cluster-name: ecs-cluster
