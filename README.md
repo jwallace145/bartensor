@@ -1,6 +1,6 @@
 # Bartensor
 
-Bartensor is community-driven, intelligent platform that connects alcohol consumers around the world. This Django web application allows people to easily search for their favorite drink's recipe or discover new similar drinks from our SQLite database and much more. Bartensor allows registered users to create custom drinks and add their recipes to our database and vote on other drink recipes. Bartensor aims to connect communities through alcohol so registered users can friend and comment with other users and their custom created drinks.
+Bartensor is community-driven, intelligent platform that connects alcohol consumers around the world. This Django web application allows people to easily search for their favorite drink's recipe or discover new similar drinks from our SQLite database and much more. Bartensor allows registered users to create custom drinks and add their recipes to our database and vote on other drink recipes. Bartensor aims to connect communities through alcohol so registered users can friend and comment with other users.
 
 ## Getting Started
 
@@ -134,6 +134,28 @@ After the python dependencies have been installed and the database migrations ha
 
     python manage.py runserver
 
+If everything was installed and configured correctly then Django will start a development server at the following url.
+
+    http://127.0.0.1:8000/
+
+## Management Methods
+
+These custom management methods are useful for development.
+
+To auto-populate the SQLite database with test users and custom drinks, run the following command.
+
+    python manage.py db-populate
+
+When new drinks are added run the following command.
+
+    python manage.py get_images
+
+Only drinks where their static image folder is nonexistent will be searched for or downloaded.
+
+For any drinks where the image field in discovery is equal to "images/placeholder.jpg": The bot will search google for the name of the respective drink and download the first page of results into the folder at '.../static/data/drink_images/00000000from_google' within a folder named the drink's discovery ID. Enter this folder and delete all but the desired image. Remove the \_\_# from the end of that image's name. Move the folder into the drink_images folder when done.
+
+All other drinks where an img src address is specified in the discovery result will be directly downloaded into a folder named their discovery ID and saved within the drink_images folder.
+
 ## Testing
 
 To run tests enter in the following command
@@ -148,23 +170,4 @@ To generate the coverage html report, enter in the following command after the t
 
     coverage html
 
-The generated coverage reports are located in the coverage_reports directory. To view the coverage report, open the index.html file with a web browser or html parser
-
-Run development server with `python manage.py runserver`
-
-When new drinks are added run `python manage.py get_images`
-Only drinks where their static image folder is nonexistent will be searched for or downloaded.
-
-For any drinks where the image field in discovery is equal to "images/placeholder.jpg":
-    The bot will search google for the name of the respective drink and download the first page of results into
-    the folder at '.../static/data/drink_images/00000000from_google'
-    within a folder named the drink's discovery ID.
-    Enter this folder and delete all but the desired image. Remove the \_\_# from the end of that image's name.
-    Move the folder into the drink_images folder when done.
-
-All other drinks where an img src address is specified in the discovery result will be directly downloaded into a folder
-named their discovery ID and saved within the drink_images folder.
-
-run `python manage.py db-populate` to insert discovery generated ids and drink names
-
-## Project Structure
+The generated coverage reports are located in the coverage_reports directory. To view the coverage report, open the index.html file with a web browser or html parser.
