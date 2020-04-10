@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  web:
+    environment:
+      - WATSON_DISCOVERY_API_KEY=Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2
+    build: .
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8000:8000"
