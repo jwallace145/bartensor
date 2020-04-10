@@ -21,3 +21,4 @@ workflows:
           service-name: bartensor-runserver-service
           cluster-name: ecs-cluster
           force-new-deployment: true
+          container-image-name-updates: 'container=bartensor-service,tag=${CIRCLE_SHA1}'
