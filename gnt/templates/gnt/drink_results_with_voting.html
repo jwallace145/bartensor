@@ -1,20 +1,22 @@
 {% extends 'gnt/drink_results.html' %} {% load static %}
 {% block 'like-dislike' %} {% if user.is_authenticated %}
-<div class="col-6">
-    <a class="thumbsup" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-        <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up"
-            width="100%" />
-        <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}"
-            alt="thumbs up liked" width="90%" />
-    </a>
-</div>
-<div class="col-6">
-    <a class="thumbsdown" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
-        <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down"
-            width="100%" />
-        <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}"
-            alt="thumbs down disliked" width="90%" />
-    </a>
+<div class="row no-gutters">
+    <div class="col-6">
+        <a class="thumbsup" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
+            <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up"
+                width="100%" />
+            <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}"
+                alt="thumbs up liked" width="100%" />
+        </a>
+    </div>
+    <div class="col-6">
+        <a class="thumbsdown" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
+            <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}"
+                alt="thumbs down" width="100%" />
+            <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}"
+                alt="thumbs down disliked" width="100%" />
+        </a>
+    </div>
 </div>
 
 {% endif %} {% endblock 'like-dislike' %}

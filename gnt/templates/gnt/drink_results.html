@@ -1,6 +1,6 @@
 {% load static %}
 {% for drink in drinks %}
-<div class="row drink-result-row" id="drink_id_{{drink.id}}">
+<div class="row drink-result-row no-gutters" id="drink_id_{{drink.id}}">
   {% if request.path == '/results/' or request.path == '/more_results/'%}
   <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5 drink-image">
     {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
@@ -9,49 +9,42 @@
     {% endwith %}
   </div>
 
-  <div class="col-xl-10 col-lg-10 col-md-9 col-sm-8 col-7">
+  <div class=" card col-xl-10 col-lg-10 col-md-9 col-sm-8 col-7">
     {% else %}
-    <div class="col-12">
+    <div class="card col-12">
       {% endif %}
-      <div class="card">
-        <div class="card-header" id="drink_{{drink.id}}" style="display: flex">
-          <div class="row no-gutters">
-            <div class="col-lg-11 col-md-10 col-9">
-              <button class="btn btn-drink-names btn-block text-left" type="button" data-toggle="collapse"
-                data-target="#header{{drink.id}}" aria-expanded="false" aria-controls="drink_{{drink.id}}">
-                {{ drink.names | first }}
-              </button>
-            </div>
-            <div class="col-lg-1 col-md-2 col-3 like-dislike">
-              <!-- Like dislike buttons. no gutters removes padding -->
-              <div class="row no-gutters">
-                {% block 'like-dislike' %}{% endblock 'like-dislike' %}
-              </div>
-            </div>
-          </div>
+      <div class="card-header row no-gutters" id="drink_{{drink.id}}" style="display: flex">
+        <div class="col-lg-10 col-md-10 col-9 drink-name">
+          <button class="btn btn-drink-names btn-block text-left" type="button" data-toggle="collapse"
+            data-target="#header{{drink.id}}" aria-expanded="false" aria-controls="drink_{{drink.id}}">
+            {{ drink.names | first }}
+          </button>
         </div>
-        <div id="header{{drink.id}}" class="collapse" aria-labelledby="drink_{{drink.id}}" data-parent="#results">
-          <div class="card-body" style="display: flex">
-            <div class='col-lg-6' style="display: inline-block">
-              Ingredients:
-              <ul>
-                {% for ingredient in drink.ingredients %}
-                <li>{{ingredient}}</li>
-                {% endfor %}
-              </ul>
-              Method:
-              <ul>
-                {% for step in drink.method %}
-                <li>{{step}}</li>
-                {% endfor %}
-              </ul>
-            </div>
-            <div class="col-lg-4" style="display: inline-block; margin-left: 15%;">
-              {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
-              <!-- <i class="fas fa-cocktail fa-3x"></i> -->
-              <img src="{% static image_path %}" alt="picture lost :(" width="100%" />
-              {% endwith %}
-            </div>
+        <div class="col-lg-2 col-md-2 col-3 like-dislike">
+          {% block 'like-dislike' %}{% endblock 'like-dislike' %}
+        </div>
+      </div>
+      <div id="header{{drink.id}}" class="collapse" aria-labelledby="drink_{{drink.id}}" data-parent="#results">
+        <div class="card-body" style="display: flex">
+          <div class='col-lg-6' style="display: inline-block">
+            Ingredients:
+            <ul>
+              {% for ingredient in drink.ingredients %}
+              <li>{{ingredient}}</li>
+              {% endfor %}
+            </ul>
+            Method:
+            <ul>
+              {% for step in drink.method %}
+              <li>{{step}}</li>
+              {% endfor %}
+            </ul>
+          </div>
+          <div class="col-lg-4" style="display: inline-block; margin-left: 15%;">
+            {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
+            <!-- <i class="fas fa-cocktail fa-3x"></i> -->
+            <img src="{% static image_path %}" alt="picture lost :(" width="100%" />
+            {% endwith %}
           </div>
         </div>
       </div>

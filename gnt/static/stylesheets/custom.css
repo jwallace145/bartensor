@@ -341,25 +341,18 @@ a {
   padding-bottom: 15px;
 }
 
-.col-1.drink-image {
-  padding-left: 0px;
-  padding-right: 0px;
-}
-
 .card {
-  height: 100%;
-}
-
-.card-header {
-  height: 100%;
-}
-
-button.btn.btn-drink-names {
-  white-space: pre-line;
+  margin-top: auto;
+  margin-bottom: auto;
 }
 
 .like-dislike {
-  margin: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.btn.btn-drink-names {
+  white-space: pre-line;
 }
 
 .btn-drink-names {
@@ -381,10 +374,6 @@ button.btn.btn-drink-names {
 #dislike-drink {
   display: none;
   text-align: center;
-}
-
-.remove {
-  margin: 10px;
 }
 
 .no-results {

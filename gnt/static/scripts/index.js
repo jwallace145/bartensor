@@ -321,12 +321,6 @@ function load_more_drinks() {
     });
 }
 
-$(document).ready(function () {
-    if ($(window).width() < 700) {
-        alert("mobile");
-    }
-});
-
 function handleDrinkResults(drinks) {
     $("#index-div").hide();
     $("#content_here").append(drinks);
