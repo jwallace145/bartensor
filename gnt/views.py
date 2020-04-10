@@ -319,7 +319,8 @@ def profile_public(request, username):
 
             comment.save()
 
-            messages.success(request, f'You left a comment on { username }\'s drink!')
+            messages.success(
+                request, f'You left a comment on { username }\'s drink!')
 
     context = {
         'profile': user,

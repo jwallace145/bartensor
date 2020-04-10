@@ -27,7 +27,7 @@ SECRET_KEY = 'fhsu029mf+3w+r-e-oquk3!cv(t@rd1u5ocj=sd^vn#bj)s$@y'
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost', 'bartensor-env.eba-rvg8fb2e.us-east-2.elasticbeanstalk.com', '127.0.0.1']
+    'localhost', 'bartensor-env.eba-rvg8fb2e.us-east-2.elasticbeanstalk.com', '127.0.0.1', '192.168.1.188']
 
 
 # Application definition

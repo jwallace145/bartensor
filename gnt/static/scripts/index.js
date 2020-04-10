@@ -90,13 +90,17 @@ $(document).ready(function () {
     });
 
     // overwrite form's builtin post request
-    $('#index-search-form').on('submit', function () {
+    $('#index-search-form').on('submit', function search(e) {
+        e.preventDefault();
+        e.stopPropagation();
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
             dataType: 'html',
             data: $(this).serialize(),
             success: function (data) {
+                console.log("ajax success");
+                console.log(data);
                 $("#index-div").hide();
                 $("#content_here").append(data);
                 color_thumbs();
@@ -105,7 +109,10 @@ $(document).ready(function () {
                 hide_disliked_drinks();
             },
             error: function (xhr, ajaxOptions, thrownError) {
+                console.log("ajax fail");
+                console.log(xhr.statusCode);
                 console.log(xhr.status);
+                console.log(xhr.statusText);
                 console.log(thrownError);
                 $("#index-div").hide();
                 $("#content_here").append('<h6 class="backend-error">Error searching drinks</h6>');
@@ -115,7 +122,7 @@ $(document).ready(function () {
     });
 });
 
-function color_thumbs(){
+function color_thumbs() {
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
@@ -317,7 +324,7 @@ function load_more_drinks() {
         dataType: "html",
         success: function (data) {
             // There are no more drinks to load
-            if (data.length == 1){
+            if (data.length == 1) {
                 console.log("done");
                 $(".load-more").html("<h5>All drinks loaded</h5>");
             } else {
@@ -336,3 +343,7 @@ function load_more_drinks() {
         }
     });
 }
+
+$(document).ready(function () {
+    console.log("ready");
+})

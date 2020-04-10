@@ -16,7 +16,7 @@
   </div>
   <div class="container">
     <div class="row justify-content-center">
-      <form class="col-12 form-group" action="{% url 'results' %}" method="POST" id="index-search-form">
+      <form class="col-12 form-group" action="{% url 'results' %}" method="post" id="index-search-form">
         {% csrf_token %}
         <ul class="nav nav-tabs nav-fill row search-tabs no-gutters">
           <li class="nav-item col-4 nav-link active search-nav-link">
@@ -42,7 +42,6 @@
           </div>
         </div>
       </form>
-      <div class="col"></div>
     </div>
   </div>
 </div>

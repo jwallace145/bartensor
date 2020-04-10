@@ -55,10 +55,6 @@ h6 {
 
 @media (min-width:1200px) {}
 
-.container {
-  max-width: 80% !important;
-}
-
 ul {
   margin: 0;
 }
@@ -294,6 +290,7 @@ a.article-title:hover {
  * Loading Screen
  */
 .loading_gif_wrapper {
+  margin-top: 10%;
   text-align: center;
 }
 
