@@ -20,3 +20,4 @@ workflows:
           family: bartensor-runserver
           service-name: bartensor-runserver-service
           cluster-name: ecs-cluster
+          force-new-deployment: true
