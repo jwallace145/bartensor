@@ -1,21 +1,49 @@
-version: 2.1
-
-orbs:
-  python: circleci/python@0.2.1
+version: 2
 
 jobs:
-  build-and-test:
-    executor: python/default
+  # build:
+  #   docker:
+  #     - image: circleci/aws
+  #   steps:
+  #     - checkout
+  #     - setup_remote_docker
+  #     - run:
+  #         name: Export Environment Variables
+  #         command: |
+  #           echo 'export ECR_REPOSITORY_NAME=bartensor-repo' >> $BASH_ENV
+  #           echo 'export FULL_IMAGE_NAME=650503560686.dkr.ecr.us-east-2.amazonaws.com/bartensor-repo:latest' >> $BASH_ENV
+  #     - run:
+  #         name: Install AWS-CLI
+  #         command: |
+  #           pip install aws-cli
+  #     - run:
+  #         name: Get AWS Authentication Token
+  #         command: |
+  #           aws ecr get-login-password --region us-east-2 | docker login --username AWS --password-stdin 650503560686.dkr.ecr.us-east-2.amazonaws.com/bartensor-repo
+  #     - run:
+  #         name: Build Image
+  #         command: |
+  #           sudo docker build -t 650503560686.dkr.ecr.us-east-2.amazonaws.com/bartensor-repo:latest .
+  #     - run:
+  #         name: Save Image
+  #         command: |
+  #           mkdir docker-image
+  #           sudo docker save -o docker-image/image.tar 650503560686.dkr.ecr.us-east-2.amazonaws.com/bartensor-repo:latest
+
+  build:
+    docker:
+      - image: circleci/python:3.8
     steps:
-      - checkout
-      - python/load-cache
-      - python/install-deps
-      - python/save-cache
-      - run:
-          command: ./manage.py test
-          name: Test
+      - run: echo 'PENIS'
+  deploy-dev:
+    docker:
+      - image: circleci/python:3.8
+    steps:
+      - run: echo 'WEINERS'
 
 workflows:
-  main:
+  version: 2
+  build-test-deploy:
     jobs:
-      - build-and-test
+      - build
+      - deploy-dev
