@@ -2,11 +2,19 @@
 
 Bartensor is community-driven, intelligent platform that connects alcohol consumers around the world. This Django web application allows people to easily search for their favorite drink's recipe or discover new similar drinks from our SQLite database and much more. Bartensor allows registered users to create custom drinks and add their recipes to our database and vote on other drink recipes. Bartensor aims to connect communities through alcohol so registered users can friend and comment with other users and their custom created drinks.
 
+## Project Structure
+
+Project Structure
+
+-   Bartensor
+    -   .circleci - cicd pipeline software
+        -   congig.yml - circleci config file
+
 ## Getting Started
 
 This set of instructions...
 
-### Python Dependencies
+### Python Application Dependencies
 
 Bartensor uses Django3.0.3 - a python framework - so there are required python dependencies listed in the requirements.txt file of this repository.
 
@@ -100,6 +108,41 @@ Bartensor uses Django3.0.3 - a python framework - so there are required python d
     wcwidth==0.1.8
     websocket-client==0.48.0
     wrapt==1.11.2
+
+### Install Python Application Dependencies
+
+First, clone this repository to your local machine.
+
+    git clone https://github.com/jwallace317/Gin-and-Tensor.git
+
+Next, navigate into the cloned directory and create a python3 virtual environment with virtualenv.
+
+    python3 -m virtualenv <virtual environment name>
+
+Now with the virtual environment activated, install the python dependencies with pip and the requirements.txt file.
+
+    source <virtual environment name>/bin/activate
+    pip install -r requirements.txt
+
+### Run Database Migrations
+
+Django creates migrations to record changes in the database design. The migrations must be applied prior to running the server to ensure correct functionality.
+
+To make migrations, run the following command..
+
+    python manage.py makemigrations
+
+To run migrations, run the following command.
+
+    python manage.py migrate
+
+### Run Development Server
+
+After the python dependencies have been installed and the database migrations have been applied, we can run the development server with the following command.
+
+    python manage.py runserver
+
+## Testing
 
 Run development server with `python manage.py runserver`
 
