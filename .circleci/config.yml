@@ -14,8 +14,8 @@ workflows:
           profile-name: jwallace145
           region: AWS_REGION
           repo: bartensor-repo
-          tag: 'latest,bartensor'
       - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
-          family: 
+          family: bartensor-runserver
+          clustername: ecs-cluster
