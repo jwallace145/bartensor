@@ -33,63 +33,61 @@
 <body>
   <header class="site-header">
     <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
-      <div class="container">
-        <a class="navbar-brand mr-4" href="{% url 'home' %}">Bartensor</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
-          aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarToggle">
-          <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="{% url 'timeline_pop' %}">Proposals</a>
-          </div>
-          <div class="navbar-nav mr-auto">
-            <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
-          </div>
+      <a class="navbar-brand mr-4" href="{% url 'home' %}">Bartensor</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle"
+        aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarToggle">
+        <div class="navbar-nav mr-auto">
+          <a class="nav-item nav-link" href="{% url 'timeline_pop' %}">Proposals</a>
+        </div>
+        <div class="navbar-nav mr-auto">
+          <a class="nav-item nav-link" href="{% url 'about' %}">About</a>
+        </div>
 
-          <!-- Navbar Searchbar -->
-          <div class="container h-100">
-            <div class="d-flex justify-content-center h-100">
-              <form action="{% url 'search' %}" method="POST">
-                {% csrf_token %}
-                <div class="searchbar">
-                  <input class="search_input" type="text" name="search_input" placeholder="Friend search..." />
-                  <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
-                </div>
-              </form>
-            </div>
-          </div>
-
-          <!-- Navbar Right Side -->
-          <div class="navbar-nav">
-            {% if user.is_authenticated %}
-            <a class="nav-item nav-link" href="{% url 'profile_edit' username=user %}">
-              <img class="rounded-circle account-header-img" src="{{ user.profile.image.url }}" />
-            </a>
-
-            <a class="nav-item nav-link" href="{% url 'timeline' username=user %}">{{ user.username }}</a>
-
-            <a class="nav-item nav-link" href="#">
-              <i class="fas fa-comment-dots fa-lg"></i>
-            </a>
-            <a class="nav-item nav-link" href="{% url 'notifications' username=user %}">
-              <i class="fas fa-bell fa-lg"></i>
-            </a>
-            <div class="dropdown">
-              <button class="btn btn-ellipsis" type="button" id="dropdownMenuButton" data-toggle="dropdown"
-                aria-haspopup="true" aria-expanded="false">
-                <i class="fas fa-ellipsis-h fa-lg"></i>
-              </button>
-              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-                <a class="dropdown-item" href="#">Settings</a>
+        <!-- Navbar Searchbar -->
+        <div class="container h-100">
+          <div class="d-flex justify-content-center h-100">
+            <form action="{% url 'search' %}" method="POST">
+              {% csrf_token %}
+              <div class="searchbar">
+                <input class="search_input" type="text" name="search_input" placeholder="Friend search..." />
+                <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
               </div>
-            </div>
-            {% else %}
-            <a class=" nav-item nav-link" href="{% url 'login' %}">Login</a>
-            <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
-            {% endif %}
+            </form>
           </div>
+        </div>
+
+        <!-- Navbar Right Side -->
+        <div class="navbar-nav">
+          {% if user.is_authenticated %}
+          <a class="nav-item nav-link" href="{% url 'profile_edit' username=user %}">
+            <img class="rounded-circle account-header-img" src="{{ user.profile.image.url }}" />
+          </a>
+
+          <a class="nav-item nav-link" href="{% url 'timeline' username=user %}">{{ user.username }}</a>
+
+          <a class="nav-item nav-link" href="#">
+            <i class="fas fa-comment-dots fa-lg"></i>
+          </a>
+          <a class="nav-item nav-link" href="{% url 'notifications' username=user %}">
+            <i class="fas fa-bell fa-lg"></i>
+          </a>
+          <div class="dropdown">
+            <button class="btn btn-ellipsis" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              <i class="fas fa-ellipsis-h fa-lg"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+              <a class="dropdown-item" href="#">Settings</a>
+            </div>
+          </div>
+          {% else %}
+          <a class=" nav-item nav-link" href="{% url 'login' %}">Login</a>
+          <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
+          {% endif %}
         </div>
       </div>
     </nav>
