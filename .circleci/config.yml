@@ -4,16 +4,6 @@ orbs:
   aws-ecr: circleci/aws-ecr@6.8.1
   aws-ecs: circleci/aws-ecs@1.1.0
 
-jobs:
-  run-task:
-    docker:
-      - image: 'circlci/python:3.8'
-    steps:
-      - aws-ecs/run-task:
-          cluster: ecs-cluster
-          task-definition: bartensor-runserver:6
-          launch-type: EC2
-
 workflows:
   build-and-deploy:
     jobs:
@@ -24,6 +14,8 @@ workflows:
           profile-name: jwallace145
           region: AWS_REGION
           repo: bartensor-repo
-      - run-task:
+      - aws-ecs/deploy-service-update:
           requires:
             - aws-ecr/build-and-push-image
+          family: bartensor-runserver
+          cluster-name: ecs-cluster
