@@ -9,24 +9,24 @@
     {% endwith %}
   </div>
 
-  <div class=" card col-xl-10 col-lg-10 col-md-9 col-sm-8 col-7">
+  <div class="card col-xl-10 col-lg-10 col-md-9 col-sm-8 col-7">
     {% else %}
     <div class="card col-12">
       {% endif %}
-      <div class="card-header row no-gutters" id="drink_{{drink.id}}" style="display: flex">
-        <div class="col-lg-10 col-md-10 col-9 drink-name">
+      <div class="card-header row no-gutters align-items-center" id="drink_{{drink.id}}" style="display: flex">
+        <div class="col-lg-10 col-md-9 col-sm-8 col-7 drink-name">
           <button class="btn btn-drink-names btn-block text-left" type="button" data-toggle="collapse"
             data-target="#header{{drink.id}}" aria-expanded="false" aria-controls="drink_{{drink.id}}">
             {{ drink.names | first }}
           </button>
         </div>
-        <div class="col-lg-2 col-md-2 col-3 like-dislike">
+        <div class="col-lg-2 col-md-3 col-sm-4 col-5 like-dislike">
           {% block 'like-dislike' %}{% endblock 'like-dislike' %}
         </div>
       </div>
       <div id="header{{drink.id}}" class="collapse" aria-labelledby="drink_{{drink.id}}" data-parent="#results">
-        <div class="card-body" style="display: flex">
-          <div class='col-lg-6' style="display: inline-block">
+        <div class="card-body row justify-content-between">
+          <div class='col-lg-6'>
             Ingredients:
             <ul>
               {% for ingredient in drink.ingredients %}
@@ -40,7 +40,7 @@
               {% endfor %}
             </ul>
           </div>
-          <div class="col-lg-4" style="display: inline-block; margin-left: 15%;">
+          <div class="col-lg-4">
             {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
             <!-- <i class="fas fa-cocktail fa-3x"></i> -->
             <img src="{% static image_path %}" alt="picture lost :(" width="100%" />

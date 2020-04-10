@@ -349,6 +349,8 @@ a {
 .like-dislike {
   margin-top: auto;
   margin-bottom: auto;
+  padding-left: 3%;
+  padding-right: 3%;
 }
 
 .btn.btn-drink-names {
