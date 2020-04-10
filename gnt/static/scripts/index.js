@@ -91,6 +91,8 @@ $(document).ready(function () {
 
     // overwrite form's builtin post request
     $('#index-search-form').on('submit', function search(e) {
+        // This prevents the ajax call from navigating to the /results endpoint
+        // Makes it stay on index which is what we want
         e.preventDefault();
         e.stopPropagation();
         $.ajax({
