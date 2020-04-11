@@ -6,6 +6,12 @@ orbs:
 
 workflows:
   build-and-deploy:
+    triggers:
+      - schedule:
+          filter:
+            branches:
+              only:
+                - master
     jobs:
       - aws-ecr/build-and-push-image:
           account-url: AWS_ECR_ACCOUNT_URL
