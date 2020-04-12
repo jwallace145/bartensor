@@ -136,7 +136,6 @@ reports/
 user_drink_pics/
 .vscode/
 
-run.sh
 secret.txt
 google-stt-secrets.json
 

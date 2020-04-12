@@ -24,10 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'fhsu029mf+3w+r-e-oquk3!cv(t@rd1u5ocj=sd^vn#bj)s$@y'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', True)
 
-ALLOWED_HOSTS = ['localhost', '18.222.147.47', 'ec2-18-222-147-47.us-east-2.compute.amazonaws.com', 'bartensor.biz']
-
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 
 # Application definition
 
@@ -79,8 +78,12 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'NAME': os.environ.get('SQL_DATABASE', 'bartensordb'),
+        'USER': os.environ.get('SQL_USER', 'bartensoradmin'),
+        'PASSWORD': os.environ.get('SQL_PASSWORD', 'BartensorOSU!'),
+        'HOST': os.environ.get('SQL_HOST', 'localhost'),
+        'PORT': os.environ.get('SQL_PORT', '5432')
     }
 }
 
@@ -117,12 +120,6 @@ USE_L10N = True
 
 USE_TZ = True
 
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
-
-STATIC_URL = '/static/'
-
 PROJECT_APPS = [
     'gnt',
     'users'
@@ -154,4 +151,8 @@ EMAIL_HOST_PASSWORD = os.environ.get('BARTENSOR_EMAIL_PASSWORD')
 WATSON_DISCOVERY_API_KEY = os.environ.get('WATSON_DISCOVERY_API_KEY')
 WATSON_SPEECH_TO_TEXT_API_KEY = os.environ.get('WATSON_SPEECH_TO_TEXT_API_KEY')
 
-STATIC_ROOT = os.path.join(BASE_DIR, "static/")
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/3.0/howto/static-files/
+
+STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
