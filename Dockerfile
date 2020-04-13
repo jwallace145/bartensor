@@ -7,6 +7,7 @@ WORKDIR /usr/src/app
 # set environment variables
 ENV PYTHONUNBUFFERED 1
 
+# update and upgrade apt
 RUN apt-get update && apt-get -y upgrade
 
 # add requirements

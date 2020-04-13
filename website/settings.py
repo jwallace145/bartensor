@@ -26,7 +26,7 @@ SECRET_KEY = 'fhsu029mf+3w+r-e-oquk3!cv(t@rd1u5ocj=sd^vn#bj)s$@y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', True)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django']
 
 # Application definition
 
@@ -78,7 +78,7 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql_psycopg2'),
+        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.postgresql'),
         'NAME': os.environ.get('SQL_DATABASE', 'bartensordb'),
         'USER': os.environ.get('SQL_USER', 'bartensoradmin'),
         'PASSWORD': os.environ.get('SQL_PASSWORD', 'BartensorOSU!'),
@@ -155,4 +155,4 @@ WATSON_SPEECH_TO_TEXT_API_KEY = os.environ.get('WATSON_SPEECH_TO_TEXT_API_KEY')
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
