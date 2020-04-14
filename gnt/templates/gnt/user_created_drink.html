@@ -20,52 +20,62 @@
 
     <div class="row">
 
-      <!-- INGREDIENTS AND INSTRUCTIONS -->
-      <div class="col-lg-6">
-        <h2>{{ drink.name }}</h2>
+      <!-- NAME AND DESCRIPTION -->
+      <div class="col-lg-8 col-md-7 col-6">
+        <h2 class="article-title">{{ drink.name }}</h2>
         <p class="article-content">{{ drink.description }}</p>
+      </div>
+
+      <!-- IMAGE -->
+      <div class="col-lg-2 col-md-3 col-4">
+        <img src="{{ drink.image.url }}" width="90%" style="margin-left: auto;" />
+      </div>
+
+      <!-- VOTING -->
+      <div class="col-2">
+        <a class="upvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
+          <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up"
+            width="30em" />
+          <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}"
+            alt="thumbs up liked" width="30em" />
+        </a>
+        <div id="drink{{drink.id}}_votes">{{drink.votes}}</div>
+        <a class="downvote" id="{{drink.id}}" drinkid="{{drink.id}}" user="{{user}}">
+          <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down"
+            width="30em" />
+          <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}"
+            alt="thumbs down disliked" width="30em" />
+        </a>
+      </div>
+
+
+      <!-- INGREDIENTS AND INSTRUCTIONS -->
+      <div class="col-12">
         <p class="article-content">Ingredients</p>
         {% for ingredient in drink.ingredient_set.all %}
         <ul>
-          <li>{{ ingredient.name }} - {{ ingredient.quantity }}</li>
+          <li class="ingredient">{{ ingredient.name }} - {{ ingredient.quantity }}</li>
         </ul>
         {% endfor %}
         <p class="article-content">Instructions</p>
         {% for instruction in drink.instruction_set.all %}
         <ul>
-          <li>{{ instruction.instruction }}</li>
+          <li class="instruction">{{ instruction.instruction }}</li>
         </ul>
         {% endfor %}
       </div>
 
-      <!-- DRINK IMAGE -->
-      <div class="col-lg-5" style="text-align: right;">
-        <img src="{{ drink.image.url }}" width="60%" style="margin-left: auto;" />
-      </div>
 
-      <!-- VOTES -->
-      <div class="col-lg-1" style="text-align: center;">
-        <a class="upvote" id="{{ drink.id }}" drinkid="{{ drink.id }}" user="{{ user }}">
-          <img class="voting_buttons" id="blank_thumbsup" src="{% static 'images/thumbsup.png' %}" alt="thumbs up" width="30em" />
-          <img class="voting_buttons" id="filled_thumbsup" src="{% static 'images/thumbsup_liked.png' %}" alt="thumbs up liked" width="30em" />
-        </a>
-        <div id='drink{{ drink.id }}_votes'>{{ drink.votes }}</div>
-        <a class="downvote" id="{{ drink.id }}" drinkid="{{ drink.id }}" user="{{ user }}">
-          <img class="voting_buttons" id="blank_thumbsdown" src="{% static 'images/thumbsdown.png' %}" alt="thumbs down" width="30em" />
-          <img class="voting_buttons" id="filled_thumbsdown" src="{% static 'images/thumbsdown_disliked.png' %}" alt="thumbs down disliked" width="30em" />
-        </a>
-      </div>
-    </div>
 
-    <!-- COMMENTS SECTION -->
-    <div class="row">
+      <!-- COMMENTS SECTION -->
       <div class="col-lg-12">
         <hr>
         <h5>Comments</h2>
           {% for comment in drink.comment_set.all %}
           <div class="content-section">
             <a href="{% url 'timeline' username=comment.author %}" class="mr-2">
-              <img class="rounded-circle" src="{{ comment.author.profile.image.url }}" style="height: 50px; width: 50px;">
+              <img class="rounded-circle" src="{{ comment.author.profile.image.url }}"
+                style="height: 50px; width: 50px;">
             </a>
             <div class="media-body">
               <div class="article-metadata">
@@ -81,7 +91,8 @@
           </div>
           {% endfor %}
           {% if user.is_authenticated %}
-          <a href="{% url 'timeline' username=user %}"><img class="rounded-circle" src="{{ user.profile.image.url }}" style="height: 50px; width: 50px;"></a>
+          <a href="{% url 'timeline' username=user %}"><img class="rounded-circle" src="{{ user.profile.image.url }}"
+              style="height: 50px; width: 50px;"></a>
           <div class="comments-bar">
             <form method="POST">
               {% csrf_token %}
@@ -92,5 +103,4 @@
           {% endif %}
       </div>
     </div>
-  </div>
 </article>
