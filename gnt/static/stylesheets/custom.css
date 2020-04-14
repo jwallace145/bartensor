@@ -2,8 +2,6 @@ body,
 html {
   height: 100%;
   width: 100%;
-  background: #fafafa;
-  background-color: #fafafa;
   color: #333333;
   margin-top: 5rem;
 }
@@ -83,7 +81,7 @@ span {
 
   .searchbar:hover>.search_input {
     padding: 0 10px;
-    width: 250px;
+    width: 230px;
     caret-color: black;
     transition: width 0.4s linear;
   }
