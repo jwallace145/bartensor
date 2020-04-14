@@ -13,10 +13,24 @@ h4,
 h5,
 h6 {
   color: #444444;
+  white-space: normal;
+  word-break: break-all;
+}
+
+p {
+  word-break: break-all;
 }
 
 span {
   white-space: normal;
+}
+
+li.instruction {
+  word-break: break-all;
+}
+
+li.ingredient {
+  word-break: break-all;
 }
 
 
@@ -35,6 +49,10 @@ span {
     width: 200px;
     caret-color: black;
     transition: width 0.4s linear;
+  }
+
+  h2.article-title {
+    font-size: 20px;
   }
 
 }
@@ -56,6 +74,10 @@ span {
     transition: width 0.4s linear;
   }
 
+  h2.article-title {
+    font-size: 20px;
+  }
+
 }
 
 /* Bootstrap medium */
@@ -69,6 +91,10 @@ span {
     width: 400px;
     caret-color: black;
     transition: width 0.4s linear;
+  }
+
+  h2.article-title {
+    font-size: 20px;
   }
 
 }

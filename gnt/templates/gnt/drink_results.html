@@ -30,13 +30,13 @@
             Ingredients:
             <ul>
               {% for ingredient in drink.ingredients %}
-              <li>{{ingredient}}</li>
+              <li class="ingredient">{{ingredient}}</li>
               {% endfor %}
             </ul>
             Method:
             <ul>
               {% for step in drink.method %}
-              <li>{{step}}</li>
+              <li class="instruction">{{step}}</li>
               {% endfor %}
             </ul>
           </div>
