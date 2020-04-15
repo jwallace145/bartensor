@@ -25,7 +25,7 @@ RUN apt-get install -y apt-utils vim curl apache2 apache2-utils lynx \
 # add apache2 configs
 ADD bartensor.dev.conf  /etc/apache2/sites-available/000-default.conf
 
-# add entrypoint
+# add entrypoint script
 ADD entrypoint.dev.sh .
 
 # add the project

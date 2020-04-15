@@ -16,18 +16,16 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'fhsu029mf+3w+r-e-oquk3!cv(t@rd1u5ocj=sd^vn#bj)s$@y'
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', True)
+DEBUG = int(os.environ.get('DEBUG', 0))
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django', '18.217.199.76',
-                 'ec2-18-217-199-76.us-east-2.compute.amazonaws.com', 'bartensor.biz']
+ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS').split(' ')
 
 # Application definition
 
@@ -79,8 +77,8 @@ WSGI_APPLICATION = 'website.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': os.environ.get('SQL_ENGINE', 'django.db.backends.sqlite3'),
+        'NAME': os.environ.get('DATABASE', os.path.join(BASE_DIR, 'db.sqlite3'))
     }
 }
 
@@ -122,13 +120,19 @@ PROJECT_APPS = [
     'users'
 ]
 
-JENKINS_TASKS = [
-    'django_jenkins.tasks.run_pep8',
-    'django_jenkins.tasks.run_pyflakes',
-    'django_jenkins.tasks.run_flake8'
-]
-
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+EMAIL_HOST = 'smtp.gmail.com'
+
+EMAIL_HOST_PASSWORD = os.environ.get('BARTENSOR_EMAIL_PASSWORD')
+
+EMAIL_HOST_USER = os.environ.get('BARTENSOR_EMAIL_USERNAME')
+
+EMAIL_PORT = 587
+
+EMAIL_USE_TLS = True
 
 LOGIN_REDIRECT_URL = 'home'
 
@@ -138,18 +142,10 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MEDIA_URL = '/media/'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = os.environ.get('BARTENSOR_EMAIL_USERNAME')
-EMAIL_HOST_PASSWORD = os.environ.get('BARTENSOR_EMAIL_PASSWORD')
-
-WATSON_DISCOVERY_API_KEY = os.environ.get('WATSON_DISCOVERY_API_KEY')
-WATSON_SPEECH_TO_TEXT_API_KEY = os.environ.get('WATSON_SPEECH_TO_TEXT_API_KEY')
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/3.0/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static/')
+
+WATSON_DISCOVERY_API_KEY = os.environ.get('WATSON_DISCOVERY_API_KEY')
+
+WATSON_SPEECH_TO_TEXT_API_KEY = os.environ.get('WATSON_SPEECH_TO_TEXT_API_KEY')

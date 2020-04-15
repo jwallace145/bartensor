@@ -186,4 +186,4 @@ The generated coverage reports are located in the coverage_reports directory. To
 
 This repository features a CircleCI CICD pipeline that pushes new master branch images to an AWS Elastic Container Registry and updates a service running on an AWS Elastic Container Service Cluster. The update to the service forces a new deployment of the updated task definition. This pipeline will push master code base changes to the designated AWS resources within five minutes. The details of the deployment process can be seen in the CircleCI config.yml file.
 
-To deploy this Django project, our team decided to serve our project with Apache2. We decided to configure Apache2 to serve static requests and application requests for ease of use. The Apache2 configurations that we decided to use are listed in the bartensor.conf file. 
+To deploy this Django project, our team decided to serve our project with Apache2. We decided to configure Apache2 to serve static requests and application requests for ease of use. The Apache2 configurations that we decided to use are listed in the bartensor.conf file.
