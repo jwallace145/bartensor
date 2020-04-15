@@ -138,6 +138,16 @@ If everything was installed and configured correctly then Django will start a de
 
     http://127.0.0.1:8000/
 
+### Run Django in Docker Container with Apache2
+
+Instead of running the server on your local machine, this repository features a docker-compose file. So, with the given command, docker-compose will run the service outlined in the docker-compose.yml file. This command will containerize Django, Apache2, and SQLite.
+
+    docker-compose up
+
+Use the following command to force a new build and run the docker container listed in the docker-compose file.
+
+    docker-compose up --build
+
 ## Management Methods
 
 These custom management methods are useful for development.
@@ -171,3 +181,9 @@ To generate the coverage html report, enter in the following command after the t
     coverage html
 
 The generated coverage reports are located in the coverage_reports directory. To view the coverage report, open the index.html file with a web browser or html parser.
+
+## Deployment
+
+This repository features a CircleCI CICD pipeline that pushes new master branch images to an AWS Elastic Container Registry and updates a service running on an AWS Elastic Container Service Cluster. The update to the service forces a new deployment of the updated task definition. This pipeline will push master code base changes to the designated AWS resources within five minutes. The details of the deployment process can be seen in the CircleCI config.yml file.
+
+To deploy this Django project, our team decided to serve our project with Apache2. We decided to configure Apache2 to serve static requests and application requests for ease of use. The Apache2 configurations that we decided to use are listed in the bartensor.conf file. 
