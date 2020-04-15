@@ -16,13 +16,13 @@ workflows:
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
           profile-name: jwallace145
           region: AWS_REGION
-          repo: bartensor-repo
+          repo: bartensor-images
       - aws-ecs/deploy-service-update:
           filters:
             branches:
               only: circleci-branch-specifier
           requires:
             - aws-ecr/build-and-push-image
-          family: bartensor-service
-          cluster-name: bartensor
+          family: bartensor-runserver
+          cluster-name: bartensor-cluster
           force-new-deployment: true
