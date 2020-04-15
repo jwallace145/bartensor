@@ -1,28 +1,39 @@
 # pull official base image
-FROM python:3.8.0
+FROM ubuntu:18.04
+
+ENV PYTHONUNBUFFERED 1
+
+# update and upgrade apt
+RUN apt-get update \
+    && apt-get -y upgrade
 
 # set working directory
 WORKDIR /usr/src/app
 
-# set environment variables
-ENV PYTHONUNBUFFERED 1
-
-# update and upgrade apt
-RUN apt-get update && apt-get -y upgrade
-
 # add requirements
 ADD requirements.txt .
 
-# install  requirements
-RUN python -m venv /venv \
-    && /venv/bin/pip install --upgrade pip \
-    && /venv/bin/pip install -r requirements.txt
+# install dependencies
+RUN apt-get install -y apt-utils vim curl apache2 apache2-utils lynx \
+    && apt-get install -y python3 libapache2-mod-wsgi-py3 \
+    && apt-get install -y python3-pip \
+    && ln /usr/bin/python3 /usr/bin/python \
+    && ln /usr/bin/pip3 /usr/bin/pip \
+    && pip install --upgrade pip \
+    && pip install -r requirements.txt
+
+# add apache2 configs
+ADD bartensor.dev.conf  /etc/apache2/sites-available/000-default.conf
 
 # add entrypoint
 ADD entrypoint.dev.sh .
 
 # add the project
 ADD . .
+
+EXPOSE 80
+
+RUN ["chmod", "+x", "/usr/src/app/entrypoint.dev.sh"]
 
 # run entrypoint
 ENTRYPOINT ["/usr/src/app/entrypoint.dev.sh"]

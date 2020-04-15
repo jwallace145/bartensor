@@ -1,7 +1,8 @@
 #!/bin/bash
 
-/venv/bin/python manage.py migrate
-/venv/bin/python manage.py collectstatic
-/venv/bin/gunicorn website.wsgi:application --bind 0.0.0.0:8000
+python manage.py makemigrations
+python manage.py migrate
+python manage.py collectstatic --noinput
+apache2ctl -D FOREGROUND
 
 exec "$@"
