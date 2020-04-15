@@ -7,17 +7,3 @@ services:
       - 8000:80
     env_file:
       - env/.env.dev
-    depends_on:
-      - db
-
-  db:
-    image: postgres:12
-    ports:
-      - 5432:5432
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/
-    env_file:
-      - env/.env.dev.db
-
-volumes:
-  postgres_data:

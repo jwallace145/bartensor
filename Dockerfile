@@ -31,9 +31,11 @@ ADD entrypoint.dev.sh .
 # add the project
 ADD . .
 
+# expose port 80
 EXPOSE 80
 
+# grant execute permissions to entrypoint script
 RUN ["chmod", "+x", "/usr/src/app/entrypoint.dev.sh"]
 
-# run entrypoint
+# run entrypoint script
 ENTRYPOINT ["/usr/src/app/entrypoint.dev.sh"]
