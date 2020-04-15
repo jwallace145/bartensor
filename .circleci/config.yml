@@ -10,7 +10,7 @@ workflows:
       - aws-ecr/build-and-push-image:
           filters:
             branches:
-              only: circleci-branch-specifier
+              only: master
           account-url: AWS_ECR_ACCOUNT_URL
           aws-access-key-id: AWS_ACCESS_KEY_ID
           aws-secret-access-key: AWS_SECRET_ACCESS_KEY
@@ -20,7 +20,7 @@ workflows:
       - aws-ecs/deploy-service-update:
           filters:
             branches:
-              only: circleci-branch-specifier
+              only: master
           requires:
             - aws-ecr/build-and-push-image
           family: bartensor-runserver
