@@ -26,7 +26,8 @@ SECRET_KEY = 'fhsu029mf+3w+r-e-oquk3!cv(t@rd1u5ocj=sd^vn#bj)s$@y'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DEBUG', True)
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'django', '18.217.199.76',
+                 'ec2-18-217-199-76.us-east-2.compute.amazonaws.com', 'bartensor.biz']
 
 # Application definition
 
@@ -133,7 +134,7 @@ LOGIN_REDIRECT_URL = 'home'
 
 LOGIN_URL = 'login'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
 MEDIA_URL = '/media/'
 
