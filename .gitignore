@@ -145,3 +145,4 @@ node_modules
 !.elasticbeanstalk/*.global.yml
 
 .jsbeautifyrc
+static/
