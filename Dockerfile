@@ -10,6 +10,16 @@ RUN apt-get update \
 # set working directory
 WORKDIR /usr/src/app
 
+ENV DEBUG 0
+ENV SECRET_KEY production
+ENV ALLOWED_HOSTS bartensor.biz 18.217.199.76 ec2-18-217-199-76.us-east-2.compute.amazonaws.com
+ENV SQL_ENGINE django.db.backends.sqlite3
+ENV DATABASE db.sqlite3
+ENV BARTENSOR_EMAIL_USERNAME bartensor@gmail.com
+ENV BARTENSOR_EMAIL_PASSWORD iupeqdduwlekqjrj
+ENV WATSON_DISCOVERY_API_KEY Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2
+ENV WATSON_SPEECH_TO_TEXT_API_KEY GUyb9Y0-25JUO7_fZtyLvlDipUAMzROb2vxadUiWJEMX
+
 # add requirements
 ADD requirements.txt .
 
