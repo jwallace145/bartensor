@@ -3,67 +3,65 @@
 
 <div class="content-section">
 
-  <!-- FRIENDS -->
-  <div class="row">
-    <div class="col-lg-12">
-      <legend class="border-bottom mb-4">Friends</legend>
+    <!-- FRIENDS -->
+    <div class="row">
+        <div class="col-lg-12">
+            <legend class="border-bottom mb-4">Friends</legend>
+        </div>
     </div>
-  </div>
 
-  <!-- PROFILE HAS NO FRIENDS -->
-  {% if not friends %}
-  <div class="content-section">
-    <div>
-      {{ profile }} doesn't have any friends yet!
-    </div>
-  </div>
-  {% endif %}
-
-  <!-- PROFILE HAS FRIENDS -->
-  {% if friends %}
-  {% for friend in friends %}
-  <article class="media content-section">
-
-    <!-- FRIEND 1 IS NOT THE CURRENT PROFILE -->
-    {% if friend.friend1 != profile.profile %}
-    <img class="rounded-circle article-img" src="{{ friend.friend1.image.url }}">
-    <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="{% url 'timeline' username=friend.friend1.user %}">{{ friend.friend1.user }}</a>
-      </div>
-      <h2><a class="article-title" href="{% url 'timeline' username=friend.friend1.user %}">{{ friend.friend1.user }}</a></h2>
-      <p class="article-content">{{ friend.friend1.bio }}</p>
-      {% if user.is_authenticated and user.profile == friend.friend2 %}
-      <form method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="requestor" value="{{ friend.friend1.user }}" />
-        <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
-      </form>
-      {% endif %}
+    <!-- PROFILE HAS NO FRIENDS -->
+    {% if not friends %}
+    <div class="content-section">
+        <div>
+            {{ profile }} doesn't have any friends yet!
+        </div>
     </div>
     {% endif %}
 
-    <!-- FRIEND 2 IS NOT THE CURRENT PROFILE -->
-    {% if friend.friend2 != profile.profile %}
-    <img class="rounded-circle article-img" src="{{ friend.friend2.image.url }}">
-    <div class="media-body">
-      <div class="article-metadata">
-        <a class="mr-2" href="{% url 'timeline' username=friend.friend2.user %}">{{ friend.friend2.user }}</a>
-      </div>
-      <h2><a class="article-title" href="{% url 'timeline' username=friend.friend2.user %}">{{ friend.friend2.user }}</a></h2>
-      <p class="article-content">{{ friend.friend2.bio }}</p>
-      {% if user.is_authenticated and user.profile == friend.friend1 %}
-      <form method="POST">
-        {% csrf_token %}
-        <input type="hidden" name="requestor" value="{{ friend.friend2.user }}" />
-        <button class="btn btn-outline-info" type="submit" name="remove-friend" value="weenies">Remove Friend</button>
-      </form>
-      {% endif %}
-    </div>
+    <!-- PROFILE HAS FRIENDS -->
+    {% if friends %}
+    {% for friend in friends %}
+    <article class="media content-section">
+
+        <!-- FRIEND 1 IS NOT THE CURRENT PROFILE -->
+        {% if friend.friend1 != profile.profile %}
+        <img class="rounded-circle article-img" src="{{ friend.friend1.image.url }}">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{% url 'timeline' username=friend.friend1.user %}">{{ friend.friend1.user }}</a>
+            </div>
+            <p class="article-content">{{ friend.friend1.bio }}</p>
+            {% if user.is_authenticated and user.profile == friend.friend2 %}
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="requestor" value="{{ friend.friend1.user }}" />
+                <button class="btn btn-outline-info" type="submit" name="remove-friend">Remove Friend</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+
+        <!-- FRIEND 2 IS NOT THE CURRENT PROFILE -->
+        {% if friend.friend2 != profile.profile %}
+        <img class="rounded-circle article-img" src="{{ friend.friend2.image.url }}">
+        <div class="media-body">
+            <div class="article-metadata">
+                <a class="mr-2" href="{% url 'timeline' username=friend.friend2.user %}">{{ friend.friend2.user }}</a>
+            </div>
+            <p class="article-content">{{ friend.friend2.bio }}</p>
+            {% if user.is_authenticated and user.profile == friend.friend1 %}
+            <form method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="requestor" value="{{ friend.friend2.user }}" />
+                <button class="btn btn-outline-info" type="submit" name="remove-friend" value="weenies">Remove Friend</button>
+            </form>
+            {% endif %}
+        </div>
+        {% endif %}
+    </article>
+    {% endfor %}
     {% endif %}
-  </article>
-  {% endfor %}
-  {% endif %}
 
 </div>
 {% endblock profile_content %}

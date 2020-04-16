@@ -7,6 +7,7 @@ from string import punctuation
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.db.models import Q
 from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
@@ -22,6 +23,8 @@ from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm,
 from .models import (Comment, Drink, Friend, FriendRequest, Profile,
                      ProfileToDislikedDrink, ProfileToLikedDrink,
                      UpvotedUserDrink, UserDrink)
+
+up_ratio, down_ratio = 0.1, 0.05
 
 
 def bad_request(request):
@@ -277,16 +280,6 @@ def profile_public(request, username):
     # get drinks created by user ordered by new
     drinks = UserDrink.objects.filter(user=user).order_by('-timestamp')
 
-    # if the user is logged in, check friendship status
-    if request.user.is_authenticated:
-        requests = (FriendRequest.objects.filter(requestee=user.profile) |
-                    FriendRequest.objects.filter(requestor=user.profile))
-        friends = (Friend.objects.filter(friend1=user.profile) |
-                   Friend.objects.filter(friend2=user.profile))
-    else:
-        requests = []
-        friends = []
-
     # if post request
     if request.method == 'POST':
 
@@ -321,6 +314,37 @@ def profile_public(request, username):
 
             messages.success(
                 request, f'You left a comment on { username }\'s drink!')
+
+        elif 'accept-friend' in request.POST:
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request.delete()
+
+            friend = Friend(
+                friend1=request.user.profile,
+                friend2=user.profile
+            )
+
+            friend.save()
+
+            messages.success(request, f'You have accepted { username }\'s friend request!')
+
+        elif 'deny-friend' in request.POST:
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request.delete()
+
+            messages.info(request, f'You have denied to add { username } as a friend.')
+
+    requests = []
+    friends = []
+    if request.user.is_authenticated:
+        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) | Q(requestee=user.profile, requestor=request.user.profile))
+        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) | Q(friend1=user.profile, friend2=request.user.profile))
+
+        if requests:
+            requests = requests[0]
+
+        if friends:
+            friends = friends[0]
 
     context = {
         'profile': user,
@@ -369,8 +393,59 @@ def liked_drinks(request, username):
     Liked Drinks View
     """
 
-    username = User.objects.get(username=username)
-    profile = Profile.objects.get(user=username)
+    user = User.objects.get(username=username)
+    profile = Profile.objects.get(user=user)
+
+    # if post request
+    if request.method == 'POST':
+
+        # if add friend post request
+        if 'add-friend' in request.POST:
+            friend_request = FriendRequest()
+            friend_request.requestee = user.profile
+            friend_request.requestor = request.user.profile
+            friend_request.save()
+
+            messages.success(request, f'Friend request sent to { username }!')
+
+        # else if remove friend post request
+        elif 'remove-friend' in request.POST:
+            friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | Friend.objects.filter(
+                friend1=user.profile, friend2=request.user.profile)
+            friend.delete()
+
+            messages.success(request, f'Removed friend { username }!')
+
+        elif 'accept-friend' in request.POST:
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request.delete()
+
+            friend = Friend(
+                friend1=request.user.profile,
+                friend2=user.profile
+            )
+
+            friend.save()
+
+            messages.success(request, f'You have accepted { username }\'s friend request!')
+
+        elif 'deny-friend' in request.POST:
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request.delete()
+
+            messages.info(request, f'You have denied to add { username } as a friend.')
+
+    requests = []
+    friends = []
+    if request.user.is_authenticated:
+        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) | Q(requestee=user.profile, requestor=request.user.profile))
+        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) | Q(friend1=user.profile, friend2=request.user.profile))
+
+        if requests:
+            requests = requests[0]
+
+        if friends:
+            friends = friends[0]
 
     profile_to_drink = ProfileToLikedDrink.objects.filter(profile=profile.id)
 
@@ -385,14 +460,19 @@ def liked_drinks(request, username):
             response[i] = obj[0]
 
         context = {
-            'profile': username,
-            'drinks': response
+            'profile': user,
+            'drinks': response,
+            'requests': requests,
+            'friends': friends
         }
 
         return render(request, 'gnt/profile_liked_drinks.html', context)
+
     else:
         context = {
-            'profile': username
+            'profile': user,
+            'requests': requests,
+            'friends': friends
         }
 
         return render(request, 'gnt/profile_liked_drinks.html', context)
@@ -411,11 +491,61 @@ def disliked_drinks(request, username):
     Disliked Drinks View
     """
 
-    username = User.objects.get(username=username)
-    profile = Profile.objects.get(user=username)
+    user = User.objects.get(username=username)
+    profile = Profile.objects.get(user=user)
 
-    profile_to_drink = ProfileToDislikedDrink.objects.filter(
-        profile=profile.id)
+    # if post request
+    if request.method == 'POST':
+
+        # if add friend post request
+        if 'add-friend' in request.POST:
+            friend_request = FriendRequest()
+            friend_request.requestee = user.profile
+            friend_request.requestor = request.user.profile
+            friend_request.save()
+
+            messages.success(request, f'Friend request sent to { username }!')
+
+        # else if remove friend post request
+        elif 'remove-friend' in request.POST:
+            friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | Friend.objects.filter(
+                friend1=user.profile, friend2=request.user.profile)
+            friend.delete()
+
+            messages.success(request, f'Removed friend { username }!')
+
+        elif 'accept-friend' in request.POST:
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request.delete()
+
+            friend = Friend(
+                friend1=request.user.profile,
+                friend2=user.profile
+            )
+
+            friend.save()
+
+            messages.success(request, f'You have accepted { username }\'s friend request!')
+
+        elif 'deny-friend' in request.POST:
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request.delete()
+
+            messages.info(request, f'You have denied to add { username } as a friend.')
+
+    requests = []
+    friends = []
+    if request.user.is_authenticated:
+        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) | Q(requestee=user.profile, requestor=request.user.profile))
+        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) | Q(friend1=user.profile, friend2=request.user.profile))
+
+        if requests:
+            requests = requests[0]
+
+        if friends:
+            friends = friends[0]
+
+    profile_to_drink = ProfileToDislikedDrink.objects.filter(profile=profile.id)
 
     if profile_to_drink:
         response = [0 for i in range(len(profile_to_drink))]
@@ -428,14 +558,20 @@ def disliked_drinks(request, username):
             response[i] = obj[0]
 
         context = {
-            'profile': username,
-            'drinks': response
+            'profile': user,
+            'drinks': response,
+            'requests': requests,
+            'friends': friends
         }
 
         return render(request, 'gnt/profile_disliked_drinks.html', context)
+
     else:
+
         context = {
-            'profile': username
+            'profile': user,
+            'requests': requests,
+            'friends': friends
         }
 
         return render(request, 'gnt/profile_disliked_drinks.html', context)
@@ -449,9 +585,12 @@ def timeline_pop(request):
     if request.GET.get('offset', 0):
         offset = int(request.GET['offset'])
     drinks = UserDrink.objects.all().order_by('-votes')[offset:offset + 50]
-
+    up_thresh = len(Profile.objects.all()) * up_ratio
+    down_thresh = 0 - len(Profile.objects.all()) * down_ratio
     context = {
-        'drinks': drinks
+        'drinks': drinks,
+        'up_thresh': up_thresh,
+        'down_thresh': down_thresh
     }
 
     return render(request, 'gnt/timeline.html', context)
@@ -465,9 +604,12 @@ def timeline(request):
     if request.GET.get('offset', 0) != 0:
         offset = int(request.GET['offset'])
     drinks = UserDrink.objects.all().order_by('-timestamp')[offset:offset + 50]
-
+    up_thresh = len(Profile.objects.all()) * up_ratio
+    down_thresh = 0 - len(Profile.objects.all()) * down_ratio
     context = {
-        'drinks': drinks
+        'drinks': drinks,
+        'up_thresh': up_thresh,
+        'down_thresh': down_thresh
     }
 
     return render(request, 'gnt/timeline.html', context)
@@ -530,24 +672,61 @@ def friends(request, username):
     Friends View
     """
 
-    username = User.objects.get(username=username)
-    profile = Profile.objects.get(user=username)
+    user = User.objects.get(username=username)
+    profile = Profile.objects.get(user=user)
 
+    # if post request
     if request.method == 'POST':
-        if 'remove-friend' in request.POST:
-            requestor = User.objects.get(username=request.POST['requestor'])
-            friends = Friend.objects.filter(friend1=requestor.profile, friend2=request.user.profile) | Friend.objects.filter(
-                friend1=request.user.profile, friend2=requestor.profile)
-            friends.delete()
 
-            messages.success(
-                request, f'you have removed friend { requestor.profile.user }')
+        # if add friend post request
+        if 'add-friend' in request.POST:
+            friend_request = FriendRequest()
+            friend_request.requestee = user.profile
+            friend_request.requestor = request.user.profile
+            friend_request.save()
+
+            messages.success(request, f'Friend request sent to { username }!')
+
+        # else if remove friend post request
+        elif 'remove-friend' in request.POST:
+            friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | Friend.objects.filter(
+                friend1=user.profile, friend2=request.user.profile)
+            friend.delete()
+
+            messages.success(request, f'Removed friend { username }!')
+
+        elif 'accept-friend' in request.POST:
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request.delete()
+
+            friend = Friend(
+                friend1=request.user.profile,
+                friend2=user.profile
+            )
+
+            friend.save()
+
+            messages.success(request, f'You have accepted { username }\'s friend request!')
+
+        elif 'deny-friend' in request.POST:
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request.delete()
+
+            messages.info(request, f'You have denied to add { username } as a friend.')
+
+    requests = []
+    if request.user.is_authenticated:
+        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) | Q(requestee=user.profile, requestor=request.user.profile))
+
+        if requests:
+            requests = requests[0]
 
     friends = Friend.objects.filter(friend1=profile) | Friend.objects.filter(
         friend2=profile)
 
     context = {
-        'profile': username,
+        'profile': user,
+        'requests': requests,
         'friends': friends
     }
 

@@ -3,8 +3,8 @@ Speech-to-text adapter and implementing classes.
 '''
 from django.conf import settings
 
-from ibm_watson import SpeechToTextV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson import SpeechToTextV1
 
 
 class STT:

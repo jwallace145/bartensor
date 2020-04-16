@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  aws-ecr: circleci/aws-ecr@6.8.1
+  aws-ecs: circleci/aws-ecs@1.1.0
+
+workflows:
+  build-and-deploy:
+    jobs:
+      - aws-ecr/build-and-push-image:
+          filters:
+            branches:
+              only: master
+          account-url: AWS_ECR_ACCOUNT_URL
+          aws-access-key-id: AWS_ACCESS_KEY_ID
+          aws-secret-access-key: AWS_SECRET_ACCESS_KEY
+          profile-name: jwallace145
+          region: AWS_REGION
+          repo: bartensor-images
+      - aws-ecs/deploy-service-update:
+          filters:
+            branches:
+              only: master
+          requires:
+            - aws-ecr/build-and-push-image
+          family: bartensor-runserver
+          cluster-name: bartensor-cluster
+          force-new-deployment: true

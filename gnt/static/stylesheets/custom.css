@@ -2,6 +2,7 @@ body,
 html {
   height: 100%;
   width: 100%;
+  background: #fafafa;
   color: #333333;
   margin-top: 5rem;
 }
@@ -222,13 +223,12 @@ a.article-title:hover {
 }
 
 .footer {
-  background-color: #fafafa;
   bottom: 0;
   position: absolute;
   height: 60px;
   width: 100%;
   line-height: 60px;
-
+  background-color: #f2f2f2;
 }
 
 /*
@@ -390,15 +390,16 @@ a {
 }
 
 #result_container {
-  border: 3px solid #252729;
+  background-color: rgba(245, 245, 245, 0.541);
+  border: 3px solid black;
+  margin-top: 20px;
   padding-bottom: 50px;
-  margin-top: 3%;
   position: relative;
   top: 5%;
 }
 
 .results-header {
-  background-color: #252729;
+  background-color: black;
   color: #f3f3f3;
   margin-bottom: 20px;
 }
@@ -495,19 +496,18 @@ button.btn.btn-drink-names {
   color: #838a8e;
 }
 
-
-.btn.btn-outline-info {
-  box-shadow: none !important;
+.btn.btn-outline-info{
+  box-shadow: none!important;
   background-color: white;
-  border-color: #252729;
-  color: #252729;
+  border-color: black;
+  color: black;
 }
 
 .btn.btn-outline-info:hover,
 .btn.btn-outline-info:active:focus:not(:disabled):not(.disabled) {
-  box-shadow: none !important;
-  background-color: #252729;
-  border-color: #252729;
+  box-shadow: none!important;
+  background-color: black;
+  border-color: black;
   color: white;
 }
 
