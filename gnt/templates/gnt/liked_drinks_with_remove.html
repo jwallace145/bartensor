@@ -1,11 +1,6 @@
 {% extends 'gnt/drink_results.html' %} {% load static %}
 {% block 'like-dislike' %} {% if user.is_authenticated %}
-<div class="col-lg-2">
-  <div>
-    <button class="btn btn-outline-danger remove like" drinkid="{{drink.id}}" user="{{user}}">
-      Remove
-    </button>
-  </div>
-</div>
-
+<button class="btn btn-outline-danger remove like" drinkid="{{drink.id}}" user="{{user}}">
+  Remove
+</button>
 {% endif %} {% endblock 'like-dislike' %}

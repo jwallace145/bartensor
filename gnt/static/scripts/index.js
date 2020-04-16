@@ -46,13 +46,7 @@ $(document).ready(function () {
                             processData: false,
                             contentType: false,
                             success: function (data) {
-                                $("#index-div").hide();
-                                $("#content_here").append(data);
-                                hide_disliked_drinks();
-                                color_thumbs();
-                                thumbs_up();
-                                thumbs_down();
-
+                                handleDrinkResults(data);
                             },
                             error: function (xhr, ajaxOptions, thrownError) {
                                 console.log(xhr.status);
@@ -90,22 +84,22 @@ $(document).ready(function () {
     });
 
     // overwrite form's builtin post request
-    $('#index-search-form').on('submit', function () {
+    $('#index-search-form').on('submit', function search(e) {
+        // This prevents the ajax call from navigating to the /results endpoint
+        // Makes it stay on index which is what we want
+        e.preventDefault();
+        e.stopPropagation();
         $.ajax({
             url: $(this).attr('action'),
             type: $(this).attr('method'),
             dataType: 'html',
             data: $(this).serialize(),
             success: function (data) {
-                $("#index-div").hide();
-                $("#content_here").append(data);
-                color_thumbs();
-                thumbs_up();
-                thumbs_down();
-                hide_disliked_drinks();
+                handleDrinkResults(data);
             },
             error: function (xhr, ajaxOptions, thrownError) {
-                console.log(xhr.status);
+                console.log(xhr.statusCode);
+                console.log(xhr.statusText);
                 console.log(thrownError);
                 $("#index-div").hide();
                 $("#content_here").append('<h6 class="backend-error">Error searching drinks</h6>');
@@ -115,7 +109,7 @@ $(document).ready(function () {
     });
 });
 
-function color_thumbs(){
+function color_thumbs() {
     var url = APPURL + "/get_liked_disliked_drinks/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
@@ -316,17 +310,7 @@ function load_more_drinks() {
         },
         dataType: "html",
         success: function (data) {
-            // There are no more drinks to load
-            if (data.length == 1){
-                console.log("done");
-                $(".load-more").html("<h5>All drinks loaded</h5>");
-            } else {
-                $(".load-more").before(data);
-                color_thumbs();
-                thumbs_up();
-                thumbs_down();
-                hide_disliked_drinks();
-            }
+            handleMoreDrinkResults(data);
         },
         error: function (xhr, ajaxOptions, thrownError) {
             console.log(xhr.status);
@@ -335,4 +319,26 @@ function load_more_drinks() {
             $("#content_here").append('<div class="load-more-error">Cannot load more drinks</div>');
         }
     });
+}
+
+function handleDrinkResults(drinks) {
+    $("#index-div").hide();
+    $("#content_here").append(drinks);
+    hide_disliked_drinks();
+    color_thumbs();
+    thumbs_up();
+    thumbs_down();
+}
+
+function handleMoreDrinkResults(drinks) {
+    // There are no more drinks to load
+    if (drinks.length == 1) {
+        $(".load-more").html("<h5>All drinks loaded</h5>");
+    } else {
+        $(".load-more").before(drinks);
+        color_thumbs();
+        thumbs_up();
+        thumbs_down();
+        hide_disliked_drinks();
+    }
 }

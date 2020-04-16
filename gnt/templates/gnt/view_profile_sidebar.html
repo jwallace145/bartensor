@@ -4,10 +4,14 @@
     <h3>Profile Help</h3>
     <p class='text-muted'>Explore {{ profile }}'s profile here!
       <ul class="list-group">
-        <li class="list-group-item list-group-item-light"><a href="{% url 'timeline' username=profile %}">Timeline</a></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' username=profile %}">Liked Drinks</a></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'disliked_drinks' username=profile %}">Disliked Drinks</a></li>
-        <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=profile %}">Friends</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'timeline' username=profile %}">Timeline</a>
+        </li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'liked_drinks' username=profile %}">Liked
+            Drinks</a></li>
+        <li class="list-group-item list-group-item-light"><a
+            href="{% url 'disliked_drinks' username=profile %}">Disliked Drinks</a></li>
+        <li class="list-group-item list-group-item-light"><a href="{% url 'friends' username=profile %}">Friends</a>
+        </li>
         <li class="list-group-item list-group-item-light"><a href="#">Flavor Profile</a></li>
       </ul>
     </p>

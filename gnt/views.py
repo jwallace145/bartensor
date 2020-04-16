@@ -312,7 +312,8 @@ def profile_public(request, username):
 
             comment.save()
 
-            messages.success(request, f'You left a comment on { username }\'s drink!')
+            messages.success(
+                request, f'You left a comment on { username }\'s drink!')
 
         elif 'accept-friend' in request.POST:
             friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)

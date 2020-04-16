@@ -31,6 +31,10 @@
                 <!-- PROFILE BIO -->
                 <p class="text-secondary">{{ profile.profile.bio }}</p>
 
+        <!-- Link to profile help -->
+        {% if user == profile %}
+        <a href="#edit-profile-sidebar">Profile Help</a>
+        {% endif %}
 
                 <!-- ADD/REMOVE FRIEND FORMS -->
                 {% if user.is_authenticated and user != profile and not friends %}

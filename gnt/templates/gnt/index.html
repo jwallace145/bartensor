@@ -9,57 +9,40 @@
       </a>
     </div>
   </div>
-  <div class="row" id="wave" style="display: none">
+  <div class="row" id="wave">
     <div class="col text-center mt-5">
       <img src="{% static 'wave.gif' %}" alt="no wave... :(" width="25%" />
     </div>
   </div>
-  <div class="row mt-5">
-    <div class="col"></div>
-    <form class="col-9 form-group" action="{% url 'results' %}" method="POST" id="index-search-form">
-      {% csrf_token %}
-      <ul class="nav nav-tabs nav-fill">
-        <li class="nav-item">
-          <input type="radio" id="what" name="question" value="what" class="d-none" checked>
-          <span class="nav-link active search-nav-link">What can I make with...</span>
-        </li>
-        <li class="nav-item">
-          <input type="radio" id="how" name="question" value="how" class="d-none">
-          <span class="nav-link search-nav-link">How do I make a...</span>
-        </li>
-        <li class="nav-item">
-          <input type="radio" id="like" name="question" value="like" class="d-none">
-          <span class="nav-link search-nav-link">Recommend me drinks like...</span>
-        </li>
-      </ul>
-      <div class="input-group">
-        <input type="text" class="form-control search-bar" id="search-bar" name="search_bar" placeholder="Search" aria-label="Search"
-          aria-describedby="search-bar">
-        <div class="input-group-append">
-          <button id="main-search-button" class="btn btn-outline-primary" type="submit">
-            <img class="search-icon" src="{% static 'images/search.png' %}" alt="Search" />
-          </button>
+  <div class="container">
+    <div class="row justify-content-center">
+      <form class="col-12 form-group" action="{% url 'results' %}" method="post" id="index-search-form">
+        {% csrf_token %}
+        <ul class="nav nav-tabs nav-fill row search-tabs no-gutters">
+          <li class="nav-item col-4 nav-link active search-nav-link">
+            <input type="radio" id="what" name="question" value="what" class="d-none" checked>
+            <span>What can I make with...</span>
+          </li>
+          <li class="nav-item col-4 nav-link search-nav-link">
+            <input type="radio" id="how" name="question" value="how" class="d-none">
+            <span>How do I make a...</span>
+          </li>
+          <li class="nav-item col-4 nav-link search-nav-link">
+            <input type="radio" id="like" name="question" value="like" class="d-none">
+            <span>Recommend me drinks like...</span>
+          </li>
+        </ul>
+        <div class="input-group">
+          <input type="text" class="form-control search-bar" id="search-bar" name="search_bar" placeholder="Search"
+            aria-label="Search" aria-describedby="search-bar">
+          <div class="input-group-append">
+            <button id="main-search-button" class="btn btn-outline-primary" type="submit">
+              <img class="search-icon" src="{% static 'images/search.png' %}" alt="Search" />
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
-    <div class="col"></div>
+      </form>
+    </div>
   </div>
-  <!--
-  <div class="row">
-    <div class="col"></div>
-    <p class="text-left col-7 font-italic font-weight-light">"How do I make a white russian?"</p>
-    <div class="col"></div>
-  </div>
-  <div class="row px-5">
-    <div class="col"></div>
-    <p class="text-left col-7 font-italic font-weight-light">"What drinks are similar to a martini?"</p>
-    <div class="col"></div>
-  </div>
-  <div class="row px-5">
-    <div class="col"></div>
-    <p class="text-left col-7 font-italic font-weight-light px-5">"What can I make with tequila and hot sauce?"</p>
-    <div class="col"></div>
-  </div>
-  -->
 </div>
 {% endblock 'content' %}
