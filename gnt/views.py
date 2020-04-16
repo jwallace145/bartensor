@@ -688,8 +688,9 @@ def friends(request, username):
 
         # else if remove friend post request
         elif 'remove-friend' in request.POST:
-            friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | Friend.objects.filter(
-                friend1=user.profile, friend2=request.user.profile)
+            requestor = User.objects.get(username=request.POST['requestor'])
+            friend = Friend.objects.filter(friend1=request.user.profile, friend2=requestor.profile) | Friend.objects.filter(
+                friend1=requestor.profile, friend2=request.user.profile)
             friend.delete()
 
             messages.success(request, f'Removed friend { username }!')
