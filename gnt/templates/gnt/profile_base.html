@@ -36,14 +36,6 @@
         <a href="#edit-profile-sidebar">Profile Help</a>
         {% endif %}
 
-        <!-- ADD/REMOVE FRIEND FORMS -->
-        {% if user != profile and not requests and not friends and user.is_authenticated %}
-        <form method="POST">
-          {% csrf_token %}
-          <button class="btn btn-outline-info" type="submit" name="add-friend">Add Friend</button>
-        </form>
-        {% endif %}
-
                 <!-- ADD/REMOVE FRIEND FORMS -->
                 {% if user.is_authenticated and user != profile and not friends %}
                 {% if not requests %}

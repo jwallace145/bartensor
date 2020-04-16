@@ -2,7 +2,7 @@
 
 # set run script variables
 DJANGO_PORT=8000
-VENV_NAME="venv"
+VENV_NAME="env"
 
 # determine os type
 if [[ "$OSTYPE" == "darwin"* ]];
@@ -100,6 +100,9 @@ then
 
   # export environment variables
   echo "exporting important environment variables..."
+  setx DEBUG '1'
+  setx SECRET_KEY 'local'
+  setx ALLOWED_HOSTS 'localhost'
   setx BARTENSOR_EMAIL_USERNAME 'bartensor@gmail.com'
   setx BARTENSOR_EMAIL_PASSWORD 'iupeqdduwlekqjrj'
   setx WATSON_DISCOVERY_API_KEY 'Q48Xgoo6dGAAOSNjdUdho8uwprTEbwgXOBUspsEaTDO2'
