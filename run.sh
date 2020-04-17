@@ -118,6 +118,6 @@ then
   echo "django migrate..."
   python manage.py migrate
 
-  echo "starting server at localhost port $DJANGO_PORT"
-  python manage.py runserver $DJANGO_PORT
+  # echo "starting server at localhost port $DJANGO_PORT"
+  # python manage.py runserver $DJANGO_PORT
 fi
