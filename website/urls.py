@@ -48,7 +48,7 @@ urlpatterns = [
     path('like_user_drink/', gnt_db_api.like_user_drink, name='like_user_drink'),
     path('remove_liked_drink/', gnt_db_api.remove_liked_drink, name='remove_liked_drink'),
     path('remove_disliked_drink/', gnt_db_api.remove_disliked_drink, name='remove_disliked_drink'),
-
+    path('get_collaborate_filtering_results/', gnt_db_api.get_collaborate_filtering_results, name='get_collaborate_filtering_results'),
     # password reset url patterns
     path('password-reset/', auth_views.PasswordResetView.as_view(template_name='gnt/password_reset.html'), name='password_reset'),
     path('password-reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='gnt/password_reset_done.html'),

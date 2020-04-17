@@ -342,3 +342,7 @@ function handleMoreDrinkResults(drinks) {
         hide_disliked_drinks();
     }
 }
+
+function getCollaborativeFilteringResults(){
+    var anchor = $("#moonshot");
+}

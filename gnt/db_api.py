@@ -390,4 +390,20 @@ def dislike_user_drink(request):
         }
         return JsonResponse(response)
 
+def get_collaborate_filtering_results(request):
+    try:
+        message = 'woo yay'
+        status = 201
+        response = {
+            'message': message,
+            'status': status
+        }
+        return JsonResponse(response)
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+    return JsonResponse(response)
 
