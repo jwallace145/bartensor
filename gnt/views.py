@@ -12,7 +12,7 @@ from django.forms.formsets import formset_factory
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.urls import reverse
-
+import concurrent.futures
 from gnt.adapters import drink_adapter
 from gnt.adapters.stt_adapter import IBM
 from nltk.tokenize.treebank import TreebankWordTokenizer
@@ -453,11 +453,15 @@ def liked_drinks(request, username):
         response = [0 for i in range(len(profile_to_drink))]
 
         discovery_adapter = drink_adapter.DiscoveryAdapter()
-
-        for i, ptd in enumerate(profile_to_drink):
-            drink = Drink.objects.get(id=ptd.drink.id)
-            obj = discovery_adapter.get_drink(drink.drink_hash)
-            response[i] = obj[0]
+        futures = {}
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(profile_to_drink)) as executor:
+            for i, ptd in enumerate(profile_to_drink):
+                drink = Drink.objects.get(id=ptd.drink.id)
+                futures[executor.submit(discovery_adapter.get_drink, drink.drink_hash)] = drink.drink_hash
+            idx = 0
+            for future in concurrent.futures.as_completed(futures):
+                response[idx] = future.result()[0]
+                idx += 1
 
         context = {
             'profile': user,
@@ -551,11 +555,15 @@ def disliked_drinks(request, username):
         response = [0 for i in range(len(profile_to_drink))]
 
         discovery_adapter = drink_adapter.DiscoveryAdapter()
-
-        for i, ptd in enumerate(profile_to_drink):
-            drink = Drink.objects.get(id=ptd.drink.id)
-            obj = discovery_adapter.get_drink(drink.drink_hash)
-            response[i] = obj[0]
+        futures = {}
+        with concurrent.futures.ThreadPoolExecutor(max_workers=len(profile_to_drink)) as executor:
+            for i, ptd in enumerate(profile_to_drink):
+                drink = Drink.objects.get(id=ptd.drink.id)
+                futures[executor.submit(discovery_adapter.get_drink, drink.drink_hash)] = drink.drink_hash
+            idx = 0
+            for future in concurrent.futures.as_completed(futures):
+                response[idx] = future.result()[0]
+                idx += 1
 
         context = {
             'profile': user,
