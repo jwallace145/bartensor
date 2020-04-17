@@ -344,5 +344,26 @@ function handleMoreDrinkResults(drinks) {
 }
 
 function getCollaborativeFilteringResults(){
-    var anchor = $("#moonshot");
+    var url = APPURL + "/get_collaborate_filtering_results/";
+    var csrftoken = getCookie("csrftoken");
+    $.ajax({
+        url: url,
+        method: "GET",
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+        dataType: "json",
+        success: function (data) {
+            if (data["status"] == 201) {
+                console.log("Woo! Moonshot Moonshot Moonshot!")
+            } else {
+                console.log(data["status"]);
+                console.log("Error in finding the moon");
+
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log("ERROR")
+        }
+    });
 }
