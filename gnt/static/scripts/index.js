@@ -362,7 +362,8 @@ function getCollaborativeFilteringResults(){
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
-            console.log("ERROR")
+            console.log(xhr.status);
+            console.log(thrownError);
         }
     });
 }
