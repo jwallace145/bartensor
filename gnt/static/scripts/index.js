@@ -342,3 +342,32 @@ function handleMoreDrinkResults(drinks) {
         hide_disliked_drinks();
     }
 }
+
+function getCollaborativeFilteringResults(){
+    var url = APPURL + "/get_collaborate_filtering_results/";
+    var csrftoken = getCookie("csrftoken");
+    $.ajax({
+        url: url,
+        method: "GET",
+        headers: {
+            "X-CSRFToken": csrftoken
+        },
+        dataType: "json",
+        success: function (data) {
+            if (data["status"] == 201) {
+                console.log("Woo! Moonshot Moonshot Moonshot!")
+            } else {
+                console.log(data["status"]);
+                console.log("Error finding the moon");
+            }
+        },
+        error: function (xhr, ajaxOptions, thrownError) {
+            console.log("ERROR")
+        }
+    });
+}
+
+// This function initializes all tooltips so they work lmao
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
