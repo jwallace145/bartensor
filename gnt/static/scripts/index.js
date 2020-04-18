@@ -344,7 +344,7 @@ function handleMoreDrinkResults(drinks) {
 }
 
 function getCollaborativeFilteringResults(){
-    var url = APPURL + "/get_collaborate_filtering_results/";
+    var url = APPURL + "/get_lucky/";
     var csrftoken = getCookie("csrftoken");
     $.ajax({
         url: url,
