@@ -1,7 +1,6 @@
 """
 Views Module
 """
-
 from string import punctuation
 
 from django.contrib import messages
@@ -17,12 +16,10 @@ from gnt.adapters import drink_adapter
 from gnt.adapters.stt_adapter import IBM
 from nltk.tokenize.treebank import TreebankWordTokenizer
 
-from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm,
-                    CreateUserDrinkInstructionForm, ProfileUpdateForm,
-                    UserRegisterForm, UserUpdateForm)
-from .models import (Comment, Drink, Friend, FriendRequest, Profile,
-                     ProfileToDislikedDrink, ProfileToLikedDrink,
-                     UpvotedUserDrink, UserDrink)
+from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm,
+                    ProfileUpdateForm, UserRegisterForm, UserUpdateForm)
+from .models import (Comment, Drink, Friend, FriendRequest, Profile, ProfileToDislikedDrink, ProfileToLikedDrink,
+                     UserDrink)
 
 up_ratio, down_ratio = 0.1, 0.05
 
@@ -208,8 +205,8 @@ def profile_create_drink(request, username):
 
     username = User.objects.get(username=username)
 
-    IngredientFormset = formset_factory(CreateUserDrinkIngredientForm)
-    InstructionFormset = formset_factory(CreateUserDrinkInstructionForm)
+    ingredient_formset = formset_factory(CreateUserDrinkIngredientForm)
+    instruction_formset = formset_factory(CreateUserDrinkInstructionForm)
 
     if request.method == 'POST':
         create_user_drink_form = CreateUserDrinkForm(
@@ -220,7 +217,7 @@ def profile_create_drink(request, username):
             drink.user = request.user
             drink.save()
 
-            ingredient_formset = IngredientFormset(
+            ingredient_formset = ingredient_formset(
                 request.POST, prefix='ingredient')
             if ingredient_formset.is_valid():
                 for ingredient_form in ingredient_formset:
@@ -228,7 +225,7 @@ def profile_create_drink(request, username):
                     ingredient.drink = drink
                     ingredient.save()
 
-            instruction_formset = InstructionFormset(
+            instruction_formset = instruction_formset(
                 request.POST, prefix='instruction')
             if instruction_formset.is_valid():
                 for instruction_form in instruction_formset:
@@ -246,8 +243,8 @@ def profile_create_drink(request, username):
             return redirect('timeline', username=request.user.username)
     else:
         create_user_drink_form = CreateUserDrinkForm()
-        ingredient_formset = IngredientFormset(prefix='ingredient')
-        instruction_formset = InstructionFormset(prefix='instruction')
+        ingredient_formset = ingredient_formset(prefix='ingredient')
+        instruction_formset = instruction_formset(prefix='instruction')
 
     context = {
         'profile': username,
@@ -263,11 +260,12 @@ def profile_public(request, username):
     """
     Profile View
 
-    Users, unathenticated and authenticated, can view other users' profiles with
+    Users, unauthenticated and authenticated, can view other users' profiles with
     this view function. The profile view will render a list of drinks created by
     the user of the profile.
 
     Args:
+        request: request object provided by django
         username (string): the user of the profile
 
     Return:
@@ -337,8 +335,10 @@ def profile_public(request, username):
     requests = []
     friends = []
     if request.user.is_authenticated:
-        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) | Q(requestee=user.profile, requestor=request.user.profile))
-        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) | Q(friend1=user.profile, friend2=request.user.profile))
+        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) |
+                                                Q(requestee=user.profile, requestor=request.user.profile))
+        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) |
+                                        Q(friend1=user.profile, friend2=request.user.profile))
 
         if requests:
             requests = requests[0]
@@ -438,8 +438,10 @@ def liked_drinks(request, username):
     requests = []
     friends = []
     if request.user.is_authenticated:
-        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) | Q(requestee=user.profile, requestor=request.user.profile))
-        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) | Q(friend1=user.profile, friend2=request.user.profile))
+        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) |
+                                                Q(requestee=user.profile, requestor=request.user.profile))
+        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) |
+                                        Q(friend1=user.profile, friend2=request.user.profile))
 
         if requests:
             requests = requests[0]
@@ -540,8 +542,10 @@ def disliked_drinks(request, username):
     requests = []
     friends = []
     if request.user.is_authenticated:
-        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) | Q(requestee=user.profile, requestor=request.user.profile))
-        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) | Q(friend1=user.profile, friend2=request.user.profile))
+        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) |
+                                                Q(requestee=user.profile, requestor=request.user.profile))
+        friends = Friend.objects.filter(Q(friend1=request.user.profile, friend2=user.profile) |
+                                        Q(friend1=user.profile, friend2=request.user.profile))
 
         if requests:
             requests = requests[0]
@@ -649,15 +653,12 @@ def notifications(request, username):
     if request.method == 'POST':
         if 'add-friend' in request.POST:
             requestor = User.objects.get(username=request.POST['requestor'])
-            friend_request = FriendRequest.objects.get(
-                requestee=request.user.profile, requestor=requestor.profile)
+            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=requestor.profile)
             friend_request.delete()
-            friends = Friend(friend1=request.user.profile,
-                             friend2=requestor.profile)
-            friends.save()
+            friend = Friend(friend1=request.user.profile, friend2=requestor.profile)
+            friend.save()
 
-            messages.success(
-                request, f'You have added friend { requestor.profile.user }!')
+            messages.success(request, f'You have added friend { requestor.profile.user }!')
 
         elif 'deny-friend' in request.POST:
             requestor = User.objects.get(username=request.POST['requestor'])
@@ -697,8 +698,8 @@ def friends(request, username):
 
         # else if remove friend post request
         elif 'remove-friend' in request.POST:
-            friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | Friend.objects.filter(
-                friend1=user.profile, friend2=request.user.profile)
+            friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | \
+                     Friend.objects.filter(friend1=user.profile, friend2=request.user.profile)
             friend.delete()
 
             messages.success(request, f'Removed friend { username }!')
@@ -724,7 +725,8 @@ def friends(request, username):
 
     requests = []
     if request.user.is_authenticated:
-        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) | Q(requestee=user.profile, requestor=request.user.profile))
+        requests = FriendRequest.objects.filter(Q(requestee=request.user.profile, requestor=user.profile) |
+                                                Q(requestee=user.profile, requestor=request.user.profile))
 
         if requests:
             requests = requests[0]
