@@ -358,8 +358,7 @@ function getCollaborativeFilteringResults(){
                 console.log("Woo! Moonshot Moonshot Moonshot!")
             } else {
                 console.log(data["status"]);
-                console.log("Error in finding the moon");
-
+                console.log("Error finding the moon");
             }
         },
         error: function (xhr, ajaxOptions, thrownError) {
@@ -367,3 +366,8 @@ function getCollaborativeFilteringResults(){
         }
     });
 }
+
+// This function initializes all tooltips so they work lmao
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
