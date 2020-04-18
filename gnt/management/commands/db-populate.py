@@ -121,5 +121,5 @@ class Command(BaseCommand):
         os.system('python manage.py migrate')
         self._create_tags()
         self._create_fake_users()
-        self._create_fake_likes()
+        #self._create_fake_likes()
         print('TRANSACTION COMPLETE', file=self.stdout)
