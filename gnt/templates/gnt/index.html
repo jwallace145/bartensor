@@ -44,7 +44,7 @@
       </form>
     </div>
     {% if user.is_authenticated %}
-    <form class = "moonshot-row row justify-content-center align-self-center" action="{% url 'get_lucky' %}" method="post">
+    <form class="moonshot-row row justify-content-center align-self-center" action="{% url 'get_lucky' %}" method="post" id="feeling-lucky-form">
       {% csrf_token %}
       <input class="d-none" name="username" value="{{ user.username }}">
       <button id= "moonshot" class="glow-on-hover align-self-center" type="submit">I'm feeling lucky
@@ -56,5 +56,4 @@
     {% endif %}
   </div>
 </div>
-
 {% endblock 'content' %}

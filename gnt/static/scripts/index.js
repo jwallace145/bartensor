@@ -107,6 +107,31 @@ $(document).ready(function () {
         });
         display_duck();
     });
+
+    // overwrite form's builtin post request
+    $('#feeling-lucky-form').on('submit', function search(e) {
+        // This prevents the ajax call from navigating to the /results endpoint
+        // Makes it stay on index which is what we want
+        e.preventDefault();
+        e.stopPropagation();
+        $.ajax({
+            url: $(this).attr('action'),
+            type: $(this).attr('method'),
+            dataType: 'html',
+            data: $(this).serialize(),
+            success: function (data) {
+                handleDrinkResults(data);
+            },
+            error: function (xhr, ajaxOptions, thrownError) {
+                console.log(xhr.statusCode);
+                console.log(xhr.statusText);
+                console.log(thrownError);
+                $("#index-div").hide();
+                $("#content_here").append('<h6 class="backend-error">Error searching drinks</h6>');
+            }
+        });
+        display_duck();
+    });
 });
 
 function color_thumbs() {
@@ -341,35 +366,6 @@ function handleMoreDrinkResults(drinks) {
         thumbs_down();
         hide_disliked_drinks();
     }
-}
-
-function getCollaborativeFilteringResults(){
-    var url = APPURL + "/get_lucky/";
-    var user = $('#username').attr('username');
-    var csrftoken = getCookie("csrftoken");
-    $.ajax({
-        url: url,
-        method: "POST",
-        headers: {
-            "X-CSRFToken": csrftoken
-        },
-        data: {
-            user: user
-        },
-        dataType: "json",
-        success: function (data) {
-            if (data["status"] == 201) {
-                console.log("Woo! Moonshot Moonshot Moonshot!")
-            } else {
-                console.log(data["status"]);
-                console.log("Error finding the moon");
-            }
-        },
-        error: function (xhr, ajaxOptions, thrownError) {
-            console.log(xhr.status);
-            console.log(thrownError);
-        }
-    });
 }
 
 // This function initializes all tooltips so they work lmao

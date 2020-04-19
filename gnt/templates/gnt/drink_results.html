@@ -1,7 +1,7 @@
 {% load static %}
 {% for drink in drinks %}
 <div class="row drink-result-row no-gutters" id="drink_id_{{drink.id}}">
-  {% if request.path == '/results/' or request.path == '/more_results/'%}
+  {% if request.path == '/results/' or request.path == '/more_results/' or request.path == '/get_lucky/' %}
   <div class="col-xl-2 col-lg-2 col-md-3 col-sm-4 col-5 drink-image">
     {% with "data/drink_images/"|add:drink.id|add:"/img_"|add:drink.id|add:".jpg" as image_path %}
     <!-- <i class="fas fa-cocktail fa-3x"></i> -->

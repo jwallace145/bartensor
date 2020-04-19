@@ -222,7 +222,8 @@ def get_lucky(request):
             rating = -1
             f.write('%d,%s,%d\n' % (row, dislike.drink.drink_hash, rating))
     '''
-
+    for d in response:
+        print(d)
     return render(request, 'gnt/results.html', {
         'query': 'You got lucky ;)',
         'drinks': response,
