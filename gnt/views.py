@@ -15,6 +15,8 @@ import concurrent.futures
 from gnt.adapters import drink_adapter
 from gnt.adapters.stt_adapter import IBM
 from nltk.tokenize.treebank import TreebankWordTokenizer
+import numpy as np
+from sklearn.neighbors import NearestNeighbors
 
 from .forms import (CreateUserDrinkForm, CreateUserDrinkIngredientForm, CreateUserDrinkInstructionForm,
                     ProfileUpdateForm, UserRegisterForm, UserUpdateForm)
@@ -132,6 +134,100 @@ def _query_discovery(text, question, offset=0):
                 break
 
     return response
+
+
+@login_required
+def get_lucky(request):
+    """
+    Let's help this user get lucky.
+
+    :param request:
+    :param username:
+    :return:
+    """
+    if request.method != 'POST':
+        return HttpResponseRedirect(reverse('home'))
+
+    username = User.objects.get(username=request.POST['username'])
+    profile = Profile.objects.get(user=username)
+
+    # Load ratings (we account for exact column indices changing based on enumerate() returns)
+    drinks = Drink.objects.all()
+    hash2column = {}
+    column2hash = {}
+    for i, drink in enumerate(drinks):
+        hash2column[drink.drink_hash] = i
+        column2hash[i] = drink.drink_hash
+    ratings = np.zeros((840, len(drinks))) # (|profiles|, |drinks|) when ratings were recorded
+    with open('static/data/ratings.db') as f:
+        for line in f.readlines():
+            terms = line.split(',')
+            ratings[int(terms[0]), hash2column[terms[1]]] = int(terms[2])
+
+    # Create user's profile rating vector
+    profile_ratings = np.zeros(len(drinks))
+    for like in ProfileToLikedDrink.objects.filter(profile=profile):
+        profile_ratings[hash2column[like.drink.drink_hash]] = 1
+    for dislike in ProfileToDislikedDrink.objects.filter(profile=profile):
+        profile_ratings[hash2column[dislike.drink.drink_hash]] = -1
+
+    # Normalize ratings by subtracting each profile's average rating
+    profile_masked = np.ma.masked_array(profile_ratings, mask=(profile_ratings == 0), fill_value=0)
+    profile_average = np.average(profile_masked)
+    profile_ratings = np.array(profile_masked - profile_average)
+
+    masked = np.ma.masked_array(ratings, mask=(ratings == 0), fill_value=0)
+    average = np.average(masked, axis=1)
+    ratings = np.array(masked - average.reshape((average.shape[0], 1)))
+
+    k = 10
+    nn = NearestNeighbors(n_neighbors=k).fit(ratings)
+    indices = nn.kneighbors(profile_ratings.reshape(1, len(profile_ratings)), return_distance=False)[0]
+    neighbors = ratings[indices]
+    scores = np.sum(neighbors, axis=0) / k
+    indices = np.argsort(scores)
+    hashes = []
+    for i in indices[::-1]:
+        if profile_ratings[i] == 0: # only use this rec if the user hasn't already rated this drink
+            hashes.append(column2hash[i])
+        if len(hashes) == 10:
+            break
+
+    response = [0 for i in range(k)]
+    discovery_adapter = drink_adapter.DiscoveryAdapter()
+    futures = {}
+    with concurrent.futures.ThreadPoolExecutor(max_workers=k) as executor:
+        for i, hash in enumerate(hashes):
+            futures[executor.submit(discovery_adapter.get_drink, hash)] = hash
+        idx = 0
+        for future in concurrent.futures.as_completed(futures):
+            response[idx] = future.result()[0]
+            idx += 1
+
+    '''
+    # Update ratings.db (takes about ~120s with the fake db)
+    drinks = Drink.objects.all()
+    profiles = Profile.objects.all()
+    rows = {}
+    for i, profile in enumerate(profiles):
+        rows[profile] = i
+    with open('static/data/ratings.db', 'w') as f:
+        # Populate ratings matrix
+        for like in ProfileToLikedDrink.objects.all():
+            row = rows[like.profile]
+            rating = 1
+            f.write('%d,%s,%d\n' % (row, like.drink.drink_hash, rating))
+        for dislike in ProfileToDislikedDrink.objects.all():
+            row = rows[dislike.profile]
+            rating = -1
+            f.write('%d,%s,%d\n' % (row, dislike.drink.drink_hash, rating))
+    '''
+
+    return render(request, 'gnt/results.html', {
+        'query': 'You got lucky ;)',
+        'drinks': response,
+        'question': 'how'
+    })
 
 
 def results(request):

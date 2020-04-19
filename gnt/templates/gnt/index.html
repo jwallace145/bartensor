@@ -44,13 +44,15 @@
       </form>
     </div>
     {% if user.is_authenticated %}
-    <div class = "moonshot-row row justify-content-center align-self-center">
-      <button id= "moonshot" class="glow-on-hover align-self-center" type="button" onclick="getCollaborativeFilteringResults()">I'm feeling lucky
+    <form class = "moonshot-row row justify-content-center align-self-center" action="{% url 'get_lucky' %}" method="post">
+      {% csrf_token %}
+      <input class="d-none" name="username" value="{{ user.username }}">
+      <button id= "moonshot" class="glow-on-hover align-self-center" type="submit">I'm feeling lucky
       </button>
       <i class="far fa-question-circle" data-toggle="tooltip" data-placement="bottom" data-html="true" 
       title="Let <em>Bartensor</em> recommend you a drink! Using collaborative filtering, <em>Bartensor</em> will recommend you a drink based what other users with similar taste like">
       </i>
-    </div>
+    </form>
     {% endif %}
   </div>
 </div>
