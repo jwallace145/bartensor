@@ -1,12 +1,14 @@
 <!-- LOAD STATIC -->
 {% load static %}
 
+<!-- Loop through all drinks -->
+{% for drink in drinks %}
 <!-- USER CREATED DRINK TEMPLATE -->
 <article class="media content-section">
 
   <!-- PROFILE PICTURE -->
-  <a href="{% url 'timeline' username=profile %}">
-    <img class="rounded-circle article-img" src="{{ profile.profile.image.url }}">
+  <a href="{% url 'timeline' username=drink.user %}">
+    <img class="rounded-circle article-img" src="{{ drink.user.profile.image.url }}">
   </a>
 
   <!-- USER DRINK CONTENT -->
@@ -14,12 +16,10 @@
 
     <!-- META DATA -->
     <div class="article-metadata">
-      <a class="mr-2" href="{% url 'timeline' username=profile %}">{{ profile }}</a>
+      <a class="mr-2" href="{% url 'timeline' username=drink.user %}">{{ drink.user }}</a>
       <small class="text-muted">{{ drink.timestamp | date:"F d, Y g:i" }}</small>
     </div>
 
-    <!-- Loop through all drinks -->
-  {% for drink in drinks %}
   <div class="row drink-result-row no-gutters" id="drink_id_{{drink.id}}">
       <div class="card col-12">
         <!-- Card Header -->
@@ -85,7 +85,6 @@
 
       <!-- End Drink -->
     </div>
-    {% endfor %}
 
       <!-- COMMENTS SECTION -->
       <div class="col-lg-12">
@@ -123,3 +122,4 @@
           {% endif %}
       </div>
 </article>
+{% endfor %}
