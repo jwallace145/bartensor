@@ -44,6 +44,7 @@ ibm-watson==4.2.1
 idna==2.7
 isort==4.3.21
 jmespath==0.9.5
+joblib==0.14.1
 jsonschema==3.2.0
 lazy-object-proxy==1.4.3
 lxml==4.5.0
@@ -79,9 +80,12 @@ pytz==2019.3
 PyYAML==5.2
 requests==2.20.1
 rsa==4.0
+scikit-learn==0.22.2.post1
+scipy==1.4.1
 selenium==3.141.0
 semantic-version==2.5.0
 six==1.11.0
+sklearn==0.0
 soupsieve==2.0
 sqlparse==0.3.0
 termcolor==1.1.0
