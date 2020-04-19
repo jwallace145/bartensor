@@ -345,12 +345,17 @@ function handleMoreDrinkResults(drinks) {
 
 function getCollaborativeFilteringResults(){
     var url = APPURL + "/get_lucky/";
+    var user = $('#username').attr('username');
+    console.log(user)
     var csrftoken = getCookie("csrftoken");
     $.ajax({
         url: url,
-        method: "GET",
+        method: "POST",
         headers: {
             "X-CSRFToken": csrftoken
+        },
+        data: {
+            user: user
         },
         dataType: "json",
         success: function (data) {
