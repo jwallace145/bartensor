@@ -24,7 +24,7 @@ urlpatterns = [
     path('search/', gnt_views.search, name='search'),
     path('timeline/', gnt_views.timeline, name='timeline'),
     path('timeline_pop/', gnt_views.timeline_pop, name='timeline_pop'),
-    path('get_lucky/', gnt_views.get_lucky, name='get_lucky'),
+    path('get_lucky/', gnt_views.collaborative_filter, name='get_lucky'),
 
     # login, logout, register url patterns
     path('login/', auth_views.LoginView.as_view(template_name='gnt/login.html'), name='login'),

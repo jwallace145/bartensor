@@ -136,8 +136,7 @@ def _query_discovery(text, question, offset=0):
     return response
 
 
-@login_required
-def get_lucky(request):
+def collaborative_filter(request):
     """
     Let's help this user get lucky.
 
@@ -180,7 +179,7 @@ def get_lucky(request):
     average = np.average(masked, axis=1)
     ratings = np.array(masked - average.reshape((average.shape[0], 1)))
 
-    k = 10
+    k = int(request.POST['count'])
     nn = NearestNeighbors(n_neighbors=k).fit(ratings)
     indices = nn.kneighbors(profile_ratings.reshape(1, len(profile_ratings)), return_distance=False)[0]
     neighbors = ratings[indices]
@@ -190,7 +189,7 @@ def get_lucky(request):
     for i in indices[::-1]:
         if profile_ratings[i] == 0: # only use this rec if the user hasn't already rated this drink
             hashes.append(column2hash[i])
-        if len(hashes) == 10:
+        if len(hashes) == k:
             break
 
     response = [0 for i in range(k)]
@@ -222,10 +221,9 @@ def get_lucky(request):
             rating = -1
             f.write('%d,%s,%d\n' % (row, dislike.drink.drink_hash, rating))
     '''
-    for d in response:
-        print(d)
+
     return render(request, 'gnt/results.html', {
-        'query': 'You got lucky ;)',
+        'query': 'Lucky enough?',
         'drinks': response,
         'question': 'how'
     })
