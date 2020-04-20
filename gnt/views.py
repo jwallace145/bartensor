@@ -41,7 +41,7 @@ def home(request):
     if request.user.is_authenticated:
 
         profile = Profile.objects.get(user=request.user)
-        if ProfileToLikedDrink.objects.filter(profile=profile) and ProfileToLikedDrink.objects.filter(profile=profile):
+        if ProfileToLikedDrink.objects.filter(profile=profile) or ProfileToLikedDrink.objects.filter(profile=profile):
 
             print(f'USERNAME: {profile.user}')
             # Load ratings (we account for exact column indices changing based on enumerate() returns)
