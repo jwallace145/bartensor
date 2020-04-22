@@ -1,11 +1,13 @@
 from django.http import JsonResponse
-from gnt.models import Profile, Drink, DrinkName, ProfileToLikedDrink, ProfileToDislikedDrink, UpvotedUserDrink, DownvotedUserDrink, UserDrink, Ingredient, Instruction
+from gnt.models import Profile, Drink, DrinkName, ProfileToLikedDrink, ProfileToDislikedDrink, UpvotedUserDrink, DownvotedUserDrink, UserDrink, Ingredient, Instruction, Comment
 import json
 import os
 from ibm_watson import DiscoveryV1
 from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from django.http import HttpResponseRedirect
 from django.conf import settings
 from django.contrib import messages
+from django.urls import reverse
 import threading
 import shutil
 import time
@@ -19,6 +21,7 @@ authenticator = IAMAuthenticator(api_key)
 discovery = DiscoveryV1(version='2019-04-30', authenticator=authenticator)
 discovery.set_service_url(
     'https://api.us-south.discovery.watson.cloud.ibm.com/')
+
 
 def like_drink(request):
     try:
@@ -190,6 +193,7 @@ def get_liked_disliked_drinks(request):
         }
         return JsonResponse(response)
 
+
 def get_liked_disliked_user_drinks(request):
     try:
         liked_drinks = []
@@ -226,13 +230,15 @@ def get_liked_disliked_user_drinks(request):
         }
         return JsonResponse(response)
 
+
 def like_user_drink(request):
     try:
         username = request.POST['user']
         drink = UserDrink.objects.get(id=request.POST['drink_id'])
         profile = Profile.objects.get(id=request.user.profile.id)
         if DownvotedUserDrink.objects.filter(profile=profile, drink=drink):
-            disliked_drink = DownvotedUserDrink.objects.filter(profile=profile, drink=drink)
+            disliked_drink = DownvotedUserDrink.objects.filter(
+                profile=profile, drink=drink)
             disliked_drink.delete()
             drink.votes += 2
             drink.save()
@@ -243,12 +249,13 @@ def like_user_drink(request):
                 str(username) + "'s liked drinks"
             status = 201
         elif UpvotedUserDrink.objects.filter(profile=profile, drink=drink):
-            upvoted_drink = UpvotedUserDrink.objects.filter(profile=profile, drink=drink)
+            upvoted_drink = UpvotedUserDrink.objects.filter(
+                profile=profile, drink=drink)
             upvoted_drink.delete()
             drink.votes -= 1
             drink.save()
-            message =  "Removed the upvote"
-            status =  202
+            message = "Removed the upvote"
+            status = 202
         else:
             new_like = UpvotedUserDrink(profile=profile, drink=drink)
             new_like.save()
@@ -266,7 +273,8 @@ def like_user_drink(request):
             drink_id = drink.id
             drink_copied_filepath = make_drink_json(drink)
             drink.delete()
-            x = threading.Thread(target=upload_to_discovery, args=(drink_id, drink_copied_filepath, ))
+            x = threading.Thread(target=upload_to_discovery, args=(
+                drink_id, drink_copied_filepath, ))
             x.start()
             message = f'{drink.name} has reach the upvote threshold of {up_thresh} and has been added to our central database!'
             status = 203
@@ -283,10 +291,13 @@ def like_user_drink(request):
         }
         return JsonResponse(response)
 
+
 def make_drink_json(drink):
     names = [drink.name]
-    ingredients = [f'{ingr.quantity} {ingr.name}' for ingr in Ingredient.objects.filter(drink=drink)]
-    instructions = [f'{instr.instruction}' for instr in Instruction.objects.filter(drink=drink)]
+    ingredients = [
+        f'{ingr.quantity} {ingr.name}' for ingr in Ingredient.objects.filter(drink=drink)]
+    instructions = [
+        f'{instr.instruction}' for instr in Instruction.objects.filter(drink=drink)]
     json_obj = {"names": names,
                 "ingredients": ingredients,
                 "method": instructions,
@@ -300,15 +311,43 @@ def make_drink_json(drink):
         json.dump(json_obj, outfile)
     outfile.close()
     print(drink.image.url[1:])
-    shutil.copy(drink.image.url[1:], f'gnt/static/data/accepted_user_drinks/User_drink{drink.id}')
+    shutil.copy(
+        drink.image.url[1:], f'gnt/static/data/accepted_user_drinks/User_drink{drink.id}')
     img_name = os.path.basename(drink.image.url[1:])
     return f'gnt/static/data/accepted_user_drinks/User_drink{drink.id}/{img_name}'
+
+
+def comment(request):
+    """
+    Write comment to DB
+    """
+    try:
+        drink = UserDrink.objects.get(id=request.POST['drink'])
+
+        comment = Comment(
+            author=request.user,
+            drink=drink,
+            comment=request.POST['create-comment']
+        )
+
+        comment.save()
+        response = {'status': 201,
+                    'message': 'Comment added'}
+    except Exception as e:
+        print(str(e))
+        response = {
+            'message': str(e),
+            'status': 500
+        }
+
+    return JsonResponse(response)
 
 
 def upload_to_discovery(drink_id, image_url):
     print("Epic multithread mode engaged")
     with open(f'./gnt/static/data/accepted_user_drinks/User_drink{drink_id}/User_drink{drink_id}.json') as fileinfo:
-        add_doc = discovery.add_document(f'{environment_id}', f'{collection_id}', file=fileinfo).get_result()
+        add_doc = discovery.add_document(
+            f'{environment_id}', f'{collection_id}', file=fileinfo).get_result()
     fileinfo.close()
     d_id, d_status = add_doc['document_id'], add_doc['status']
     print(f'DOCUMENT {d_id} IS {d_status}')
@@ -319,7 +358,8 @@ def upload_to_discovery(drink_id, image_url):
     shutil.move(image_url, dest_path)
     response = []
     while len(response) == 0:
-        response = discovery.query(environment_id, collection_id, query=f'id::"{d_id}"').result['results']
+        response = discovery.query(
+            environment_id, collection_id, query=f'id::"{d_id}"').result['results']
         if len(response) == 0:
             time.sleep(10)
         print(f'RESPONSE: {response}')
@@ -344,7 +384,8 @@ def dislike_user_drink(request):
         drink = UserDrink.objects.get(id=request.POST['drink_id'])
         profile = Profile.objects.get(id=request.user.profile.id)
         if UpvotedUserDrink.objects.filter(profile=profile, drink=drink):
-            liked_drink = UpvotedUserDrink.objects.filter(profile=profile, drink=drink)
+            liked_drink = UpvotedUserDrink.objects.filter(
+                profile=profile, drink=drink)
             liked_drink.delete()
             drink.votes -= 2
             drink.save()
@@ -355,7 +396,8 @@ def dislike_user_drink(request):
                 str(username) + "'s disliked drinks"
             status = 201
         elif DownvotedUserDrink.objects.filter(profile=profile, drink=drink):
-            downvoted_drink = DownvotedUserDrink.objects.filter(profile=profile, drink=drink)
+            downvoted_drink = DownvotedUserDrink.objects.filter(
+                profile=profile, drink=drink)
             downvoted_drink.delete()
             drink.votes += 1
             drink.save()
@@ -390,6 +432,7 @@ def dislike_user_drink(request):
         }
         return JsonResponse(response)
 
+
 def get_collaborate_filtering_results(request):
     try:
         message = 'woo yay'
@@ -406,4 +449,3 @@ def get_collaborate_filtering_results(request):
             'status': 500
         }
     return JsonResponse(response)
-
