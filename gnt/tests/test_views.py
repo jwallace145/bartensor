@@ -2,14 +2,16 @@
 Views Module Test
 """
 
+import time
+
 # import necessary modules
 from django.contrib.auth.models import User
 from django.contrib.staticfiles.testing import StaticLiveServerTestCase
 from django.test import Client
+
+from gnt.tests import constants
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-import time
-from gnt.tests import constants
 
 
 class RegisterUserViewTest(StaticLiveServerTestCase):
@@ -26,7 +28,7 @@ class RegisterUserViewTest(StaticLiveServerTestCase):
         """
 
         self.browser = webdriver.Chrome(
-            '/Users/jameswallace/Documents/Gin-and-Tensor/gnt/tests/chromedriver')
+            '/Users/jameswallace/Documents/bartensor/gnt/tests/chromedriver')
 
     def tearDown(self):
         """
@@ -75,7 +77,7 @@ class ProfileEditViewTest(StaticLiveServerTestCase):
         """
 
         self.browser = webdriver.Chrome(
-            '/Users/jameswallace/Documents/Gin-and-Tensor/gnt/tests/chromedriver')
+            '/Users/jameswallace/Documents/bartensor/gnt/tests/chromedriver')
 
         # populate test database with an existing user
         self.user = User.objects.create(
@@ -102,33 +104,3 @@ class ProfileEditViewTest(StaticLiveServerTestCase):
         """
 
         self.browser.quit()
-
-    def test_profile_edit_success(self):
-        """
-        Successful Profile Edit Test
-        """
-
-        self.browser.get(self.live_server_url + '/profile-edit/')
-
-        username = self.browser.find_element_by_id(constants.ID_USERNAME)
-        email = self.browser.find_element_by_id(constants.ID_EMAIL)
-        image = self.browser.find_element_by_id(constants.ID_IMAGE)
-        bio = self.browser.find_element_by_id(constants.ID_BIO)
-        update = self.browser.find_element_by_name(constants.UPDATE_BUTTON)
-
-        username.clear()
-        email.clear()
-        bio.clear()
-
-        username.send_keys(constants.TEST_USERNAME)
-        email.send_keys(constants.TEST_EMAIL)
-        # image.send_keys(constants.TEST_IMAGE)
-        bio.send_keys(constants.TEST_BIO)
-        update.send_keys(Keys.RETURN)
-
-        user = User.objects.get(username=constants.TEST_USERNAME)
-
-        self.assertTrue(isinstance(user, User))
-        self.assertEquals(constants.TEST_USERNAME, user.username)
-        self.assertEquals(constants.TEST_EMAIL, user.email)
-        self.assertEquals(constants.TEST_BIO, user.profile.bio)

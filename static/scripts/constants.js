@@ -1,0 +1,1 @@
+var APPURL = window.location.origin;
