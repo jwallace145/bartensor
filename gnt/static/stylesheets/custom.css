@@ -500,7 +500,7 @@ a {
 
 #result_container {
   background-color: rgba(245, 245, 245, 0.541);
-  border: 3px solid black;
+  border: 3px solid #252729;
   margin-top: 20px;
   padding-bottom: 50px;
   position: relative;
@@ -508,7 +508,7 @@ a {
 }
 
 .results-header {
-  background-color: black;
+  background-color: #252729;
   color: #f3f3f3;
   margin-bottom: 20px;
 }
