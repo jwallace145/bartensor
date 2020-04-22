@@ -34,17 +34,9 @@
   {% endif %}
 
   <!-- USER VIEWS OTHER USER'S PROFILE WITH USER CREATED DRINKS -->
-  {% if user != profile and drinks %}
-  {% for drink in drinks %}
-  {% include 'gnt/user_created_drink.html' %}
-  {% endfor %}
-  {% endif %}
-
   <!-- USER VIEWS HIS/HER PROFILE WITH USER CREATED DRINKS -->
-  {% if user == profile and drinks %}
-  {% for drink in drinks %}
-  {% include 'gnt/user_created_drink.html' %}
-  {% endfor %}
+  {% if user != profile and drinks or user == profile and drinks%}
+  {% include 'gnt/user_created_drinks.html' %}
   {% endif %}
 
 </div>

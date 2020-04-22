@@ -1,0 +1,572 @@
+[
+    {
+        "id": 1,
+        "names": [
+            "Screwdriver"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "Fill with Orange juice"
+        ],
+        "method": [
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 2,
+        "names": [
+            "Rum & Coke"
+        ],
+        "ingredients": [
+            "1 ½ oz Rum",
+            "Fill w/coke"
+        ],
+        "method": [
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 3,
+        "names": [
+            "Cuba Libra"
+        ],
+        "ingredients": [
+            "1 ½ oz Rum",
+            "Fill w/coke"
+        ],
+        "method": [
+            "garnish with Lime",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 4,
+        "names": [
+            "Vodka Soda"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "Fill with Seltzer"
+        ],
+        "method": [
+            "Garnish with a lime",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 5,
+        "names": [
+            "Vodka Cranberry",
+            "Cape Cod",
+            "Cape Codder",
+            "Cranberry Vodka"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "Fill with Cranberry juice"
+        ],
+        "method": [
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 6,
+        "names": [
+            "Greyhound",
+            "Vodka & Grapefruit"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "Fill with Grapefruit juice"
+        ],
+        "method": [
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 7,
+        "names": [
+            "Bay Breeze"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "Fill with Pineapple juice"
+        ],
+        "method": [
+            "Top with Cranberry",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 8,
+        "names": [
+            "Sea Breeze"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "Fill to 3/4 with Grapefruit juice",
+            "Top with Cranberry Juice"
+        ],
+        "method": [
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 9,
+        "names": [
+            "Gin & Tonic"
+        ],
+        "ingredients": [
+            "1 ½ oz Gin",
+            "Fill with Tonic"
+        ],
+        "method": [
+            "Lime Garnish",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 10,
+        "names": [
+            "Vodka Tonic"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "Fill with Tonic"
+        ],
+        "method": [
+            "Lime Garnish",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 11,
+        "names": [
+            "Highball",
+            "Whiskey Ginger"
+        ],
+        "ingredients": [
+            "1 ½ oz Whiskey",
+            "Fill with Ginger Ale"
+        ],
+        "method": [
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 12,
+        "names": [
+            "Bloody Mary"
+        ],
+        "ingredients": [
+            "1 ½ oz vodka",
+            "Fill with Tomato Juice",
+            "3 dashes of salt & pepper",
+            "2 drops of Worcestershire",
+            "2 drops of Tabasco",
+            "Squeeze of lemon juice",
+            "Horseradish to taste"
+        ],
+        "method": [
+            "Roll and Pour",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 13,
+        "names": [
+            "Margarita"
+        ],
+        "ingredients": [
+            "1.5 oz Silver Tequila",
+            "½ Triple sec",
+            "1 oz Fresh Lime Juice",
+            "3/4 oz Simple (or Agave) Syrup"
+        ],
+        "method": [
+            "Add all ingredients to shaker w/ice",
+            "Shake and strain into prepared glass",
+            "Optional: Salt on the rim",
+            "Optional: Ice",
+            "Glass: Margarita or Coupe"
+        ]
+    },
+    {
+        "id": 14,
+        "names": [
+            "Tequila Sunrise"
+        ],
+        "ingredients": [
+            "1 ½ oz Tequila",
+            "Fill with Orange Juice",
+            "Top with ½ oz of Grenadine"
+        ],
+        "method": [
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 15,
+        "names": [
+            "Long Island Ice Tea"
+        ],
+        "ingredients": [
+            "½ oz  Vodka",
+            "½ oz  Gin",
+            "½ oz Light Rum",
+            "½ oz Tequila",
+            "½ oz Triple sec",
+            "2oz Sour mix",
+            "Top with Cola"
+        ],
+        "method": [
+            "Lemon Garnish",
+            "Short shake",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 16,
+        "names": [
+            "Alabama Slammer"
+        ],
+        "ingredients": [
+            "1 ½ oz sloe Gin",
+            " oz Amaretto",
+            "½ oz Southern Comfort",
+            "Fill with Orange Juice"
+        ],
+        "method": [
+            "Short Shake",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 17,
+        "names": [
+            "Singapore Sling"
+        ],
+        "ingredients": [
+            "1 oz. London dry gin",
+            " oz. Cherry Heering",
+            "½ oz. Bénédictine",
+            "1 oz. fresh lime juice",
+            "2 oz. soda water",
+            "1 dash Angostura bitters"
+        ],
+        "method": [
+            "Shake all ingredients with ice",
+            "Strain into a Collins glass filled with fresh ice",
+            "Garnish with wedge of Pineapple"
+        ]
+    },
+    {
+        "id": 18,
+        "names": [
+            "White Russian"
+        ],
+        "ingredients": [
+            "1 ½ oz vodka",
+            "1 oz Kahlua",
+            "Top with Milk"
+        ],
+        "method": [
+            "Short Shake",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 19,
+        "names": [
+            "Toasted Almond"
+        ],
+        "ingredients": [
+            "1 oz Amaretto",
+            "1 ½ oz Kahlua",
+            "Fill with Milk"
+        ],
+        "method": [
+            "Shake and Pour",
+            "Glass: Highball w/ice"
+        ]
+    },
+    {
+        "id": 20,
+        "names": [
+            "Godfather"
+        ],
+        "ingredients": [
+            "1 ½ oz Scotch",
+            "½ oz  Amaretto"
+        ],
+        "method": [
+            "Glass: Rocks w/ice"
+        ]
+    },
+    {
+        "id": 21,
+        "names": [
+            "Negroni"
+        ],
+        "ingredients": [
+            "1oz Gin",
+            "1oz Sweet Vermouth",
+            "1oz Campari"
+        ],
+        "method": [
+            "Pour over ice in Rocks Glass",
+            "Stir",
+            "Orange twist",
+            "(Usually served on the rocks, but some guests may prefer it UP in which case - stir over ice in mixing cup.  Strain into chilled cocktail glass.)"
+        ]
+    },
+    {
+        "id": 22,
+        "names": [
+            "Whiskey Sour"
+        ],
+        "ingredients": [
+            "1 ½ oz Whiskey",
+            "2 oz Sour Mix",
+            "Optional: 1/2 oz egg white"
+        ],
+        "method": [
+            "Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice",
+            "Strain into a large old fashioned glass with fresh ice",
+            "Garnish with Cherry & Orange",
+            "Glass:  Highball"
+        ]
+    },
+    {
+        "id": 23,
+        "names": [
+            "Amaretto Sour"
+        ],
+        "ingredients": [
+            "1 ½ oz Amaretto",
+            "2 oz Sour Mix",
+            "Optional: 1/2 oz egg white"
+        ],
+        "method": [
+            "Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice",
+            "Strain into a large old fashioned glass with fresh ice",
+            "Garnish with Cherry & Orange",
+            "Glass:  Highball"
+        ]
+    },
+    {
+        "id": 24,
+        "names": [
+            "Vodka Sour"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "2 oz Sour Mix",
+            "Optional: 1/2 oz egg white"
+        ],
+        "method": [
+            "Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice",
+            "Strain into a large old fashioned glass with fresh ice",
+            "Garnish with Cherry & Orange",
+            "Glass:  Highball"
+        ]
+    },
+    {
+        "id": 25,
+        "names": [
+            "Scotch Sour"
+        ],
+        "ingredients": [
+            "1 ½ oz Scotch",
+            "2 oz Sour Mix",
+            "Optional: 1/2 oz egg white"
+        ],
+        "method": [
+            "Shake Ingredients in a Mixing Glass or Cocktail Shaker w/ice",
+            "Strain into a large old fashioned glass with fresh ice",
+            "Garnish with Cherry & Orange",
+            "Glass:  Highball"
+        ]
+    },
+    {
+        "id": 26,
+        "names": [
+            "Old Fashioned"
+        ],
+        "ingredients": [
+            "Packet of Sugar",
+            "2 dashes of Bitters",
+            "Splash of soda",
+            "2 oz Whiskey"
+        ],
+        "method": [
+            "Fill glass with ice",
+            "Muddle",
+            "Optional: Cherry & orange",
+            "Rocks glass"
+        ]
+    },
+    {
+        "id": 27,
+        "names": [
+            "Black Russian"
+        ],
+        "ingredients": [
+            "1 ½ oz Vodka",
+            "½ oz Kahlua"
+        ],
+        "method": [
+            "Glass: Rocks w/ice"
+        ]
+    },
+    {
+        "id": 28,
+        "names": [
+            "Dry Martini",
+            "Martini"
+        ],
+        "ingredients": [
+            "2-3 drops of Dry Vermouth",
+            "2 oz Gin or Vodka"
+        ],
+        "method": [
+            "Can be made either up (NEAT without ICE) or on the Rocks (ICE)",
+            "Always pour Vermouth first",
+            "Fill mixing glass w/ice",
+            "STIR, don’t shake (Unless you're James Bond)",
+            "Strain",
+            "Olive Garnish (one large or 3 small)"
+        ]
+    },
+    {
+        "id": 29,
+        "names": [
+            "Dirty Martini"
+        ],
+        "ingredients": [
+            "2-3 drops of Dry Vermouth",
+            "2 oz Gin or Vodka",
+            "Some Olive juice"
+        ],
+        "method": [
+            "Can be made either up (NEAT without ICE) or on the Rocks (ICE)",
+            "Always pour Vermouth first",
+            "Fill mixing glass w/ice",
+            "STIR, don’t shake (Unless you're James Bond)",
+            "Strain",
+            "Olive Garnish (one large or 3 small)"
+        ]
+    },
+    {
+        "id": 30,
+        "names": [
+            "Extra Dry Martini"
+        ],
+        "ingredients": [
+            "1 drop of Dry Vermouth",
+            "2 oz Gin or Vodka"
+        ],
+        "method": [
+            "Can be made either up (NEAT without ICE) or on the Rocks (ICE)",
+            "Always pour Vermouth first",
+            "Fill mixing glass w/ice",
+            "STIR, don’t shake (Unless you're James Bond)",
+            "Strain",
+            "Lemon twist or olive garnish (one large or 3 small)"
+        ]
+    },
+    {
+        "id": 31,
+        "names": [
+            "Gibson"
+        ],
+        "ingredients": [
+            "2-3 drops of Dry Vermouth",
+            "2 oz Gin or Vodka"
+        ],
+        "method": [
+            "Can be made either up (NEAT without ICE) or on the Rocks (ICE)",
+            "Always pour Vermouth first",
+            "Fill mixing glass w/ice",
+            "STIR, don’t shake (Unless you're James Bond)",
+            "Strain",
+            "Garnish with 3 cocktail Onions"
+        ]
+    },
+    {
+        "id": 32,
+        "names": [
+            "Manhattan"
+        ],
+        "ingredients": [
+            "1 oz Sweet Vermouth",
+            "2 oz Bourbon",
+            "2 Dashes Bitters"
+        ],
+        "method": [
+            "Mixing glass with ice",
+            "Stir & Strain into a chilled Coupe or Martini glass",
+            "Cherry Garnish"
+        ]
+    },
+    {
+        "id": 33,
+        "names": [
+            "Dry Manhattan"
+        ],
+        "ingredients": [
+            "½ oz Sweet Vermouth",
+            "2 oz Bourbon"
+        ],
+        "method": [
+            "Fill mixing glass w/ice",
+            "Stir & Strain into a chilled Coupe or Martini glass",
+            "Lemon Twist Garnish"
+        ]
+    },
+    {
+        "id": 34,
+        "names": [
+            "Perfect Manhattan"
+        ],
+        "ingredients": [
+            "½ oz each of Dry & Sweet Vermouth",
+            "2 oz Bourbon"
+        ],
+        "method": [
+            "Mixing glass with Ice",
+            "Stir & Strain into a chilled Coupe or Martini glass",
+            "Lemon Twist Garnish"
+        ]
+    },
+    {
+        "id": 35,
+        "names": [
+            "Rob Roy"
+        ],
+        "ingredients": [
+            "1 oz Sweet Vermouth",
+            "2 oz Scotch",
+            "2 Dashes Bitters"
+        ],
+        "method": [
+            "Mixing glass with ice",
+            "Stir & Strain into a chilled Coupe or Martini glass",
+            "Cherry Garnish"
+        ]
+    },
+    {
+        "id": 36,
+        "names": [
+            "Sweaty Mexican"
+        ],
+        "ingredients": [
+            "2 oz tequila",
+            "2 oz tabasco sauce"
+        ],
+        "method": [
+            "Stir",
+            "Glass: Old-Fashioned"
+        ]
+    }
+]

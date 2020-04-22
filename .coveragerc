@@ -1,13 +1,16 @@
 [run]
 omit =
   # exclude test coverage of virtual environment modules
-  */env/*
+  */venv/*
 
   # exclude test coverage of database migrations
   */migrations/*
 
   # exclude test coverage of test classes
   */tests/*
+
+  # exclude init
+  */__init__.py
 
 [html]
 directory = coverage_reports

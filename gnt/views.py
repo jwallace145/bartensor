@@ -51,11 +51,13 @@ def home(request):
             for i, drink in enumerate(drinks):
                 hash2column[drink.drink_hash] = i
                 column2hash[i] = drink.drink_hash
-            ratings = np.zeros((840, len(drinks))) # (|profiles|, |drinks|) when ratings were recorded
+            # (|profiles|, |drinks|) when ratings were recorded
+            ratings = np.zeros((840, len(drinks)))
             with open('static/data/ratings.db') as f:
                 for line in f.readlines():
                     terms = line.split(',')
-                    ratings[int(terms[0]), hash2column[terms[1]]] = int(terms[2])
+                    ratings[int(terms[0]), hash2column[terms[1]]
+                            ] = int(terms[2])
 
             # Create user's profile rating vector
             profile_ratings = np.zeros(len(drinks))
@@ -65,23 +67,27 @@ def home(request):
                 profile_ratings[hash2column[dislike.drink.drink_hash]] = -1
 
             # Normalize ratings by subtracting each profile's average rating
-            profile_masked = np.ma.masked_array(profile_ratings, mask=(profile_ratings == 0), fill_value=0)
+            profile_masked = np.ma.masked_array(
+                profile_ratings, mask=(profile_ratings == 0), fill_value=0)
             profile_average = np.average(profile_masked)
             profile_ratings = np.array(profile_masked - profile_average)
 
-            masked = np.ma.masked_array(ratings, mask=(ratings == 0), fill_value=0)
+            masked = np.ma.masked_array(
+                ratings, mask=(ratings == 0), fill_value=0)
             average = np.average(masked, axis=1)
             ratings = np.array(masked - average.reshape((average.shape[0], 1)))
 
             k = 3
             nn = NearestNeighbors(n_neighbors=k).fit(ratings)
-            indices = nn.kneighbors(profile_ratings.reshape(1, len(profile_ratings)), return_distance=False)[0]
+            indices = nn.kneighbors(profile_ratings.reshape(
+                1, len(profile_ratings)), return_distance=False)[0]
             neighbors = ratings[indices]
             scores = np.sum(neighbors, axis=0) / k
             indices = np.argsort(scores)
             hashes = []
             for i in indices[::-1]:
-                if profile_ratings[i] == 0: # only use this rec if the user hasn't already rated this drink
+                # only use this rec if the user hasn't already rated this drink
+                if profile_ratings[i] == 0:
                     hashes.append(column2hash[i])
                 if len(hashes) == k:
                     break
@@ -91,12 +97,13 @@ def home(request):
             futures = {}
             with concurrent.futures.ThreadPoolExecutor(max_workers=k) as executor:
                 for i, d_hash in enumerate(hashes):
-                    futures[executor.submit(discovery_adapter.get_drink, d_hash)] = d_hash
+                    futures[executor.submit(
+                        discovery_adapter.get_drink, d_hash)] = d_hash
                 idx = 0
                 for future in concurrent.futures.as_completed(futures):
                     response[idx] = future.result()[0]
                     idx += 1
-            
+
             '''
             # Update ratings.db (takes about ~120s with the fake db)
             drinks = Drink.objects.all()
@@ -120,7 +127,7 @@ def home(request):
     else:
         response = {}
 
-    return render(request, 'gnt/index.html', {'drinks':response})
+    return render(request, 'gnt/index.html', {'drinks': response})
 
 
 def _text_to_dql(text, name_multiplier=1, ingredient_multiplier=1):
@@ -215,7 +222,6 @@ def _query_discovery(text, question, offset=0):
                 break
 
     return response
-
 
 
 def results(request):
@@ -382,23 +388,9 @@ def profile_public(request, username):
 
             messages.success(request, f'Removed friend { username }!')
 
-        # else if create comment post request
-        elif 'create-comment' in request.POST:
-            drink = UserDrink.objects.get(id=request.POST['drink'])
-
-            comment = Comment(
-                author=request.user,
-                drink=drink,
-                comment=request.POST['create-comment']
-            )
-
-            comment.save()
-
-            messages.success(
-                request, f'You left a comment on { username }\'s drink!')
-
         elif 'accept-friend' in request.POST:
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=user.profile)
             friend_request.delete()
 
             friend = Friend(
@@ -408,13 +400,16 @@ def profile_public(request, username):
 
             friend.save()
 
-            messages.success(request, f'You have accepted { username }\'s friend request!')
+            messages.success(
+                request, f'You have accepted { username }\'s friend request!')
 
         elif 'deny-friend' in request.POST:
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=user.profile)
             friend_request.delete()
 
-            messages.info(request, f'You have denied to add { username } as a friend.')
+            messages.info(
+                request, f'You have denied to add { username } as a friend.')
 
     requests = []
     friends = []
@@ -501,7 +496,8 @@ def liked_drinks(request, username):
             messages.success(request, f'Removed friend { username }!')
 
         elif 'accept-friend' in request.POST:
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=user.profile)
             friend_request.delete()
 
             friend = Friend(
@@ -511,13 +507,16 @@ def liked_drinks(request, username):
 
             friend.save()
 
-            messages.success(request, f'You have accepted { username }\'s friend request!')
+            messages.success(
+                request, f'You have accepted { username }\'s friend request!')
 
         elif 'deny-friend' in request.POST:
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=user.profile)
             friend_request.delete()
 
-            messages.info(request, f'You have denied to add { username } as a friend.')
+            messages.info(
+                request, f'You have denied to add { username } as a friend.')
 
     requests = []
     friends = []
@@ -543,7 +542,8 @@ def liked_drinks(request, username):
         with concurrent.futures.ThreadPoolExecutor(max_workers=len(profile_to_drink)) as executor:
             for i, ptd in enumerate(profile_to_drink):
                 drink = Drink.objects.get(id=ptd.drink.id)
-                futures[executor.submit(discovery_adapter.get_drink, drink.drink_hash)] = drink.drink_hash
+                futures[executor.submit(
+                    discovery_adapter.get_drink, drink.drink_hash)] = drink.drink_hash
             idx = 0
             for future in concurrent.futures.as_completed(futures):
                 response[idx] = future.result()[0]
@@ -605,7 +605,8 @@ def disliked_drinks(request, username):
             messages.success(request, f'Removed friend { username }!')
 
         elif 'accept-friend' in request.POST:
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=user.profile)
             friend_request.delete()
 
             friend = Friend(
@@ -615,13 +616,16 @@ def disliked_drinks(request, username):
 
             friend.save()
 
-            messages.success(request, f'You have accepted { username }\'s friend request!')
+            messages.success(
+                request, f'You have accepted { username }\'s friend request!')
 
         elif 'deny-friend' in request.POST:
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=user.profile)
             friend_request.delete()
 
-            messages.info(request, f'You have denied to add { username } as a friend.')
+            messages.info(
+                request, f'You have denied to add { username } as a friend.')
 
     requests = []
     friends = []
@@ -637,7 +641,8 @@ def disliked_drinks(request, username):
         if friends:
             friends = friends[0]
 
-    profile_to_drink = ProfileToDislikedDrink.objects.filter(profile=profile.id)
+    profile_to_drink = ProfileToDislikedDrink.objects.filter(
+        profile=profile.id)
 
     if profile_to_drink:
         response = [0 for i in range(len(profile_to_drink))]
@@ -647,7 +652,8 @@ def disliked_drinks(request, username):
         with concurrent.futures.ThreadPoolExecutor(max_workers=len(profile_to_drink)) as executor:
             for i, ptd in enumerate(profile_to_drink):
                 drink = Drink.objects.get(id=ptd.drink.id)
-                futures[executor.submit(discovery_adapter.get_drink, drink.drink_hash)] = drink.drink_hash
+                futures[executor.submit(
+                    discovery_adapter.get_drink, drink.drink_hash)] = drink.drink_hash
             idx = 0
             for future in concurrent.futures.as_completed(futures):
                 response[idx] = future.result()[0]
@@ -737,12 +743,15 @@ def notifications(request, username):
     if request.method == 'POST':
         if 'add-friend' in request.POST:
             requestor = User.objects.get(username=request.POST['requestor'])
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=requestor.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=requestor.profile)
             friend_request.delete()
-            friend = Friend(friend1=request.user.profile, friend2=requestor.profile)
+            friend = Friend(friend1=request.user.profile,
+                            friend2=requestor.profile)
             friend.save()
 
-            messages.success(request, f'You have added friend { requestor.profile.user }!')
+            messages.success(
+                request, f'You have added friend { requestor.profile.user }!')
 
         elif 'deny-friend' in request.POST:
             requestor = User.objects.get(username=request.POST['requestor'])
@@ -783,13 +792,15 @@ def friends(request, username):
         # else if remove friend post request
         elif 'remove-friend' in request.POST:
             friend = Friend.objects.filter(friend1=request.user.profile, friend2=user.profile) | \
-                     Friend.objects.filter(friend1=user.profile, friend2=request.user.profile)
+                Friend.objects.filter(
+                    friend1=user.profile, friend2=request.user.profile)
             friend.delete()
 
             messages.success(request, f'Removed friend { username }!')
 
         elif 'accept-friend' in request.POST:
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=user.profile)
             friend_request.delete()
 
             friend = Friend(
@@ -799,13 +810,16 @@ def friends(request, username):
 
             friend.save()
 
-            messages.success(request, f'You have accepted { username }\'s friend request!')
+            messages.success(
+                request, f'You have accepted { username }\'s friend request!')
 
         elif 'deny-friend' in request.POST:
-            friend_request = FriendRequest.objects.get(requestee=request.user.profile, requestor=user.profile)
+            friend_request = FriendRequest.objects.get(
+                requestee=request.user.profile, requestor=user.profile)
             friend_request.delete()
 
-            messages.info(request, f'You have denied to add { username } as a friend.')
+            messages.info(
+                request, f'You have denied to add { username } as a friend.')
 
     requests = []
     if request.user.is_authenticated:

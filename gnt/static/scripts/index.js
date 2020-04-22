@@ -273,8 +273,8 @@ function thumbs_down() {
         $(this).unbind();
     })
     // Add click listener to each thumbs up button
-    anchor.each(function likeDrink(index, element) {
-        $(this).on("click", function likeDrink() {
+    anchor.each(function dislikeDrink(index, element) {
+        $(this).on("click", function dislikeDrink() {
             var user = $(this).attr("user");
             var drink_id = $(this).attr("drinkid");
             var url = APPURL + "/dislike_drink/";
@@ -371,4 +371,27 @@ function handleMoreDrinkResults(drinks) {
 // This function initializes all tooltips so they work lmao
 $(function () {
     $('[data-toggle="tooltip"]').tooltip()
-  })
+})
+
+$(function comment() {
+    var anchor = $(".comment-form");
+    // Remove listeners if there were any
+    anchor.each(function removeListner() {
+        $(this).unbind();
+    })
+    // Add click listener to each thumbs up button
+    anchor.each(function () {
+        $(this).submit(function (event) {
+            event.preventDefault(); //prevent default action 
+            var url = APPURL + '/comment/'
+            var form_data = $(this).serialize(); //Encode form elements for submission
+            $.ajax({
+                url: url,
+                type: 'post',
+                data: form_data
+            }).done(function (response) { //
+                location.reload();
+            });
+        });
+    });
+});
