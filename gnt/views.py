@@ -38,8 +38,89 @@ def home(request):
     """
     Home View
     """
+    if request.user.is_authenticated:
 
-    return render(request, 'gnt/index.html')
+        profile = Profile.objects.get(user=request.user)
+        if ProfileToLikedDrink.objects.filter(profile=profile) or ProfileToLikedDrink.objects.filter(profile=profile):
+
+            print(f'USERNAME: {profile.user}')
+            # Load ratings (we account for exact column indices changing based on enumerate() returns)
+            drinks = Drink.objects.all()
+            hash2column = {}
+            column2hash = {}
+            for i, drink in enumerate(drinks):
+                hash2column[drink.drink_hash] = i
+                column2hash[i] = drink.drink_hash
+            ratings = np.zeros((840, len(drinks))) # (|profiles|, |drinks|) when ratings were recorded
+            with open('static/data/ratings.db') as f:
+                for line in f.readlines():
+                    terms = line.split(',')
+                    ratings[int(terms[0]), hash2column[terms[1]]] = int(terms[2])
+
+            # Create user's profile rating vector
+            profile_ratings = np.zeros(len(drinks))
+            for like in ProfileToLikedDrink.objects.filter(profile=profile):
+                profile_ratings[hash2column[like.drink.drink_hash]] = 1
+            for dislike in ProfileToDislikedDrink.objects.filter(profile=profile):
+                profile_ratings[hash2column[dislike.drink.drink_hash]] = -1
+
+            # Normalize ratings by subtracting each profile's average rating
+            profile_masked = np.ma.masked_array(profile_ratings, mask=(profile_ratings == 0), fill_value=0)
+            profile_average = np.average(profile_masked)
+            profile_ratings = np.array(profile_masked - profile_average)
+
+            masked = np.ma.masked_array(ratings, mask=(ratings == 0), fill_value=0)
+            average = np.average(masked, axis=1)
+            ratings = np.array(masked - average.reshape((average.shape[0], 1)))
+
+            k = 3
+            nn = NearestNeighbors(n_neighbors=k).fit(ratings)
+            indices = nn.kneighbors(profile_ratings.reshape(1, len(profile_ratings)), return_distance=False)[0]
+            neighbors = ratings[indices]
+            scores = np.sum(neighbors, axis=0) / k
+            indices = np.argsort(scores)
+            hashes = []
+            for i in indices[::-1]:
+                if profile_ratings[i] == 0: # only use this rec if the user hasn't already rated this drink
+                    hashes.append(column2hash[i])
+                if len(hashes) == k:
+                    break
+
+            response = [0 for i in range(k)]
+            discovery_adapter = drink_adapter.DiscoveryAdapter()
+            futures = {}
+            with concurrent.futures.ThreadPoolExecutor(max_workers=k) as executor:
+                for i, d_hash in enumerate(hashes):
+                    futures[executor.submit(discovery_adapter.get_drink, d_hash)] = d_hash
+                idx = 0
+                for future in concurrent.futures.as_completed(futures):
+                    response[idx] = future.result()[0]
+                    idx += 1
+            
+            '''
+            # Update ratings.db (takes about ~120s with the fake db)
+            drinks = Drink.objects.all()
+            profiles = Profile.objects.all()
+            rows = {}
+            for i, profile in enumerate(profiles):
+                rows[profile] = i
+            with open('static/data/ratings.db', 'w') as f:
+                # Populate ratings matrix
+                for like in ProfileToLikedDrink.objects.all():
+                    row = rows[like.profile]
+                    rating = 1
+                    f.write('%d,%s,%d\n' % (row, like.drink.drink_hash, rating))
+                for dislike in ProfileToDislikedDrink.objects.all():
+                    row = rows[dislike.profile]
+                    rating = -1
+                    f.write('%d,%s,%d\n' % (row, dislike.drink.drink_hash, rating))
+            '''
+        else:
+            response = {}
+    else:
+        response = {}
+
+    return render(request, 'gnt/index.html', {'drinks':response})
 
 
 def _text_to_dql(text, name_multiplier=1, ingredient_multiplier=1):
@@ -135,98 +216,6 @@ def _query_discovery(text, question, offset=0):
 
     return response
 
-
-def collaborative_filter(request):
-    """
-    Let's help this user get lucky.
-
-    :param request:
-    :param username:
-    :return:
-    """
-    if request.method != 'POST':
-        return HttpResponseRedirect(reverse('home'))
-
-    username = User.objects.get(username=request.POST['username'])
-    profile = Profile.objects.get(user=username)
-
-    # Load ratings (we account for exact column indices changing based on enumerate() returns)
-    drinks = Drink.objects.all()
-    hash2column = {}
-    column2hash = {}
-    for i, drink in enumerate(drinks):
-        hash2column[drink.drink_hash] = i
-        column2hash[i] = drink.drink_hash
-    ratings = np.zeros((840, len(drinks))) # (|profiles|, |drinks|) when ratings were recorded
-    with open('static/data/ratings.db') as f:
-        for line in f.readlines():
-            terms = line.split(',')
-            ratings[int(terms[0]), hash2column[terms[1]]] = int(terms[2])
-
-    # Create user's profile rating vector
-    profile_ratings = np.zeros(len(drinks))
-    for like in ProfileToLikedDrink.objects.filter(profile=profile):
-        profile_ratings[hash2column[like.drink.drink_hash]] = 1
-    for dislike in ProfileToDislikedDrink.objects.filter(profile=profile):
-        profile_ratings[hash2column[dislike.drink.drink_hash]] = -1
-
-    # Normalize ratings by subtracting each profile's average rating
-    profile_masked = np.ma.masked_array(profile_ratings, mask=(profile_ratings == 0), fill_value=0)
-    profile_average = np.average(profile_masked)
-    profile_ratings = np.array(profile_masked - profile_average)
-
-    masked = np.ma.masked_array(ratings, mask=(ratings == 0), fill_value=0)
-    average = np.average(masked, axis=1)
-    ratings = np.array(masked - average.reshape((average.shape[0], 1)))
-
-    k = int(request.POST['count'])
-    nn = NearestNeighbors(n_neighbors=k).fit(ratings)
-    indices = nn.kneighbors(profile_ratings.reshape(1, len(profile_ratings)), return_distance=False)[0]
-    neighbors = ratings[indices]
-    scores = np.sum(neighbors, axis=0) / k
-    indices = np.argsort(scores)
-    hashes = []
-    for i in indices[::-1]:
-        if profile_ratings[i] == 0: # only use this rec if the user hasn't already rated this drink
-            hashes.append(column2hash[i])
-        if len(hashes) == k:
-            break
-
-    response = [0 for i in range(k)]
-    discovery_adapter = drink_adapter.DiscoveryAdapter()
-    futures = {}
-    with concurrent.futures.ThreadPoolExecutor(max_workers=k) as executor:
-        for i, hash in enumerate(hashes):
-            futures[executor.submit(discovery_adapter.get_drink, hash)] = hash
-        idx = 0
-        for future in concurrent.futures.as_completed(futures):
-            response[idx] = future.result()[0]
-            idx += 1
-
-    '''
-    # Update ratings.db (takes about ~120s with the fake db)
-    drinks = Drink.objects.all()
-    profiles = Profile.objects.all()
-    rows = {}
-    for i, profile in enumerate(profiles):
-        rows[profile] = i
-    with open('static/data/ratings.db', 'w') as f:
-        # Populate ratings matrix
-        for like in ProfileToLikedDrink.objects.all():
-            row = rows[like.profile]
-            rating = 1
-            f.write('%d,%s,%d\n' % (row, like.drink.drink_hash, rating))
-        for dislike in ProfileToDislikedDrink.objects.all():
-            row = rows[dislike.profile]
-            rating = -1
-            f.write('%d,%s,%d\n' % (row, dislike.drink.drink_hash, rating))
-    '''
-
-    return render(request, 'gnt/results.html', {
-        'query': 'Lucky enough?',
-        'drinks': response,
-        'question': 'how'
-    })
 
 
 def results(request):
