@@ -113,7 +113,12 @@ Next, navigate into the cloned directory and create a python3 virtual environmen
 
 Now with the virtual environment activated, install the python dependencies with pip and the requirements.txt file.
 
+    For MacOS and linux
     source <virtual environment name>/bin/activate
+    
+    For Windows
+    <virtual environment name>/Scripts/activate
+    
     pip install -r requirements.txt
 
 ### Run Database Migrations
